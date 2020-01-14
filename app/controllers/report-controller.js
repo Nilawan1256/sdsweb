@@ -20,7 +20,7 @@ exports.index = async function(req,res){
 exports.donor = async function(req,res){	
 	try{
 		
-		const sql = "select * FROM sdsweb.donor as create_date";
+		const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor ";
 		models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 		.then(result => {
 		res.render('report/donor', { title: 'Report donor', menu_left:'reports',
