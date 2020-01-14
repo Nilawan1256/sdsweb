@@ -1,0 +1,64 @@
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="card card-user">
+                    <br />
+                    <div class="content">
+                        <div class="author">
+                            <img class="avatar border-white" src="/assets/img/faces/face-stock.jpg" alt="...">
+                            <h4 class="title">
+                                สต๊อก<br>
+                            </h4>
+                        </div>
+                        <ul class="leftnav">
+                            <li>
+                                <p class="description">
+                                    <a href="/stock">ข้อมูลสต๊อก</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="description">
+                                    <a href="/stockcard">การเคลื่อนไหวสต๊อก</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="description">
+                                    <a href="/stockfulfill">รับเข้าสต๊อก</a>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-9 col-md-7">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">แก้ไขจำนวนสต๊อก: โมลด์กรีนดารา</h4>
+                    </div>
+                    <div class="content">
+                        <form action="/stock/save" method="POST">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>จำนวน</label>
+                                        <input class="form-control border-input" placeholder="จำนวน" value="<%= data.fk_stock_product_id.qty %>" type="text" name="qty">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
+                                <input type="hidden" class="form-control" name="id" value="<%= data.id %>">
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

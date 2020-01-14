@@ -1,0 +1,172 @@
+<div class="content">
+  <div class="container-fluid">
+
+      <div class="row">
+          <div class="col-lg-3 col-md-5">
+              <div class="card card-user">
+                  <br />
+                  <div class="content">
+                      <div class="author">
+                          <img class="avatar border-white" src="/assets/img/faces/face-report.jpg" alt="...">
+                          <h4 class="title">
+                              รายงานการบริจาค<br>
+                          </h4>
+                      </div>
+                      <ul class="leftnav">
+                          <li>
+                              <p class="description">
+                                  <a href="/report/donor">รายงานผู้ร่วมบุญ</a>
+                              </p>
+                          </li>
+                          <li>
+                              <p class="description">
+                                  <a href="/report/order">รายงานการบริจาค</a>
+                              </p>
+                          </li>
+                          <li>
+                              <p class="description">
+                                  <a href="/report/revenue">รายงานรายรับ</a>
+                              </p>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="card card-user">
+                  <br />
+                  <div class="content" style="min-height:0;">
+                      <div class="author" style="padding-top:50px">                                        
+                          <h4 class="title">
+                              รายงาน SMS<br>
+                          </h4>
+                      </div>
+                      <ul class="leftnav">
+                          <li>
+                              <p class="description">
+                                  <a href="/report/smssends">รายงานการส่ง SMS</a>
+                              </p>
+                          </li>
+                          <li>
+                              <p class="description">
+                                  <a href="/report/smsreply">รายงานการตอบกลับ SMS</a>
+                              </p>
+                          </li>
+                          <li>
+                              <p class="description">
+                                  <a href="/report/smssummary">รายงานสรุปการส่ง SMS</a>
+                              </p>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-lg-9 col-md-7">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">รายงานรายรับ</h4>
+                    <p class="category"></p>
+                </div>
+                <div class="content">
+                    <form method="get" action="" class="search-container">
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>วันที่</label>
+                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" value="15/03/2018" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label style="width:40px!important; text-align:left">-</label>
+                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" value="15/03/2018" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label></label>
+                                    <a class="btn btn-info btn-fill" href="#">ค้นหา</a>
+                                </div>
+
+                            </div>
+                        </div>                                        
+                    </form>
+                </div>
+                <div class="content table-responsive table-full-width">
+                    <div class="content right"><a class="btn" href="#">Export to excel</a></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>วันที่</th>
+                                <th>ศูนย์ตั้งรับ</th>
+                                <th>จำนวน</th>
+                                <th>เงินสด</th>
+                                <th>รอโอน</th>
+                                <th>รวม</th>
+                                <th>ปรับยอด</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>15/03/2018</td>
+                                <td>ธรรมสวัสดี</td>
+                                <td>2</td>
+                                <td>4,500</td>
+                                <td>3,400</td>
+                                <td>7,900</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>15/03/2018</td>
+                                <td>ลานโพธิ์</td>
+                                <td>1</td>
+                                <td>3,900</td>
+                                <td>1,000</td>
+                                <td>2,900</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>15/03/2018</td>
+                                <td>ถ้ำอารยตารา</td>
+                                <td>20</td>
+                                <td>10,600</td>
+                                <td>8,300</td>
+                                <td>55,200</td>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class=""></td>
+                                <td class=""></td>
+                                <td class="">รวม</td>
+                                <td class="bold">10,900</td>
+                                <td class="bold">12,700</td>
+                                <td class="bold">66,000</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div class="content right">
+                        <ul class="pagination">
+                            <li><a href="#"><<</a></li>
+                            <li><a href="#"><</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#">></a></li>
+                            <li><a href="#">>></a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>                                                        
+        </div>
+
+      </div>
+
+  </div>
+</div>

@@ -1,0 +1,197 @@
+<div class="content">
+  <div class="container-fluid">
+
+      <div class="row">
+          <div class="col-lg-4 col-md-5">
+              <div class="card card-user">
+                  <div class="image">
+                      <img src="/assets/img/background.jpg" alt="...">
+                  </div>
+                  <div class="content">
+                      <div class="author">
+                          <img class="avatar border-white" src="/assets/img/faces/face-1.jpg" alt="...">
+                          <h4 class="title">
+                              Got Porrames<br>
+                          </h4>
+                      </div>
+                      <p class="description text-center">
+                          "I like the way you work it <br>
+                          No diggity <br>
+                          I wanna bag it up"
+                      </p>
+                      <p class="text-center"><a href="order-edit.html" target="_blank">ข้อมูลการบริจาค</a></p>
+                  </div>
+                  <hr>
+                  <div class="text-center">
+                      <div class="row">
+                          <div class="col-md-12">
+                              <h5><small>สมัครสมาชิกเมื่อ</small>: 15/03/2016</h5>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+          <div class="col-lg-8 col-md-7">
+              <div class="card">
+                  <div class="header">
+                      <h4 class="title">Edit Profile</h4>
+                  </div>
+                  <div class="content">
+                      <form action="/donor/save" method="POST">
+                          <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>คำหน้า</label>
+                                    <select class="form-control border-input" name="prefix">
+                                        <option>
+                                            นาย
+                                          </option>
+                                          <option>
+                                            นาง
+                                          </option>
+                                          <option>
+                                            นางสาว
+                                          </option>
+                                          <option>
+                                            อื่นๆ
+                                          </option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                              <div class="col-md-4">
+                                  <div class="form-group">
+                                      <label>ชื่อ</label>
+                                      <input class="form-control border-input" placeholder="ชื่อ" value="<%= data.firstname %>" type="text" name="fname">
+                                  </div>
+                              </div>
+                              <div class="col-md-5">
+                                  <div class="form-group">
+                                      <label>นามสกุล</label>
+                                      <input class="form-control border-input" placeholder="นามสกุล" value="<%= data.lastname %>" type="text" name="lname">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="form-group">
+                                      <label>ที่อยู่</label>
+                                      <textarea class="form-control border-input" placeholder="ที่อยู่" name="address"><%= data.address %></textarea>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>เมือง</label>
+                                    <input class="form-control border-input" placeholder="State" value="<%= data.state %>" type="text" name="state">
+                                </div>
+                            </div>
+                               <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>ประเทศ</label>
+                                        <select class="form-control border-input">
+                                          <option>
+                                            ไทย
+                                          </option>
+                                          <option>
+                                            ลาว
+                                          </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+                              <div class="col-md-4">
+                                  <div class="form-group">
+                                      <label>รหัสไปรษณีย์</label>
+                                      <input class="form-control border-input" placeholder="รหัสไปรษณีย์" type="number" name="zipcode" value="<%= data.zipcode %>">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-4">
+                                  <div class="form-group">
+                                      <label>เบอร์โทรศัพท์</label>
+                                      <input class="form-control border-input" placeholder="เบอร์โทรศัพท์" value="<%= data.phone %>" type="text" name="phone">
+                                  </div>
+                              </div>
+                              <div class="col-md-4">
+                                  <div class="form-group">
+                                      <label>อาชีพ</label>
+                                      <input class="form-control border-input" placeholder="อาชีพ" value="<%= data.occupation %>" type="text" name="occupation">
+                                  </div>
+                              </div>
+                              <div class="col-md-4">
+                                  <div class="form-group">
+                                      <label for="exampleInputEmail1">วันเกิด</label>
+                                      <input class="form-control border-input" placeholder="วันเกิด" type="text" name="birthday">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>เพศ</label>
+                                    <select class="form-control border-input">
+                                      <option>
+                                        ชาย
+                                      </option>
+                                      <option>
+                                        หญิง
+                                      </option>
+                                    </select>
+                                </div>
+                            </div>
+                              <div class="col-md-4">
+                                  <div class="form-group">
+                                      <label>ไอดีไลน์</label>
+                                      <input class="form-control border-input" placeholder="ไอดีไลน์" value="<%= data.line %>" type="text" name="line">
+                                  </div>
+                              </div>
+                              <div class="col-md-4">
+                                  <div class="form-group">
+                                      <label>อีเมล์</label>
+                                      <input class="form-control border-input" placeholder="อีเมล์" value="<%= data.email %>" type="text" name="email">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>กลุ่มผู้ร่วมบุญ</label>
+                                    <select class="form-control border-input">
+                                      <option>
+                                        กลุ่ม 1
+                                      </option>
+                                      <option>
+                                        กลุ่ม 2
+                                      </option>
+                                    </select>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="form-group">
+                                      <label>รายละเอียดเพิ่มเติม</label>
+                                      <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" value="Mike" name="comment">I like the way you work it. No diggity. I wanna bag it up</textarea>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="text-center">
+                              <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
+                          </div>
+                          <div class="clearfix"></div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+
+  </div>
+</div>

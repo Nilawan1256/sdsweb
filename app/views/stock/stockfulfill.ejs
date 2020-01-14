@@ -1,0 +1,94 @@
+<div class="content">
+  <div class="container-fluid">
+
+      <div class="row">
+          <div class="col-lg-3 col-md-5">
+              <div class="card card-user">
+                  <br />
+                  <div class="content">
+                      <div class="author">
+                          <img class="avatar border-white" src="assets/img/faces/face-stock.jpg" alt="...">
+                          <h4 class="title">
+                              สต๊อก<br>
+                          </h4>
+                      </div>
+                      <ul class="leftnav">
+                          <li>
+                              <p class="description">
+                                  <a href="/stock">ข้อมูลสต๊อก</a>
+                              </p>
+                          </li>
+                          <li>
+                              <p class="description">
+                                  <a href="/stockcard">การเคลื่อนไหวสต๊อก</a>
+                              </p>
+                          </li>
+                          <li>
+                              <p class="description">
+                                  <a href="/stockfulfill">รับเข้าสต๊อก</a>
+                              </p>
+                          </li>
+                      </ul>
+                  </div>                                
+              </div>
+              
+          </div>
+
+          <div class="col-lg-9 col-md-7">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">รับเข้าสต๊อก</h4>
+                    <p class="category"></p>
+                </div>
+                <hr />
+                <div class="row content-container">
+                    <form method="get" action="" class="search-container">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>สถานะ</label>
+                                <select class="form-control border-input" style="width:50%">
+                                    <% lov.forEach(function(lov) { %>
+                                        <option value="<%= lov.code %>"><%= lov.text %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2 left">
+                            <a class="btn btn-info btn-fill addnew" href="/stockfulfill/edit">เพิ่มการรับเข้าสต๊อก</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="content table-responsive table-full-width">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>รายการสั่งซื้อ</th>
+                                <th>จำนวนสั่งซื้อ</th>
+                                <th>วันที่สั่งซื้อ</th>
+                                <th>วันที่นัดรับ</th>
+                                <th>วันที่รับล่าสุด</th>
+                                <th>จำนวนรับรวม</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% data.forEach(function(data) { %>
+                                <tr>
+                                    <td><span><%= data.name %></span></td>
+                                    <td><span><%= data.qty_instock %></span></td>
+                                    <td><span><%= data.purchase_date %></span></td>
+                                    <td><span><%= data.receive_plan_date %></span></td>
+                                    <td><span><%= data.receive_actual_date %></span></td>
+                                    <td><span><%= data.qty%></span></td>
+                                    <td><a href="/stockfulfill/edit?id=<%= data.id %>" class="btn btn-default">แก้ไข</a></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>                            
+        </div>
+
+      </div>
+
+  </div>
+</div>

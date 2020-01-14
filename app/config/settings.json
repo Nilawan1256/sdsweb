@@ -1,0 +1,13 @@
+{
+    "baseUrl": "http://localhost:3000",
+    "emailHost": "smtp-mail.outlook.com",
+    "emailPort": 587,
+    "emailSecure": false,
+    "emailUser": "hi@gmail.com",
+    "emailPassword": "this_is_the_smtp_password",
+    "emailAddress": "hi@gmail.com",
+    "RowPerPage": 20,
+    "currencySymbol": "฿",
+    "availableLanguages": ["en", "th"],
+    "defaultLocale": "en"
+}

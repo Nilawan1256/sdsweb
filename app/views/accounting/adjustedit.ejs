@@ -1,0 +1,32 @@
+<div class="content">
+  <div class="container-fluid">
+
+      <div class="row">
+          <div class="col-lg-12 col-md-12">
+              <div class="card">
+                  <div class="header">
+                      <h4 class="title">ปรับยอดรวมรับรายวัน (Adjust)</h4>
+                  </div>
+                  <div class="content">
+                      <form action="/accounting/adjust/save" method="POST">
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>รายรับรวมรายวัน (บาท)</label>
+                                      <input class="form-control border-input" placeholder="รายรับรายวัน (บาท)" value="<%= data.adjust %>" type="text" name="adjust">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="text-center">
+                              <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
+                          </div>
+                          <div class="clearfix"></div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+
+  </div>
+</div>

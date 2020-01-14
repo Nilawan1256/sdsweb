@@ -1,0 +1,75 @@
+{
+    "properties": {
+        "baseUrl": {
+            "type": "string",
+            "format": "uri-template",
+            "default": "http://localhost:1111"
+        },
+        "emailHost": {
+            "format": "uri-template",
+            "type": "string"
+        },
+        "emailPort": {
+            "type": "number",
+            "default": 587
+        },
+        "emailSecure": {
+            "type": "boolean",
+            "default": false
+        },
+        "emailUser": {
+            "type": "string"
+        },
+        "emailPassword": {
+            "type": "string"
+        },
+        "emailAddress": {
+            "type": "string",
+            "format": "email"
+        },
+        "RowPerPage": {
+            "type": "number",
+            "default": 20
+        },
+        "currencySymbol": {
+            "type": "string",
+            "default": "£"
+        },
+        "databaseConnectionString": {
+            "type": "string"
+        },
+        "env": {
+            "type": "string"
+        },
+        "trackStock": {
+            "type": "boolean",
+            "default": false
+        },
+        "secretCookie": {
+            "type": "string"
+        },
+        "secretSession": {
+            "type": "string"
+        },
+        "availableLanguages": {
+            "type": "array"
+        },
+        "defaultLocale": {
+            "type": "string"
+        },
+        "enableLanguages": {
+            "type": "boolean",
+            "default": true
+        }
+    },
+    "required": [
+        "baseUrl",
+        "emailHost",
+        "emailPort",
+        "emailSecure",
+        "emailUser",
+        "emailPassword",
+        "emailAddress"
+    ],
+    "additionalProperties": false
+}

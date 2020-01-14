@@ -1,0 +1,105 @@
+var async = require("async");
+var _ = require("lodash");
+const moment = require('moment');
+var models = require("../models");
+var donor = models.donor;
+var order = models.order;
+var lov = models.lov;
+
+var exports = module.exports = {}
+
+exports.index = async function(req,res){	
+	try{
+		res.render('report/index', { title: 'Report', menu_left:'reports', page_title:'', data:null });
+	}
+	catch(err){
+		next();
+	}
+}
+
+exports.donor = async function(req,res){	
+	try{
+		
+		const sql = "select * FROM sdsweb.donor as create_date";
+		models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+		.then(result => {
+		res.render('report/donor', { title: 'Report donor', menu_left:'reports',
+		page_title:'', data:result });
+		});
+
+		// const db = req.app.db;
+		// db.donor.findAll().then(result => {
+		// res.render('report/donor', { title: 'Report donor', menu_left:'reports',
+		//  page_title:'', data:result });
+		// });
+
+
+		// const db = req.app.db;
+		// db.donor.findAll().then(function(Donor) {
+		// 	Donor = Donor.map(function (DoNor) {
+		// 		DoNor.create_date=DoNor.create_date.getFullYear()+'-'+
+		// 			(DoNor.create_date.getMonth() < 9 ? '0' : '') + 
+		// 			(DoNor.create_date.getMonth() + 1) + '-' + DoNor.create_date.getDate();
+		// 			return DoNor;
+		// 	});
+		// 	res.render('report/donor', { title: 'Report donor', menu_left:'reports',
+		//  page_title:'', data:Donor });
+		// })
+
+
+	}
+	catch(err){
+		next();
+	}
+}
+
+exports.order = async function(req,res){	
+	try{
+		const db = req.app.db;
+		db.order.findAll().then(result => {
+			res.render('report/order', { title: 'Report order', menu_left:'reports',
+			 page_title:'', data:result });
+
+
+		});
+	}
+	catch(err){
+		next();
+	}
+}
+
+exports.revenue = async function(req,res){	
+	try{
+		res.render('report/revenue', { title: 'Report revenue', menu_left:'reports', page_title:'', data:null });
+	}
+	catch(err){
+		next();
+	}
+}
+
+exports.smssends = async function(req,res){	
+	try{
+		res.render('report/smssends', { title: 'Report smssends', menu_left:'reports', page_title:'', data:null });
+	}
+	catch(err){
+		next();
+	}
+}
+
+exports.smsreply = async function(req,res){	
+	try{
+		res.render('report/smsreply', { title: 'Report smsresponse', menu_left:'reports', page_title:'', data:null });
+	}
+	catch(err){
+		next();
+	}
+}
+
+exports.smssummary = async function(req,res){	
+	try{
+		res.render('report/smssummary', { title: 'Report smssummary', menu_left:'reports', page_title:'', data:null });
+	}
+	catch(err){
+		next();
+	}
+}

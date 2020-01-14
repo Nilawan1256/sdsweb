@@ -1,0 +1,100 @@
+<div class="content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-lg-3 col-md-5">
+              <div class="card card-user">
+                  <br />
+                  <div class="content">
+                      <div class="author">
+                          <img class="avatar border-white" src="/assets/img/faces/face-stock.jpg" alt="...">
+                          <h4 class="title">
+                              สต๊อก<br>
+                          </h4>
+                      </div>
+                      <ul class="leftnav">
+                          <li>
+                              <p class="description">
+                                  <a href="/stock">ข้อมูลสต๊อก</a>
+                              </p>
+                          </li>
+                          <li>
+                              <p class="description">
+                                  <a href="/stockcard">การเคลื่อนไหวสต๊อก</a>
+                              </p>
+                          </li>
+                          <li>
+                              <p class="description">
+                                  <a href="/stockfulfill">รับเข้าสต๊อก</a>
+                              </p>
+                          </li>
+                      </ul>
+                  </div>                                
+              </div>
+          </div>
+          <div class="col-lg-9 col-md-7">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title"><%= type %> :</h4>
+                </div>
+                <div class="content">
+                    <form action="/stockfulfill/save" method="POST">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>รายการสั่งซื้อ</label>
+                                    <input class="form-control border-input" placeholder="รายการสั่งซื้อ" value="<%= data[0].name %>" type="text" name="name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>จำนวนสั่งซื้อ</label>
+                                    <input class="form-control border-input" placeholder="จำนวนสั่งซื้อ" value="<%= data[0].qty_instock %>" type="text" name="qty_receive">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>วันที่สั่งซื้อ</label>
+                                    <input class="form-control border-input" placeholder="วันที่สั่งซื้อ" value="<%= data[0].purchase_date %>" type="text" name="purchase_date">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>วันที่นัดรับ</label>
+                                    <input class="form-control border-input" placeholder="วันที่นัดรับ" value="<%= data[0].receive_plan_date %>" type="text" name="receive_plan_date">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>วันที่รับล่าสุด</label>
+                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" value="<%= data[0].receive_actual_date %>" type="text" name="receive_actual_date">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>จำนวนรับรวม</label>
+                                    <input class="form-control border-input" placeholder="จำนวนรับรวม" value="" type="text">
+                                </div>
+                            </div>
+                        </div> -->
+                        <div>
+                            <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
+                            <input type="hidden" class="form-control" name="type" value="<%= type %>">
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
+</div>
