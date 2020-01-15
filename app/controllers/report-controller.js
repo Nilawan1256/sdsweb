@@ -55,13 +55,20 @@ exports.donor = async function(req,res){
 
 exports.order = async function(req,res){	
 	try{
-		const db = req.app.db;
-		db.order.findAll().then(result => {
-			res.render('report/order', { title: 'Report order', menu_left:'reports',
-			 page_title:'', data:result });
 
+		// const db = req.app.db;
+		// db.order.findAll().then(result => {
+		// 	res.render('report/order', { title: 'Report order', menu_left:'reports',
+		// 	 page_title:'', data:result });
+		// });
 
+		const sql = "SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from sdsweb.donor where donor.id = order.donor_id) as firstname, (select lastname from sdsweb.donor where donor.id = order.donor_id) as lastname, (select phone from sdsweb.donor where donor.id = order.donor_id) as phone, (select text from sdsweb.lov where lov.id = order.lov_payment_status) as lov_payment_status, (select text from sdsweb.lov where lov.id = order.lov_service_point_id) as lov_service_point_id FROM sdsweb.order ";
+		models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+		.then(result => {
+		res.render('report/order', { title: 'Report donor', menu_left:'reports',
+		page_title:'', data:result });
 		});
+
 	}
 	catch(err){
 		next();
