@@ -18,11 +18,18 @@ exports.index = async function(req,res){
 
 exports.edit = async function(req,res){	
 	try{
-		let db = req.app.db ;
-		db.donor.findOne({ where: {id: req.query.id}}).then(_donor => {
+		let _id = req.query.id;
+		if(_id == null){
+		let _data = [{}];
+			res.render('donor/edit', { title: 'donor', menu_left:'donor', page_title:'', data:_data});
+		}
+		else{
+			let db = req.app.db ;
+			db.donor.findOne({ where: {id: req.query.id}}).then(_donor => {
 			console.log(JSON.stringify(_donor));
 			res.render('donor/edit', { title: 'donor', menu_left:'donor', page_title:'', data:_donor });
 		})
+		}
 	}
 	catch(err){
 		next();
@@ -31,29 +38,51 @@ exports.edit = async function(req,res){
 
 exports.save = async function(req,res){	
 	try{
-		donor.update({
-			fname: req.body.firstname,
-			lnamee: req.body.lastnam,
-			address: req.body.address,
-			state: req.body.state,
-			zipcode: req.body.zipcode,
-			phone: req.body.phone,
-			occupation: req.body.occupation,
-			birthday: req.body.date_of_birth,
-			line: req.body.line,
-			email: req.body.email,
-			comment: req.body.comment
-
-		},
-			{ where: { id: req.body.id }}
-		)
-		.then(_donor => {
-		  console.log("Updated Successfully !");
-		})
-		.catch(error => {
-		  console.log("Update Failed ! +" + error);
-		})
-		res.redirect('/donor'); //go to route adjust
+		let _id = req.query.id;
+		if (_id == null){
+			let db = req.app.db;
+			db.donor.create({
+				firstname: req.body.fname,
+				lastname: req.body.lname,
+				address: req.body.address,
+				state: req.body.state,
+				zipcode: req.body.zipcode,
+				phone: req.body.phone,
+				occupation: req.body.occupation,
+				line: req.body.line,
+				email: req.body.email,
+				comment: req.body.comment
+			}).then(_donor => {
+				console.log(_donor.get({
+					plain: true
+				}))
+				res.redirect('/donor')
+			})
+		}
+		else{
+			let db = req.app.db;
+			db.donor.update({
+				firstname: req.body.fname,
+				lastname: req.body.lname,
+				address: req.body.address,
+				state: req.body.state,
+				zipcode: req.body.zipcode,
+				phone: req.body.phone,
+				occupation: req.body.occupation,
+				line: req.body.line,
+				email: req.body.email,
+				comment: req.body.comment
+			},
+				{ where: { id: req.body.id }}
+			)
+			.then(_donor => {
+			  console.log("Updated Successfully !");
+			})
+			.catch(error => {
+			  console.log("Update Failed ! +" + error);
+			})
+			res.redirect('/donor'); //go to route adjust
+		}	
 	}
 	catch(err){
 		next();
@@ -62,7 +91,8 @@ exports.save = async function(req,res){
 
 exports.delete = async function(req,res){	
 	try{
-		
+		let db = req.app.db;
+		db.donor.destroy({ where: { id: req.query.id }})
 		res.render('index', { title: 'เสถียรธรรมสถาน', menu_left:'', page_title:'', data:null });
 	}
 	catch(err){

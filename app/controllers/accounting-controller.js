@@ -19,10 +19,9 @@ exports.adjust = async function(req,res){
 exports.adjustedit = async function(req,res){	
 	try{
 		let db = req.app.db ;
-		let _id = req.query.id;
-		db.accounting_adjust.findOne({ where: {id: _id}}).then(_adjust => {
-			console.log(JSON.stringify(_adjust));
-			res.render('accounting/adjustedit', { title: 'adjust', menu_left:'adjust', page_title:'', data:_adjust });
+		db.accounting_adjust.findOne({ where: {id: req.query.id}}).then(_adjust => {
+		console.log(JSON.stringify(_adjust));
+		res.render('accounting/adjustedit', { title: 'adjust', menu_left:'adjust', page_title:'', data:_adjust });
 		})
 	}
 	catch(err){
@@ -32,7 +31,8 @@ exports.adjustedit = async function(req,res){
 
 exports.adjustsave = async function(req,res){	
 	try{
-		accounting_adjust.update(
+		let db = req.app.db ;
+		db.accounting_adjust.update(
 			{ adjust: req.body.adjust}, //what going to be updated //field: req.body.name
 			{ where: { id: req.body.id }} // where clause
 		)
