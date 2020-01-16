@@ -87,13 +87,15 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>จุดตั้งรับ</label>
+                                        
                                         <select class="form-control border-input">
-                                            <option>ทั้งหมด</option>
-                                            <option>ธรรมสวัสดี</option>
-                                            <option>ลานโพธิ์</option>
-                                            <option>ถ้ำอารยตารา</option>
-                                            <option>สำนักงาน</option>
+                                            
+                                        <% data.forEach(data => { %> 
+                                        <option><%= data.service_point_group%></option>
+                                        <% }) %>
+
                                         </select>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-4">

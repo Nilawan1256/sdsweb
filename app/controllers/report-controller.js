@@ -63,6 +63,7 @@ exports.order = async function(req,res){
 		// });
 
 		const sql = "SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from sdsweb.donor where donor.id = order.donor_id) as firstname, (select lastname from sdsweb.donor where donor.id = order.donor_id) as lastname, (select phone from sdsweb.donor where donor.id = order.donor_id) as phone, (select text from sdsweb.lov where lov.id = order.lov_payment_status) as lov_payment_status, (select text from sdsweb.lov where lov.id = order.lov_service_point_id) as lov_service_point_id FROM sdsweb.order ";
+		// const sql_lov="SELECT * FROM sdsweb.lov where delete_flag=0";
 		models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 		.then(result => {
 		res.render('report/order', { title: 'Report donor', menu_left:'reports',
