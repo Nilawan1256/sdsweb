@@ -50,7 +50,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>จำนวนสั่งซื้อ</label>
-                                    <input class="form-control border-input" placeholder="จำนวนสั่งซื้อ" value="<%= data[0].qty_instock %>" type="text" name="qty_receive">
+                                    <input class="form-control border-input" placeholder="จำนวนสั่งซื้อ" value="<%= data[0].qty_instock %>" type="text" name="qty_instock">
                                 </div>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                         </div> -->
                         <div>
                             <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
-                            <input type="hidden" class="form-control" name="type" value="<%= type %>">
+                            <input type="hidden" class="form-control" name="id" value="<%= data[0].id %>">
                         </div>
                         <div class="clearfix"></div>
                     </form>

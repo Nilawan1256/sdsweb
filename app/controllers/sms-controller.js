@@ -14,7 +14,9 @@ exports.index = async function(req,res){
 
 exports.sends = async function(req,res){	
 	try{
-		res.render('index', { title: 'sms', menu_left:'sms', page_title:'', data:null });
+		console.log(req.body.phone);
+		res.redirect('/sms');
+		// res.render('index', { title: 'sms', menu_left:'sms', page_title:'', data:null });
 	}
 	catch(err){
 		next();

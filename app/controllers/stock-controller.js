@@ -92,7 +92,7 @@ exports.stockfulfilledit = async function(req,res){
 			res.render('stock/stockfulfilledit', { title: 'stock Edit', menu_left:'stock', page_title:'', data: _data, type: _type });
 		}
 		else{
-			const sql = "select name, qty_instock, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date, DATE_FORMAT(receive_plan_date, \"%d/%m/%Y\") as receive_plan_date, DATE_FORMAT(receive_actual_date, \"%d/%m/%Y\") as receive_actual_date from stock_fulfill where id = " + _id + "";
+			const sql = "select id, name, qty_instock, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date, DATE_FORMAT(receive_plan_date, \"%d/%m/%Y\") as receive_plan_date, DATE_FORMAT(receive_actual_date, \"%d/%m/%Y\") as receive_actual_date from stock_fulfill where id = " + _id + "";
 			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 			.then(_data => {
 			  const _type = "แก้ไขจำนวนรับเข้าสต๊อก";
@@ -107,8 +107,8 @@ exports.stockfulfilledit = async function(req,res){
 
 exports.stockfulfillsave = async function(req,res){	
 	try{
-		const _type = req.body.type;
-		if (_type == "เพิ่มการรับเข้าสต๊อก"){
+		const _id = req.body.id;
+		if (_id == null){
 			// Set format date //
 			const purchase_date_olddate = moment(req.body.purchase_date, 'DD/MM/YYYY');
 			const receive_plan_date_olddate = moment(req.body.receive_plan_date, 'DD/MM/YYYY');
@@ -121,21 +121,49 @@ exports.stockfulfillsave = async function(req,res){
 			models.stock_fulfill.create({
 				product_id: null,
 				name: req.body.name,
-				qty_instock: req.body.qty_receive,
+				qty_instock: req.body.qty_instock,
 				purchase_date: purchase_date_newdate,
 				receive_plan_date: receive_plan_date_newdate,
 				receive_actual_date: receive_actual_date_newdate
-			}).then(result => {
-				console.log(result.get({
+			}).then(_data => {
+				console.log(_data.get({
 					plain: true
 				}))
-				res.redirect('/stockfulfill')
+				console.log("เพิ่มข้อมูลสำเร็จ");
 			})
-			console.log("เพิ่มข้อมูลสำเร็จ");
+			.catch(error => {
+				console.log("แก้ไขข้อมูลไม่สำเร็จ");
+			})
+			res.redirect('/stockfulfill')
 		}
 		else{
+
+			const purchase_date_olddate = moment(req.body.purchase_date, 'DD/MM/YYYY');
+			const receive_plan_date_olddate = moment(req.body.receive_plan_date, 'DD/MM/YYYY');
+			const receive_actual_date_olddate = moment(req.body.receive_actual_date, 'DD/MM/YYYY');
+
+			const purchase_date_newdate = purchase_date_olddate.format('YYYY/MM/DD')
+			const receive_plan_date_newdate = receive_plan_date_olddate.format('YYYY/MM/DD')
+			const receive_actual_date_newdate = receive_actual_date_olddate.format('YYYY/MM/DD')
 			
-			console.log("แก้ไขข้อมูลสำเร็จ");
+			models.stock_fulfill.update(
+				{ 	name: req.body.name,
+					qty_instock: req.body.qty_instock,
+					purchase_date: purchase_date_newdate,
+					receive_plan_date: receive_plan_date_newdate,
+					receive_actual_date: receive_actual_date_newdate 
+				}, { where: { id: _id }}
+			)
+			.then(_data => {
+				console.log(_data.get({
+					plain: true
+				}))
+				console.log("แก้ไขข้อมูลสำเร็จ");
+			})
+			.catch(error => {
+				console.log("แก้ไขข้อมูลไม่สำเร็จ");
+			})
+			res.redirect('/stockfulfill');
 		}	
 	}
 	catch(err){
