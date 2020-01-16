@@ -39,12 +39,12 @@
                     <h4 class="title">จุดตั้งรับ</h4>
                 </div>
                 <div class="content">
-                    <form>
+                    <form action="/setting/point/save" method="POST">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>ชื่อจุดตั้งรับ</label>
-                                    <input class="form-control border-input" placeholder="ชื่อจุดตั้งรับ" value="" type="text">
+                                    <input class="form-control border-input" placeholder="ชื่อจุดตั้งรับ" value="<%=data.text%>" type="text" name="point">
                                 </div>
                             </div>
                         </div>

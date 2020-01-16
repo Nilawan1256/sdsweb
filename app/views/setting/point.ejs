@@ -55,28 +55,14 @@
                                 <th width="10%"></th>
                             </tr>
                         </thead>
+                        <% data.forEach(data => { %>
                         <tbody>
-                            <tr>
-                                <td>ลานโพธิ์</td>
-                                <td><a href="#" class="btn btn-warning">ลบ</a></td>
-                                <td><a href="/setting/point/edit" class="btn btn-info">แก้ไข</a></td>
-                            </tr>
-                            <tr>
-                                <td>ธรรมสวัสดี</td>
-                                <td><a href="#" class="btn btn-warning">ลบ</a></td>
-                                <td><a href="/setting/point/edit" class="btn btn-info">แก้ไข</a></td>
-                            </tr>
-                            <tr>
-                                <td>ถ้ำอารยตารา</td>
-                                <td><a href="#" class="btn btn-warning">ลบ</a></td>
-                                <td><a href="/setting/point/edit" class="btn btn-info">แก้ไข</a></td>
-                            </tr>
-                            <tr>
-                                <td>สำนักงาน</td>
-                                <td><a href="#" class="btn btn-warning">ลบ</a></td>
-                                <td><a href="/setting/point/edit" class="btn btn-info">แก้ไข</a></td>
-                            </tr>
+                            <td><%=data.text%></td>
+                            <td><a href="#" class="btn btn-warning">ลบ</a></td>
+                            <td><a href="/setting/point/edit?id=<%= data.id %>" class="btn btn-info">แก้ไข</a></td>
                         </tbody>
+                        <% }) %>
+
                     </table>
 
                     <div class="content right">

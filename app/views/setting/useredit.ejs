@@ -39,12 +39,12 @@
                     <h4 class="title">ข้อมูลผู้ใช้งานระบบ</h4>
                 </div>
                 <div class="content">
-                    <form>
+                    <form action="/setting/user/save" method="POST">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>ชื่อผู้ใช้งานระบบ</label>
-                                    <input class="form-control border-input" placeholder="ชื่อผู้ใช้งานระบบ" value="" type="text">
+                                    <input class="form-control border-input" placeholder="ชื่อผู้ใช้งานระบบ" value="<%= data.username %>" type="text" name="name"> 
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>อีเมล์</label>
-                                    <input class="form-control border-input" placeholder="อีเมล์" value="" type="text">
+                                    <input class="form-control border-input" placeholder="อีเมล์" value="<%= data.email %>" type="text" name="email">
                                 </div>
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>เบอร์โทร</label>
-                                    <input class="form-control border-input" placeholder="เบอร์โทร" value="" type="text">
+                                    <input class="form-control border-input" placeholder="เบอร์โทร" value="<%= data.phone %>" type="text" name="phone">
                                 </div>
                             </div>
                         </div>
@@ -75,6 +75,7 @@
                             </div>
                         </div>
                         <div>
+                            <input type="hidden" class="form-control border-input" name="id" value="<%= data.id %>">
                             <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
                         </div>
                         <div class="clearfix"></div>

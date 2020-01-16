@@ -4,7 +4,7 @@
       <div class="row">
           <div class="col-lg-3 col-md-5">
               <div class="card card-user">
-                  <br />
+                  <br>
                   <div class="content">
                       <div class="author">
                           <img class="avatar border-white" src="/assets/img/faces/face-setting.jpg" alt="...">
@@ -42,7 +42,7 @@
                 <div class="row content">
                     <form method="get" action="" class="search-container">
                         <div class="col-md-2 left">
-                            <a class="btn btn-info btn-fill" href="setting-user-edit.html">เพิ่มผู้ใช้งานระบบ</a>
+                            <a class="btn btn-info btn-fill" href="setting/useredit">เพิ่มผู้ใช้งานระบบ</a>
                         </div>
                     </form>
                 </div>
@@ -59,44 +59,32 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Punvadee</td>
-                                <td><a href="mailto:joysds@gmail.com">joysds@gmail.com</a></td>
-                                <td></td>
-                                <td>ส่วนกลาง</td>
-                                <td><a href="#" class="btn btn-warning">ลบ</a></td>
-                                <td><a href="/setting/user/edit" class="btn btn-info">แก้ไข</a></td>
-                            </tr>
-                            <tr>
-                                <td>Ae Sakya Jew</td>
-                                <td><a href="mailto:aeysds@gmail.com">aeysds@gmail.com</a></td>
-                                <td></td>
-                                <td>ส่วนกลาง</td>
-                                <td><a href="#" class="btn btn-warning">ลบ</a></td>
-                                <td><a href="/setting/user/edit" class="btn btn-info">แก้ไข</a></td>
-                            </tr>
-                            <tr>
-                                <td>Thip ทิพย์ ลูกพี่สมชาย</td>
-                                <td><a href="mailto:Thipsdsweb@gmail.com">Thipsdsweb@gmail.com</a></td>
-                                <td></td>
-                                <td>ส่วนกลาง</td>
-                                <td><a href="#" class="btn btn-warning">ลบ</a></td>
-                                <td><a href="/setting/user/edit" class="btn btn-info">แก้ไข</a></td>
-                            </tr>
+                            <% data.forEach(function(data) { %>
+                                <tr>
+                                    <td><%= data.username %></td>
+                                    <td><%= data.email %></td>
+                                    <td><%= data.phone %></td>
+                                    <td></td>
+                                    <td><a href="#" class="btn btn-warning">ลบ</a></td>
+                                    <td><a href="/setting/user/edit?id=<%= data.id %>" class="btn btn-info">แก้ไข</a></td>
+                                    
+                                </tr>
+                              <% }); %>
+                  
                         </tbody>
                     </table>
 
                     <div class="content right">
                         <ul class="pagination">
-                            <li><a href="#">&lt;&lt;</a></li>
-                            <li><a href="#">&lt;</a></li>
+                            <li><a href="#"><<</a></li>
+                            <li><a href="#"><</a></li>
                             <li><a href="#">1</a></li>
                             <li><a href="#">2</a></li>
                             <li><a href="#">3</a></li>
                             <li><a href="#">4</a></li>
                             <li><a href="#">5</a></li>
-                            <li><a href="#">&gt;</a></li>
-                            <li><a href="#">&gt;&gt;</a></li>
+                            <li><a href="#">></a></li>
+                            <li><a href="#">>></a></li>
                         </ul>
                     </div>
 
