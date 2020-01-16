@@ -77,7 +77,17 @@ exports.order = async function(req,res){
 
 exports.revenue = async function(req,res){	
 	try{
-		res.render('report/revenue', { title: 'Report revenue', menu_left:'reports', page_title:'', data:null });
+
+		const sql = "SELECT id, DATE_FORMAT(date, \"%d/%m/%Y\") as date, (select text from sdsweb.lov where lov.id = sdsweb.accounting_adjust.lov_servicepoint_id) as lov_service_point_id, qty, cash, wait_transfer, adjust, update_by, update_date,(SELECT SUM (cash) FROM accounting_adjust ) as total_cash,(SELECT SUM (wait_transfer) FROM accounting_adjust ) as total_wait_transfer FROM sdsweb.accounting_adjust ";
+		models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+		.then(result => {
+		res.render('report/revenue', { title: 'Report order', menu_left:'reports',
+		page_title:'', data:result });
+		});
+
+		// res.render('report/revenue', { title: 'Report revenue', menu_left:'reports', 
+		// page_title:'', data:null });
+
 	}
 	catch(err){
 		next();

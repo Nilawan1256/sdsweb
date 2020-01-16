@@ -106,43 +106,29 @@
                                 <th>ปรับยอด</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>15/03/2018</td>
-                                <td>ธรรมสวัสดี</td>
-                                <td>2</td>
-                                <td>4,500</td>
-                                <td>3,400</td>
-                                <td>7,900</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>15/03/2018</td>
-                                <td>ลานโพธิ์</td>
-                                <td>1</td>
-                                <td>3,900</td>
-                                <td>1,000</td>
-                                <td>2,900</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>15/03/2018</td>
-                                <td>ถ้ำอารยตารา</td>
-                                <td>20</td>
-                                <td>10,600</td>
-                                <td>8,300</td>
-                                <td>55,200</td>
-                                <td>0</td>
-                            </tr>
-                        </tbody>
+
+                       <% data.forEach(data => { %>
+                            <tbody>
+                              <tr>
+                              <td><%=data.date%></td>
+                              <td><%=data.lov_service_point_id%></td>
+                              <td><%=data.qty%></td>
+                              <td><%=data.cash%></td>
+                              <td><%=data.wait_transfer%></td>
+                              <td><%=data.cash+data.wait_transfer%></td>
+                              <td><%=data.adjust%></td>
+                              </tr>
+                            </tbody>
+                        <% }) %>
+
                         <tfoot>
                             <tr>
                                 <td class=""></td>
                                 <td class=""></td>
                                 <td class="">รวม</td>
-                                <td class="bold">10,900</td>
-                                <td class="bold">12,700</td>
-                                <td class="bold">66,000</td>
+                                <td class="bold"><%=data[0].total_cash%></td>
+                                <td class="bold"><%=data[0].total_wait_transfer%></td>
+                                <td class="bold"><%=data[0].total_cash+data[0].total_wait_transfer%></td>
                                 <td></td>
                             </tr>
                         </tfoot>
