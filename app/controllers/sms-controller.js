@@ -2,6 +2,7 @@ var async = require("async");
 var _ = require("lodash");
 var models = require("../models");
 var Nexmo = require('nexmo');
+var PhoneNumber = require( 'awesome-phonenumber' );
 var exports = module.exports = {}
 
 var nexmo = new Nexmo({
@@ -22,20 +23,26 @@ exports.index = async function (req, res) {
 
 exports.sends = async function (req, res) {
 	try {
-		console.log(req.body.data);
+		
 		const from = 'Nexmo';
-		const to = "66986501046";
 		const text = "test sms sdsweb";
-		// nexmo.message.sendSms(
-		// 	from, to, text, { type: 'unicode' },
-		// 	(err, responseData) => {
-		// 	  if(err) {
-		// 		console.log(err);
-		// 	  } else {
-		// 		console.log("Test sms = " + JSON.stringify(responseData));
-		// 	  }
-		// 	}
-		// );
+
+		//convert phone number
+		const phone = req.body.data[1];
+		const newphone = new PhoneNumber( phone, 'TH' );
+		const to = newphone.getNumber( 'e164' );
+		console.log("To = " + to);
+
+		nexmo.message.sendSms(
+			from, to, text, { type: 'unicode' },
+			(err, responseData) => {
+			  if(err) {
+				console.log(err);
+			  } else {
+				console.log("SMS status = " + JSON.stringify(responseData));
+			  }
+			}
+		);
 		res.redirect('/sms');
 		// res.render('index', { title: 'sms', menu_left:'sms', page_title:'', data:null });
 	}
