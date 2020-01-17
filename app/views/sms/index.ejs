@@ -49,48 +49,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr id="test">
-                                    <td>อัญสา โกเมน</td>
-                                    <td>081-8143200</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><a class="btn btn-default btn-fill" onclick="bt_sms_sends()">ส่ง SMS</a></td>
-                                </tr>
-                                <tr>
-                                    <td>น.ส.ตุลารัตน์ นามธรรม</td>
-                                    <td>097-0478656</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><a class="btn btn-default btn-fill" href="#">ส่ง SMS</a></td>
-                                </tr>
-                                <tr>
-                                    <td>น.ส.ศิริรัตน์ เนื่องนิต</td>
-                                    <td>087-9337568</td>
-                                    <td>nooi9888</td>
-                                    <td>noknoi77@hotmail.com</td>
-                                    <td><a class="btn btn-default btn-fill" href="#">ส่ง SMS</a></td>
-                                </tr>
-                                <tr>
-                                    <td>ศิริพร แก้วใจ</td>
-                                    <td>085-1498118</td>
-                                    <td></td>
-                                    <td>aocat@snthailand.com</td>
-                                    <td><a class="btn btn-default btn-fill" href="#">ส่ง SMS</a></td>
-                                </tr>
-                                <tr>
-                                    <td>น.ส.นิศาชล จงกล</td>
-                                    <td>081-7493559</td>
-                                    <td>doodami</td>
-                                    <td>namirhest@gmail.com</td>
-                                    <td><a class="btn btn-default btn-fill" href="#">ส่ง SMS</a></td>
-                                </tr>
-                                <tr>
-                                    <td>ภัทรา วิธรรม</td>
-                                    <td>081-7363385</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><a class="btn btn-default btn-fill" href="#">ส่ง SMS</a></td>
-                                </tr>
+                                <% data.forEach(function(data) { %>
+                                    <tr id="row_<%= data.id %>">
+                                        <td><%= data.firstname %> <%= data.lastname %></td>
+                                        <td><%= data.phone %></td>
+                                        <td><%= data.line %></td>
+                                        <td><%= data.email %></td>
+                                        <td><a class="btn btn-default btn-fill" onclick="bt_sms_sends('<%= data.id %>')">ส่ง SMS</a></td>
+                                    </tr>
+                                <% }); %>
                             </tbody>
                         </table>
                     </div>
@@ -99,7 +66,3 @@
         </div>
     </div>
   </div>
-  
-  <script>
-  
-  </script>
