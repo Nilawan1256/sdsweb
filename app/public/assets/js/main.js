@@ -1,8 +1,12 @@
-function bt_sms_sends() {
-  var tr = document.getElementById("test");
-  var spans = tr.getElementsByTagName("td");
-  var _phone = spans[1].innerHTML;
-  
+function bt_sms_sends(id) {
+  const tr = document.getElementById("row_" + id);
+  const td = tr.getElementsByTagName("td");
+  const array = [];
+
+  for (i = 0; i < 3; i++) {
+    array.push(td[i].innerHTML);
+  }
+
   fetch("/sms/sends", {
     method: "POST",
     headers: {
@@ -10,7 +14,7 @@ function bt_sms_sends() {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      phone: _phone
+      data: array
     })
   })
     .then(response => {
@@ -21,7 +25,7 @@ function bt_sms_sends() {
         return;
       }
     })
-    .catch(function (err) {
+    .catch(function(err) {
       console.log("Fetch Error :-S", err);
     })
     .done();

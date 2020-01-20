@@ -6,12 +6,12 @@ var exports = module.exports = {}
 
 exports.index = async function(req,res){	
 	try{
-		models.stock_fulfill.findAll({
+		models.product.findAll({
 			include: [
 				{ model: models.stock, as: 'fk_stock_product_id' }
 			] 
-		}).then(_stock_fulfill => {			
-			res.render('stock/index', { title: 'stock', menu_left:'stock', page_title:'', data: _stock_fulfill});
+		}).then(_data => {			
+			res.render('stock/index', { title: 'stock', menu_left:'stock', page_title:'', data: _data});
 		})
 	}
 	catch(err){
@@ -22,7 +22,7 @@ exports.index = async function(req,res){
 exports.edit = async function(req,res){	
 	try{
 		const _id = req.query.id;
-		models.stock_fulfill.findOne({ where: {id: _id}, include: [
+		models.product.findOne({ where: {id: _id}, include: [
 			{ model: models.stock, as: 'fk_stock_product_id' }
 		] })
 		.then(_data => {

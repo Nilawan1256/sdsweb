@@ -19,12 +19,10 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   stock.associate = function (models) {
-    stock.belongsTo(models.stock_fulfill, {
+    stock.belongsTo(models.product, {
       as: 'fk_stock_product_id',
-      foreignKey: 'product_id',
-      constraints: false
-    });    
-        
+      foreignKey: 'product_id'
+    });
   };
   
   return stock;

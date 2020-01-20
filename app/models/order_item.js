@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('order_item', {
+  var order = sequelize.define('order_item', {
     order_id: {
       type: DataTypes.INTEGER(11),
       allowNull: true,
@@ -27,4 +27,13 @@ module.exports = function(sequelize, DataTypes) {
     freezeTableName: true,
     timestamps: false
   });
+
+  order.associate = function (models) {
+    order.belongsTo(models.product, {
+      as: 'fk_order_item_product_id',
+      foreignKey: 'product_id'
+    });
+  };
+
+  return order;
 };
