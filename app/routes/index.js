@@ -52,6 +52,8 @@ module.exports = function(app){
   app.get('/report/smssummary',reportController.smssummary);
 
   app.get('/report/search_donor',reportController.search_donor);
+  app.get('/report/search_revenue',reportController.search_revenue);
+  app.get('/report/search_order',reportController.search_order);
 
 
 

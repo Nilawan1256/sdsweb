@@ -66,19 +66,19 @@
                     <p class="category"></p>
                 </div>
                 <div class="content">
-                    <form method="get" action="" class="search-container">
+                    <form method="get" action="/report/search_order" class="search-container" onsubmit="return validateForm()">
                         
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>วันที่</label>
-                                        <input class="form-control border-input" placeholder="วันที่รับล่าสุด" value="15/03/2018" type="text">
+                                        <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="f_date" id="f_date">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label style="width:40px!important; text-align:left">-</label>
-                                        <input class="form-control border-input" placeholder="วันที่รับล่าสุด" value="15/03/2018" type="text">
+                                        <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="l_date" id="l_date">
                                     </div>
                                 </div>
                             </div>
@@ -88,11 +88,11 @@
                                     <div class="form-group">
                                         <label>จุดตั้งรับ</label>
                                         
-                                        <select class="form-control border-input">
-                                            
-                                        <% data.forEach(data => { %> 
-                                        <option><%= data.text%></option>
-                                        <% }) %>
+                                        <select class="form-control border-input" name="ser_point">
+                                            <% data.lov_ser_point.forEach(data => { %> 
+                                                <option value="<%= data.id%>"><%= data.text%></option>
+                                                <% }) %>
+                                       
 
                                         </select>
                                         
@@ -101,18 +101,19 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label style="width:40px!important; text-align:left">สถานะ</label>
-                                        <select class="form-control border-input">
-                                            <option>ทั้งหมด</option>
-                                            <option>ชำระเรียบร้อย</option>
-                                            <option>ค้างชำระ</option>
-                                            <option>ยกเลิก</option>
+                                        <select class="form-control border-input" name="status">
+
+                                            <% data.sql_lov_pay_status.forEach(data => { %> 
+                                                <option value="<%= data.id%>"><%= data.text%></option>
+                                                <% }) %>
+
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-2 left">
                                     <div class="form-group">
                                         <label style="width:40px!important; text-align:left">&nbsp;</label>
-                                        <a class="btn btn-info btn-fill" href="#">ค้นหา</a>
+                                        <button type="submit" class="btn btn-info btn-fill">ค้นหา</button>
                                     </div>
                                     
                                 </div>
@@ -132,7 +133,7 @@
                                 <th>สถานะ</th>
                             </tr>
                         </thead>
-                        <% data.forEach(data => { %>
+                        <% data.order.forEach(data => { %>
                             <tbody>
                               <tr>
                               <td><%=data.firstname%> <%=data.lastname%></td>

@@ -67,25 +67,25 @@
                     <p class="category"></p>
                 </div>
                 <div class="content">
-                    <form method="get" action="" class="search-container">
-                        
+                    <form method="get" action="/report/search_revenue" class="search-container" onsubmit="return validateForm()">
+                                                
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>วันที่</label>
-                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" value="15/03/2018" type="text">
+                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="f_date" id="f_date">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label style="width:40px!important; text-align:left">-</label>
-                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" value="15/03/2018" type="text">
+                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="l_date" id="l_date">
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label></label>
-                                    <a class="btn btn-info btn-fill" href="#">ค้นหา</a>
+                            <button type="submit" class="btn btn-info btn-fill">ค้นหา</button>
                                 </div>
 
                             </div>
@@ -156,3 +156,15 @@
 
   </div>
 </div>
+
+
+<script type="text/javascript">
+    function validateForm() {
+    var f_date = document.forms["Form"]["f_date"].value;
+    var l_date = document.forms["Form"]["l_date"].value;
+    if (f_date == null || f_date == "", l_date == null || l_date == "") {
+      alert("Please Fill All Required Field");
+      return false;
+    }
+  }    
+</script>
