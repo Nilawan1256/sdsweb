@@ -27,6 +27,7 @@ exports.donor = async function(req,res){
 		page_title:'', data:result });
 		});
 
+
 		// const db = req.app.db;
 		// db.donor.findAll().then(result => {
 		// res.render('report/donor', { title: 'Report donor', menu_left:'reports',
@@ -62,19 +63,66 @@ exports.order = async function(req,res){
 		// 	 page_title:'', data:result });
 		// });
 
-		const sql = "SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from sdsweb.donor where donor.id = order.donor_id) as firstname, (select lastname from sdsweb.donor where donor.id = order.donor_id) as lastname, (select phone from sdsweb.donor where donor.id = order.donor_id) as phone, (select text from sdsweb.lov where lov.id = order.lov_payment_status) as lov_payment_status, (select text from sdsweb.lov where lov.id = order.lov_service_point_id) as lov_service_point_id FROM sdsweb.order ";
-		// const sql_lov="SELECT * FROM sdsweb.lov where delete_flag=0";
+		
+		
+		
+	// 	const sql = "SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from sdsweb.donor where donor.id = order.donor_id) as firstname, (select lastname from sdsweb.donor where donor.id = order.donor_id) as lastname, (select phone from sdsweb.donor where donor.id = order.donor_id) as phone, (select text from sdsweb.lov where lov.id = order.lov_payment_status) as lov_payment_status, (select text from sdsweb.lov where lov.id = order.lov_service_point_id) as lov_service_point_id FROM sdsweb.order";
+	// 	models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+		
+	// 	.then(result => {	
+	// 			res.render('report/order', { title: 'Report order', menu_left:'reports',
+	// 			page_title:'', data:result });
+	// 			console.log(result);
+	// 	});
+
+
+	// const sql_lov = "SELECT text  FROM sdsweb.lov where lov.group = 'service_point_group'";
+	// models.sequelize.query2(sql_lov, { type: models.sequelize.QueryTypes.SELECT })
+
+	// .then(result => {		
+	// 	res.render('report/order', { title: 'Report order', menu_left:'reports',
+	// 	page_title:'', data:result });
+	// 	console.log(result);		
+	// });
+
+
+
+		// const db = req.app.db;
+		// const donor = db.donor.findAll();
+		// const lov = db.lov.findAll();
+		// const order = db.order.findAll({
+		// 	where: {
+		// 		donor_id:donor_id= db.donor.id ,
+		// 		lov_service_point_id:lov_service_point_id= db.lov.id
+		// 	}
+		// });
+		// Promise
+		// .all([donor, lov, order])
+		// .then(result => {
+		// res.render('report/order', { title: 'Report donor', menu_left:'reports',
+		// page_title:'', data:result });
+		// });
+
+
+		const sql = 'SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from sdsweb.donor where donor.id = order.donor_id) as firstname, (select lastname from sdsweb.donor where donor.id = order.donor_id) as lastname, (select phone from sdsweb.donor where donor.id = order.donor_id) as phone, (select text from sdsweb.lov where lov.id = order.lov_payment_status) as lov_payment_status, (select text from sdsweb.lov where lov.id = order.lov_service_point_id) as lov_service_point_id FROM sdsweb.order;';
 		models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
-		.then(result => {
-		res.render('report/order', { title: 'Report donor', menu_left:'reports',
-		page_title:'', data:result });
+		
+		.then(result => {	
+				res.render('report/order', { title: 'Report order', menu_left:'reports',
+				page_title:'', data:result });
+				console.log(result);
 		});
+		  
+
 
 	}
 	catch(err){
 		next();
 	}
 }
+
+
+
 
 exports.revenue = async function(req,res){	
 	try{
@@ -116,6 +164,50 @@ exports.smsreply = async function(req,res){
 exports.smssummary = async function(req,res){	
 	try{
 		res.render('report/smssummary', { title: 'Report smssummary', menu_left:'reports', page_title:'', data:null });
+	}
+	catch(err){
+		next();
+	}
+}
+
+
+exports.search_donor = async function(req,res){	
+	try{
+		f_date = req.query.f_date,
+		l_date = req.query.l_date;
+
+		if(f_date == "" || f_date == null ||l_date == "" || l_date == null){
+			
+			const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor ";
+			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+			.then(result => {
+			res.render('report/donor', { title: 'Report donor', menu_left:'reports',
+			page_title:'', data:result });
+			});console.log('it\'s here >>',f_date,'<< value >>',l_date,'<< it\'s here');
+				
+	}else{
+		
+		const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor WHERE create_date BETWEEN '" + f_date + "' AND '" + l_date + "' ";
+models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+.then(result => {
+res.render('report/donor', { title: 'Report donor', menu_left:'reports',
+page_title:'', data:result });
+});console.log('it\'s here >>',f_date,'<< value >>',l_date,'<< it\'s here');
+    }
+	
+		 
+			
+				  
+		 	
+			// 	  WHERE create_date BETWEEN '" + f_date + "' AND '" + l_date + "' ; 
+			//   const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor WHERE create_date BETWEEN '" + f_date + "' AND '" + l_date + "' ; ";
+			//   models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+			//   .then(result => {
+			//   res.render('report/donor', { title: 'Report donor', menu_left:'reports',
+			//   page_title:'', data:result });
+			//   });
+
+		
 	}
 	catch(err){
 		next();
