@@ -49,7 +49,8 @@ module.exports = function(sequelize, DataTypes) {
   stock_fulfill.associate = function (models) {
     stock_fulfill.belongsTo(models.product, {
       as: 'fk_stock_fulfill_product_id',
-      foreignKey: 'product_id'
+      foreignKey: 'product_id',
+      constraints: false
     });
   };
   

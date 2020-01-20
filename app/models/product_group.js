@@ -23,15 +23,12 @@ module.exports = function(sequelize, DataTypes) {
       as: 'fk_product_product_group_id',
       foreignKey: 'id',
       constraints: false
-    });       
-  };
-
-  product_group.associate = function (models) {
+    });
     product_group.belongsTo(models.order, {
       as: 'fk_order_product_group_id',
       foreignKey: 'id',
       constraints: false
-    });       
+    });
   };
 
   return product_group;

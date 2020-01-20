@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
     stock.belongsTo(models.product, {
       as: 'fk_stock_product_id',
       foreignKey: 'product_id'
-    });       
+    });
   };
   
   return stock;
