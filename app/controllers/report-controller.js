@@ -5,6 +5,7 @@ var models = require("../models");
 var donor = models.donor;
 var order = models.order;
 var lov = models.lov;
+var xl = require('excel4node');
 
 var exports = module.exports = {}
 
@@ -22,28 +23,96 @@ exports.donor = async function (req, res) {
 
 			f_date = req.query.f_date,
 			l_date = req.query.l_date;
+			export_id = req.query.export_id;
 
-		if (f_date == "" || f_date == null || l_date == "" || l_date == null) {
+		
+		if (export_id == "" || export_id == null) {
+			if (f_date == "" || f_date == null || l_date == "" || l_date == null) {
 
-			const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor ";
-			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
-				.then(result => {
-					res.render('report/donor', {
-						title: 'Report donor', menu_left: 'reports',
-						page_title: '', data: result
-					});
-				}); console.log('it\'s here >>', f_date, '<< value >>', l_date, '<< it\'s here');
+				const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor ";
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+					.then(result => {
+						res.render('report/donor', {
+							title: 'Report donor', menu_left: 'reports',
+							page_title: '', data: result
+						});
+					}); console.log('it\'s here >>', f_date, '<< value >>', l_date, '<< it\'s here');
+	
+			} else {
+	
+				const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor WHERE create_date BETWEEN '" + f_date + "' AND '" + l_date + "' ";
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+					.then(result => {
+						res.render('report/donor', {
+							title: 'Report donor', menu_left: 'reports',
+							page_title: '', data: result
+						});
+					}); console.log('it\'s here >>', f_date, '<< value >>', l_date, '<< it\'s here');
+			}			
 
 		} else {
+//excel
 
-			const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor WHERE create_date BETWEEN '" + f_date + "' AND '" + l_date + "' ";
-			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
-				.then(result => {
-					res.render('report/donor', {
-						title: 'Report donor', menu_left: 'reports',
-						page_title: '', data: result
-					});
-				}); console.log('it\'s here >>', f_date, '<< value >>', l_date, '<< it\'s here');
+const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor ";
+models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+	.then(result => {
+			console.log('excel export');
+			var wb = new xl.Workbook();
+			var ws = wb.addWorksheet('Sheet 1'); 
+
+			var HeaderStyle = wb.createStyle({
+				font: {
+					color: '#FF0800',
+					size: 20
+				},
+				numberFormat: '$#,##0.00; ($#,##0.00); -'
+			});
+			var ContentStyle = wb.createStyle({
+				font: {
+					color: '#FF0800',
+					size: 16
+				},
+				numberFormat: '$#,##0.00; ($#,##0.00); -'
+			});
+		
+
+				ws.cell(1,1).string('ชื่อ').style(HeaderStyle);
+				ws.cell(1,2).string('นามสกุล').style(HeaderStyle);
+				ws.cell(1,3).string('โทรศัพท์').style(HeaderStyle);
+				ws.cell(1,4).string('ไลน์').style(HeaderStyle);
+				ws.cell(1,5).string('อีเมล์').style(HeaderStyle);
+				ws.cell(1,6).string('วันที่').style(HeaderStyle);
+				
+
+			result.forEach(function(data, i) {
+			 	
+				ws.cell(('%d',i+2),1).string(data.firstname).style(ContentStyle);
+				ws.cell(('%d',i+2),2).string(data.lastname).style(ContentStyle);
+				ws.cell(('%d',i+2),3).string(data.phone).style(ContentStyle);
+				ws.cell(('%d',i+2),4).string(data.line).style(ContentStyle);
+				ws.cell(('%d',i+2),5).string(data.email).style(ContentStyle);
+				ws.cell(('%d',i+2),6).string(data.create_date).style(ContentStyle);
+				console.log('it\'s here >> %d << : %s', i, data);
+		});
+			                  
+            	wb.write('ExcelFile.xlsx', res);		
+			
+
+	});
+			// console.log('excel export');
+			// var wb = new xl.Workbook();
+			// var ws = wb.addWorksheet('Sheet 1'); 
+			// ws.cell(1,1).number(100); 
+			// // หมายถึงใส่ค่าตัวเลข 100 ลงไปที่ cell A1
+			// // ws.cell(1,2).string('some text'); 
+			// // //หมายถึงใส่ค่าตัวอักษร some text ลงใน cell B1
+			// // ws.cell(1,3).formula('A1+A2'); 
+			// // //หมายถึงใส่สูตร A1+A2 ใน cell C1
+			// // ws.cell(1,4).bool(true);
+			// // //หมายถึงใส่ค่า boolean true ใน cell D1
+			// // wb.write('myfirstexcel.xlsx'); 
+			// wb.write('ExcelFile.xlsx', res);
+			
 		}
 
 	}

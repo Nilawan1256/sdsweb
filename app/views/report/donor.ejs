@@ -70,7 +70,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>วันที่</label>
-                                <input class="form-control border-input" placeholder="วันที่รับล่าสุด"  type="date" name="f_date" id="f_date">
+                                <input class="form-control border-input " placeholder="วันที่รับล่าสุด" 
+                                type="date" name="f_date" id="f_date" >
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -86,7 +87,7 @@
                     </form>
                 </div>
                 <div class="content table-responsive table-full-width">
-                    <div class="content right"><a class="btn" href="#">Export to excel</a></div>
+                    <div class="content right"><a class="btn" href="/report/donor?export_id=0">Export to excel</a></div>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -134,6 +135,7 @@
 
 
 <script type="text/javascript">
+    
     function validateForm() {
     var f_date = document.forms["Form"]["f_date"].value;
     var l_date = document.forms["Form"]["l_date"].value;
@@ -142,4 +144,5 @@
       return false;
     }
   }    
+  
 </script>
