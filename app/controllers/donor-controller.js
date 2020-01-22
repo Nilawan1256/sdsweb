@@ -6,11 +6,24 @@ var exports = module.exports = {}
 
 exports.index = async function(req,res){	
 	try{
-		let db = req.app.db ;
-		db.donor.findAll().then(_donor => {
-			console.log(JSON.stringify(_donor));
-			res.render('donor/index', { title: 'donor', menu_left:'donor', page_title:'', data:_donor });
-		})
+		var q = req.query.q;
+		console.log(JSON.stringify(q));
+		if (q == null) {
+				const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor ";
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+					.then(_donor => {
+                        res.render('donor/index', { title: 'donor', menu_left:'donor', page_title:'', data:_donor });
+                    });
+                    console.log(JSON.stringify("_donor"));
+            }
+            else {
+				const sql = "SELECT * FROM donor WHERE firstname LIKE '%"+ q +"%' OR lastname LIKE '%"+ q +"%' ";
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+					.then(_donor => {
+                       res.render('donor/index', { title: 'donor', menu_left:'donor', page_title:'', data:_donor });
+                    });
+                    console.log(JSON.stringify("_donorrr"));
+			}			
 	}
 	catch(err){
 		next();
@@ -40,8 +53,8 @@ exports.edit = async function(req,res){
 exports.save = async function(req,res){	
 	try{
 		var _id = req.query.id;
-		if (_id == null){
-			let db = req.app.db;
+		//if (_id == null){
+			/*let db = req.app.db;
 			db.donor.create({
 				firstname: req.body.fname,
 				lastname: req.body.lname,
@@ -56,11 +69,12 @@ exports.save = async function(req,res){
 			}).then(_donor => {
 				console.log(_donor.get({
 					plain: true
-				}))
+				}))*/
+				console.log("a");
 				res.redirect('/donor')
-			})
-		}
-		else if(_id != null){
+			//})
+		//}
+		//else{
 			let db = req.app.db;
 			db.donor.update({
 				firstname: req.body.fname,
@@ -82,11 +96,9 @@ exports.save = async function(req,res){
 			.catch(error => {
 			  console.log("Update Failed ! +" + error);
 			})
+			console.log("b");
 			res.redirect('/donor'); //go to route adjust
-		}
-		else{
-			console.log("Successfully !");
-		}
+		//}
 	}
 	catch(err){
 		next();
