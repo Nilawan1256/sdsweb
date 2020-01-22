@@ -47,6 +47,7 @@ exports.save = async function(req,res){
 		  console.log("Update Failed ! +");
 		})
 		res.redirect('/stock');
+		
 		// res.render('stock/index', { title: 'stock', menu_left:'stock', page_title:'', data: null});
 	}
 	catch(err){

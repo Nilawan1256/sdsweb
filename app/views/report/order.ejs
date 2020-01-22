@@ -72,13 +72,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>วันที่</label>
-                                        <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="f_date" id="f_date">
+                                        <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="f_date" id="f_date" value="<%=f_date%>">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label style="width:40px!important; text-align:left">-</label>
-                                        <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="l_date" id="l_date">
+                                        <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="l_date" id="l_date" value="<%=l_date%>">
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +89,10 @@
                                         <label>จุดตั้งรับ</label>
                                         
                                         <select class="form-control border-input" name="ser_point">
-                                            <% data.lov_ser_point.forEach(data => { %> 
+                                            
+                                        <option value="" selected >กรุณาเลือกจุดตั้งรับ</option>
+                                            
+                                                <% data.lov_ser_point.forEach(data => { %>  
                                                 <option value="<%= data.id%>"><%= data.text%></option>
                                                 <% }) %>
                                        
@@ -101,8 +104,9 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label style="width:40px!important; text-align:left">สถานะ</label>
-                                        <select class="form-control border-input" name="status">
 
+                                        <select class="form-control border-input" name="status">
+                                            <option value="" selected>กรุณาเลือกสถานะ</option>
                                             <% data.sql_lov_pay_status.forEach(data => { %> 
                                                 <option value="<%= data.id%>"><%= data.text%></option>
                                                 <% }) %>
@@ -122,7 +126,18 @@
                     </form>
                 </div>
                 <div class="content table-responsive table-full-width">
-                    <div class="content right"><a class="btn" href="#">Export to excel</a></div>
+                    <div class="content right"> 
+                        <form action="/report/order" method="GET">
+                            <input type="hidden" value="<%=f_date%>" id="f_date_search" name="f_date_search">
+                            <input type="hidden" value="<%=l_date%>" id="l_date_search" name="l_date_search">
+                            <input type="hidden" value="<%=ser_point%>" id="ser_point_search" name="ser_point_search">
+                            <input type="hidden" value="<%=status%>" id="status_search" name="status_search">
+                            <input type="hidden" value="0" id="export_id" name="export_id">
+                            <button class="btn" type="submit">
+                                Export to excel
+                            </button>
+                        </form>
+                    </div>
                     <table class="table table-striped">
                         <thead>
                             <tr>

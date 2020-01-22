@@ -1,5 +1,6 @@
 var async = require("async");
 var _ = require("lodash");
+var models = require("../models");
 
 var exports = module.exports = {}
 
@@ -38,7 +39,7 @@ exports.edit = async function(req,res){
 
 exports.save = async function(req,res){	
 	try{
-		let _id = req.query.id;
+		var _id = req.query.id;
 		if (_id == null){
 			let db = req.app.db;
 			db.donor.create({
@@ -59,7 +60,7 @@ exports.save = async function(req,res){
 				res.redirect('/donor')
 			})
 		}
-		else{
+		else if(_id != null){
 			let db = req.app.db;
 			db.donor.update({
 				firstname: req.body.fname,
@@ -82,7 +83,10 @@ exports.save = async function(req,res){
 			  console.log("Update Failed ! +" + error);
 			})
 			res.redirect('/donor'); //go to route adjust
-		}	
+		}
+		else{
+			console.log("Successfully !");
+		}
 	}
 	catch(err){
 		next();
@@ -91,9 +95,14 @@ exports.save = async function(req,res){
 
 exports.delete = async function(req,res){	
 	try{
-		let db = req.app.db;
-		db.donor.destroy({ where: { id: req.query.id }})
-		res.render('index', { title: 'เสถียรธรรมสถาน', menu_left:'', page_title:'', data:null });
+		let _id = req.query.id;
+    	let deleted = await models.donor.destroy({
+      		where: { id:_id }
+		});
+		if (deleted) {
+			res.render('index', { title: 'เสถียรธรรมสถาน', menu_left:'', page_title:'', data:null });
+		}
+		throw new Error("Post not found");
 	}
 	catch(err){
 		next();
