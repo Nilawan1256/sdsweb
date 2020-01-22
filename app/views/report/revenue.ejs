@@ -73,13 +73,13 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>วันที่</label>
-                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="f_date" id="f_date">
+                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="f_date" id="f_date" value="<%=f_date%>">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label style="width:40px!important; text-align:left">-</label>
-                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="l_date" id="l_date">
+                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" type="date" name="l_date" id="l_date" value="<%=l_date%>">
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -93,7 +93,19 @@
                     </form>
                 </div>
                 <div class="content table-responsive table-full-width">
-                    <div class="content right"><a class="btn" href="#">Export to excel</a></div>
+                   
+                    <div class="content right"> 
+                        <form action="/report/revenue" method="GET">
+                            <input type="hidden" value="<%=f_date%>" id="f_date_search" name="f_date_search">
+                            <input type="hidden" value="<%=l_date%>" id="l_date_search" name="l_date_search">
+                            <input type="hidden" value="0" id="export_id" name="export_id">
+                            <button class="btn" type="submit">
+                                Export to excel
+                            </button>
+                        </form>
+                    </div>
+                    
+                    
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -106,8 +118,8 @@
                                 <th>ปรับยอด</th>
                             </tr>
                         </thead>
-
-                       <% data.forEach(data => { %>
+                       
+                       <% data.forEach(function(data, i) { %>
                             <tbody>
                               <tr>
                               <td><%=data.date%></td>
@@ -117,6 +129,7 @@
                               <td><%=data.wait_transfer%></td>
                               <td><%=data.cash+data.wait_transfer%></td>
                               <td><%=data.adjust%></td>
+                              
                               </tr>
                             </tbody>
                         <% }) %>
@@ -126,9 +139,11 @@
                                 <td class=""></td>
                                 <td class=""></td>
                                 <td class="">รวม</td>
+
                                 <td class="bold"><%=data[0].total_cash%></td>
                                 <td class="bold"><%=data[0].total_wait_transfer%></td>
                                 <td class="bold"><%=data[0].total_cash+data[0].total_wait_transfer%></td>
+
                                 <td></td>
                             </tr>
                         </tfoot>
