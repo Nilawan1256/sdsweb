@@ -39,7 +39,7 @@ exports.sends = async function (req, res) {
 			  if(err) {
 				console.log(err);
 			  } else {
-				console.log("SMS status = " + JSON.stringify(responseData));
+				console.log("SMS Data = " + JSON.stringify(responseData));
 			  }
 			}
 		);

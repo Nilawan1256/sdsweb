@@ -4,7 +4,7 @@ function bt_sms_sends(id) {
   const array = [];
 
   for (i = 0; i < 3; i++) {
-    array.push(td[i].innerHTML);
+    array.push(td[i].innerText);
   }
 
   fetch("/sms/sends", {

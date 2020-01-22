@@ -55,12 +55,36 @@ exports.save = async function(req,res){
 }
 
 exports.stockcard = async function(req,res){	
-	try{
-		const sql = "select product_id, name, qty_instock, qty_receive, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date, (select qty from stock where stock.product_id = stock_fulfill.product_id) as qty from stock_fulfill";
-		models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
-		.then(_data => {
-			res.render('stock/stockcard', { title: 'เสถียรธรรมสถาน', menu_left:'stock', page_title:'', data: _data });
-		})
+	try{		
+		const press = req.query.type;
+		if (press != null){
+			// Set format date //
+			const f_date_olddate = moment(req.query.f_date, 'DD/MM/YYYY');
+			const l_date_olddate = moment(req.query.l_date, 'DD/MM/YYYY');
+
+			const f_date_newdate = f_date_olddate.format('YYYY/MM/DD');
+			const l_date_newdate = l_date_olddate.format('YYYY/MM/DD');
+
+			const sql_where = "WHERE purchase_date between '" + f_date_newdate + "' and '" + l_date_newdate + "'"
+			console.log(sql_where);
+			const sql = "select product_id, name, qty_instock, qty_receive, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date,";
+			sql += "(select qty from stock where stock.product_id = stock_fulfill.product_id) as qty from stock_fulfill "+ sql_where;
+			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+			.then(_data => {
+				res.render('stock/stockcard', { title: 'เสถียรธรรมสถาน', menu_left:'stock', page_title:'', data: _data });
+			})
+		}
+		else{
+			console.log("type null");
+			const sql_where = [];
+			const sql = "select product_id, name, qty_instock, qty_receive, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date,";
+			sql += "(select qty from stock where stock.product_id = stock_fulfill.product_id) as qty from stock_fulfill "+ sql_where;
+			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+			.then(_data => {
+				res.render('stock/stockcard', { title: 'เสถียรธรรมสถาน', menu_left:'stock', page_title:'', data: _data });
+			})
+		}
+
 	}
 	catch(err){
 		next();
@@ -69,7 +93,9 @@ exports.stockcard = async function(req,res){
 
 exports.stockfulfill = async function(req,res){	
 	try{
-		const sql = "select id, name, qty_instock, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date, DATE_FORMAT(receive_plan_date, \"%d/%m/%Y\") as receive_plan_date, DATE_FORMAT(receive_actual_date, \"%d/%m/%Y\") as receive_actual_date, (select qty from stock where stock.product_id = stock_fulfill.product_id) as qty from stock_fulfill";
+		const sql = "select id, product_id, name, qty_instock, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date,"
+		sql += "DATE_FORMAT(receive_plan_date, \"%d/%m/%Y\") as receive_plan_date, DATE_FORMAT(receive_actual_date, \"%d/%m/%Y\") as receive_actual_date,"
+		sql += "(select qty from stock where stock.product_id = stock_fulfill.product_id) as qty from stock_fulfill";
 		models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 		.then(_data => {
 			models.lov.findAll({where: {group: "stock_status"}})
@@ -92,7 +118,9 @@ exports.stockfulfilledit = async function(req,res){
 			res.render('stock/stockfulfilledit', { title: 'stock Edit', menu_left:'stock', page_title:'', data: _data, type: _type });
 		}
 		else{
-			const sql = "select id, name, qty_instock, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date, DATE_FORMAT(receive_plan_date, \"%d/%m/%Y\") as receive_plan_date, DATE_FORMAT(receive_actual_date, \"%d/%m/%Y\") as receive_actual_date from stock_fulfill where id = " + _id + "";
+			const sql = "select id, product_id, name, qty_instock, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date,"
+			sql += "DATE_FORMAT(receive_plan_date, \"%d/%m/%Y\") as receive_plan_date,"
+			sql += "DATE_FORMAT(receive_actual_date, \"%d/%m/%Y\") as receive_actual_date from stock_fulfill where id = " + _id + "";
 			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 			.then(_data => {
 			  const _type = "แก้ไขจำนวนรับเข้าสต๊อก";
@@ -107,8 +135,9 @@ exports.stockfulfilledit = async function(req,res){
 
 exports.stockfulfillsave = async function(req,res){	
 	try{
-		const _id = req.body.id;
-		if (_id == null){
+		const _id = req.body.type;
+		if (!_id){
+			console.log("เพิ่มข้อมูลสำเร็จ");
 			// Set format date //
 			const purchase_date_olddate = moment(req.body.purchase_date, 'DD/MM/YYYY');
 			const receive_plan_date_olddate = moment(req.body.receive_plan_date, 'DD/MM/YYYY');
@@ -137,7 +166,8 @@ exports.stockfulfillsave = async function(req,res){
 			res.redirect('/stockfulfill')
 		}
 		else{
-
+			console.log("แก้ไขข้อมูลสำเร็จ");
+			// Set format date //
 			const purchase_date_olddate = moment(req.body.purchase_date, 'DD/MM/YYYY');
 			const receive_plan_date_olddate = moment(req.body.receive_plan_date, 'DD/MM/YYYY');
 			const receive_actual_date_olddate = moment(req.body.receive_actual_date, 'DD/MM/YYYY');
