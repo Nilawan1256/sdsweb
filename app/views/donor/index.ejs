@@ -13,8 +13,8 @@
                           <div class="col-md-6 tex">
                               <div class="form-group">
                                   <label>ค้นหา</label>
-                                  <input class="form-control border-input" placeholder="ค้นหา ชื่อ หรือ นามสกุล" value="" type="text" name="q">
-                              </div>
+                                  <input class="form-control border-input" placeholder="ค้นหา ชื่อ หรือ นามสกุล" value="" type="text" name="q" id="search">
+                                </div>
                           </div>
                           <div class="col-md-2 left">
                               <a class="btn btn-info btn-fill addnew" href="/donor/edit" target="_blank">เพิ่มสมาชิก</a>
@@ -40,7 +40,7 @@
                                     <td><%= data.phone %></td>
                                     <td><%= data.line %></td>
                                     <td><%= data.email %></td>
-                                    <td><a href="/donor/delete?id=<%= data.id %>" class="btn btn-warning" type="submit">ลบ</a></td>
+                                    <td><a href="/donor/delete?id=<%= data.id %>" class="btn btn-warning" type="submit" onclick="return confirm('คุณต้องการที่จะลบรายการนี้ ?')">ลบ</a></td>
                                     <td><a href="/donor/edit?id=<%= data.id %>" class="btn btn-default">แก้ไข</a></td>
                                 </tr>
                             <% }); %>
