@@ -42,7 +42,7 @@
                 <div class="row content">
                     <form method="get" action="" class="search-container">
                         <div class="col-md-2 left">
-                            <a class="btn btn-info btn-fill" href="setting/useredit">เพิ่มผู้ใช้งานระบบ</a>
+                            <a class="btn btn-info btn-fill" href="/setting/user/edit">เพิ่มผู้ใช้งานระบบ</a>
                         </div>
                     </form>
                 </div>
@@ -64,7 +64,7 @@
                                     <td><%= data.username %></td>
                                     <td><%= data.email %></td>
                                     <td><%= data.phone %></td>
-                                    <td></td>
+                                    <td><%= data.department_id %></td>
                                     <td><a href="#" class="btn btn-warning">ลบ</a></td>
                                     <td><a href="/setting/user/edit?id=<%= data.id %>" class="btn btn-info">แก้ไข</a></td>
                                     

@@ -44,7 +44,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>ชื่อผู้ใช้งานระบบ</label>
-                                    <input class="form-control border-input" placeholder="ชื่อผู้ใช้งานระบบ" value="<%= data.username %>" type="text" name="name"> 
+                                        <input class="form-control border-input" placeholder="ชื่อผู้ใช้งานระบบ" value="<%= data.user[0].username %>" type="text" name="name"> 
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>อีเมล์</label>
-                                    <input class="form-control border-input" placeholder="อีเมล์" value="<%= data.email %>" type="text" name="email">
+                                    <input class="form-control border-input" placeholder="อีเมล์" value="<%= data.user[0].email %>" type="text" name="email">
                                 </div>
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>เบอร์โทร</label>
-                                    <input class="form-control border-input" placeholder="เบอร์โทร" value="<%= data.phone %>" type="text" name="phone">
+                                    <input class="form-control border-input" placeholder="เบอร์โทร" value="<%= data.user[0].phone %>" type="text" name="phone">
                                 </div>
                             </div>
                         </div>
@@ -68,13 +68,15 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>ส่วนงาน</label>
-                                    <select class="form-control border-input">
-                                        <option>ส่วนกลาง</option>
+                                    <select class="form-control border-input" name="department">
+                                        <% data.lov.forEach(data => { %> 
+                                            <option value="<%= data.department_id %>"><%= data.text%></option>
+                                            <% }) %>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div> 
                             <input type="hidden" class="form-control border-input" name="id" value="<%= data.id %>">
                             <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
                         </div>

@@ -13,11 +13,10 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>จุดตั้งรับ</label>
-                                        <select class="form-control border-input">
-                                            <option>ธรรมสวัสดี</option>
-                                            <option>ลานโพธิ์</option>
-                                            <option>ถ้ำอารยตารา</option>
-                                            <option>สำนักงาน</option>
+                                        <select class="form-control border-input" name="point">
+                                            <% result.forEach(data => { %> 
+                                                <option value="<%= data.id%>"><%= data.text%></option>
+                                                <% }) %>
                                         </select>
                                     </div>
                                 </div>

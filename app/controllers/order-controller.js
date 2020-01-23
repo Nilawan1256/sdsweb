@@ -41,7 +41,13 @@ exports.delete = async function(req,res){
 
 exports.uploadbulk = async function(req,res){	
 	try{
-		res.render('order/uploadbulk', { title: 'uploadbulk', menu_left:'uploadbulk', page_title:'', data:null });
+		const db = req.app.db;
+		db.lov.findAll({
+			attributes: ['id','text','group'],
+			where: {group: 'service_point_group'}
+		  }).then(_data => {
+		res.render('order/uploadbulk', { title: 'uploadbulk', menu_left:'uploadbulk', page_title:'', data:_data ,result:_data});
+	});
 	}
 	catch(err){
 		next();
@@ -50,6 +56,7 @@ exports.uploadbulk = async function(req,res){
 
 exports.uploadbulksave = async function(req,res){	
 	try{
+		
 		res.render('order/uploadbulksave', { title: 'uploadbulk', menu_left:'uploadbulk', page_title:'', data:null });
 	}
 	catch(err){
