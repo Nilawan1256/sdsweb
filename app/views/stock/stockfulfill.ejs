@@ -47,7 +47,7 @@
                             <div class="form-group">
                                 <label>สถานะ</label>
                                 <select class="form-control border-input" style="width:50%">
-                                    <% lov.forEach(function(lov) { %>
+                                    <% data.lov.forEach(function(lov) { %>
                                         <option value="<%= lov.code %>"><%= lov.text %></option>
                                     <% }); %>
                                 </select>
@@ -71,7 +71,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% data.forEach(function(data) { %>
+                            <% data.stock_fulfill.forEach(function(data) { %>
                                 <tr>
                                     <td><span><%= data.name %></span></td>
                                     <td><span><%= data.qty_instock %></span></td>
