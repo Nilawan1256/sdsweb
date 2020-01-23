@@ -44,18 +44,9 @@
                                 <div class="form-group">
                                     <label>คำหน้า</label>
                                     <select class="form-control border-input" name="prefix">
-                                        <option>
-                                            นาย
-                                          </option>
-                                          <option>
-                                            นาง
-                                          </option>
-                                          <option>
-                                            นางสาว
-                                          </option>
-                                          <option>
-                                            อื่นๆ
-                                          </option>
+                                        <% data.sql_lov_prefix.forEach(data => { %>  
+                                            <option value="<%= data.id%>"><%= data.text%></option>
+                                        <% }) %>
                                     </select>
                                     
                                 </div>
@@ -63,13 +54,13 @@
                               <div class="col-md-4">
                                   <div class="form-group">
                                       <label>ชื่อ</label>
-                                      <input class="form-control border-input" placeholder="ชื่อ" value="<%= data.firstname %>" type="text" name="fname">
+                                      <input class="form-control border-input" placeholder="ชื่อ" value="<%= data[0].firstname %>" type="text" name="fname">
                                   </div>
                               </div>
                               <div class="col-md-5">
                                   <div class="form-group">
                                       <label>นามสกุล</label>
-                                      <input class="form-control border-input" placeholder="นามสกุล" value="<%= data.lastname %>" type="text" name="lname">
+                                      <input class="form-control border-input" placeholder="นามสกุล" value="<%= data[0].lastname %>" type="text" name="lname">
                                   </div>
                               </div>
                           </div>
@@ -77,7 +68,7 @@
                               <div class="col-md-12">
                                   <div class="form-group">
                                       <label>ที่อยู่</label>
-                                      <textarea class="form-control border-input" placeholder="ที่อยู่" name="address"><%= data.address %></textarea>
+                                      <textarea class="form-control border-input" placeholder="ที่อยู่" name="address"><%= data[0].address %></textarea>
                                   </div>
                               </div>
                           </div>
@@ -85,26 +76,23 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>เมือง</label>
-                                    <input class="form-control border-input" placeholder="เมือง" value="<%= data.state %>" type="text" name="state">
+                                    <input class="form-control border-input" placeholder="เมือง" value="<%= data[0].state %>" type="text" name="state">
                                 </div>
                             </div>
                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>ประเทศ</label>
-                                        <select class="form-control border-input">
-                                          <option>
-                                            ไทย
-                                          </option>
-                                          <option>
-                                            ลาว
-                                          </option>
+                                        <select class="form-control border-input" name="country">
+                                            <% data.sql_lov_country.forEach(data => { %>  
+                                                <option value="<%= data[0].id%>"><%= data.text%></option>
+                                            <% }) %>
                                         </select>
                                     </div>
                                 </div>
                               <div class="col-md-4">
                                   <div class="form-group">
                                       <label>รหัสไปรษณีย์</label>
-                                      <input class="form-control border-input" placeholder="รหัสไปรษณีย์" type="number" name="zipcode" value="<%= data.zipcode %>">
+                                      <input class="form-control border-input" placeholder="รหัสไปรษณีย์" type="number" name="zipcode" value="<%= data[0].zipcode %>">
                                   </div>
                               </div>
                           </div>
@@ -112,13 +100,13 @@
                               <div class="col-md-4">
                                   <div class="form-group">
                                       <label>เบอร์โทรศัพท์</label>
-                                      <input class="form-control border-input" placeholder="เบอร์โทรศัพท์" value="<%= data.phone %>" type="text" name="phone">
+                                      <input class="form-control border-input" placeholder="เบอร์โทรศัพท์" value="<%= data[0].phone %>" type="text" name="phone">
                                   </div>
                               </div>
                               <div class="col-md-4">
                                   <div class="form-group">
                                       <label>อาชีพ</label>
-                                      <input class="form-control border-input" placeholder="อาชีพ" value="<%= data.occupation %>" type="text" name="occupation">
+                                      <input class="form-control border-input" placeholder="อาชีพ" value="<%= data[0].occupation %>" type="text" name="occupation">
                                   </div>
                               </div>
                               <div class="col-md-4">
@@ -132,26 +120,23 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>เพศ</label>
-                                    <select class="form-control border-input">
-                                      <option>
-                                        ชาย
-                                      </option>
-                                      <option>
-                                        หญิง
-                                      </option>
+                                    <select class="form-control border-input" name="gender">
+                                        <% data.sql_lov_gender.forEach(data => { %>  
+                                            <option value="<%= data.id%>"><%= data.text%></option>
+                                        <% }) %>
                                     </select>
                                 </div>
                             </div>
                               <div class="col-md-4">
                                   <div class="form-group">
                                       <label>ไอดีไลน์</label>
-                                      <input class="form-control border-input" placeholder="ไอดีไลน์" value="<%= data.line %>" type="text" name="line">
+                                      <input class="form-control border-input" placeholder="ไอดีไลน์" value="<%= data[0].line %>" type="text" name="line">
                                   </div>
                               </div>
                               <div class="col-md-4">
                                   <div class="form-group">
                                       <label>อีเมล์</label>
-                                      <input class="form-control border-input" placeholder="อีเมล์" value="<%= data.email %>" type="text" name="email">
+                                      <input class="form-control border-input" placeholder="อีเมล์" value="<%= data[0].email %>" type="text" name="email">
                                   </div>
                               </div>
                           </div>
@@ -159,13 +144,10 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>กลุ่มผู้ร่วมบุญ</label>
-                                    <select class="form-control border-input">
-                                      <option>
-                                        กลุ่ม 1
-                                      </option>
-                                      <option>
-                                        กลุ่ม 2
-                                      </option>
+                                    <select class="form-control border-input" name="donor_group">
+                                        <% data.sql_lov_donor_group.forEach(data => { %>  
+                                            <option value="<%= data.id%>"><%= data.text%></option>
+                                        <% }) %>
                                     </select>
                                 </div>
                             </div>
@@ -174,7 +156,7 @@
                               <div class="col-md-12">
                                   <div class="form-group">
                                       <label>รายละเอียดเพิ่มเติม</label>
-                                      <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" value="Mike" name="comment">I like the way you work it. No diggity. I wanna bag it up</textarea>
+                                      <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" value="Mike" name="comment"><%= data[0].comment></textarea>
                                   </div>
                               </div>
                           </div>

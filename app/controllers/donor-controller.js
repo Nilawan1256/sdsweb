@@ -33,7 +33,81 @@ exports.index = async function(req,res){
 exports.edit = async function(req,res){	
 	try{
 		let _id = req.query.id;
-		if(_id == null){
+		let _data = [{}];
+		if(!_id){
+
+			let sql_lov_prefix = "SELECT text ,id  FROM lov WHERE lov.group = 'prefix_id' AND lov.delete_flag = 0";
+			await( models.sequelize
+				.query(sql_lov_prefix, { type: models.sequelize.QueryTypes.SELECT })
+				.then(res => {_data.sql_lov_prefix = res;})
+			);
+
+			let sql_lov_country = "SELECT text ,id  FROM lov WHERE lov.group = 'country_id' AND lov.delete_flag = 0";
+			await( models.sequelize
+				.query(sql_lov_country, { type: models.sequelize.QueryTypes.SELECT })
+				.then(res => {_data.sql_lov_country = res;})
+			);
+
+			let sql_lov_gender = "SELECT text ,id  FROM lov WHERE lov.group = 'gender_id' AND lov.delete_flag = 0";
+			await (models.sequelize
+				.query(sql_lov_gender, { type: models.sequelize.QueryTypes.SELECT })
+				.then(res => {_data.sql_lov_gender = res;})
+			);
+
+			let sql_lov_donor_group = "SELECT text ,id  FROM lov WHERE lov.group = 'donor_group_id' AND lov.delete_flag = 0";
+			await( models.sequelize
+				.query(sql_lov_donor_group, { type: models.sequelize.QueryTypes.SELECT })
+				.then(res => {_data.sql_lov_donor_group = res;})
+          	);
+
+			console.log(_data);
+			res.render('donor/edit', { title: 'donor', menu_left:'donor', page_title:'', data:_data});
+		}//if	
+		else{
+			let sql = 'SELECT id, firstname, lastname, address, state, zipcode, phone, occupation, ';
+			sql += 'DATE_FORMAT(date_of_birth, "%D/%M/%Y") as date_of_birth, line, email, comment, create_by,';
+			sql += 'DATE_FORMAT(create_date, "%D/%M/%Y") as create_date,';
+			sql += '(SELECT text FROM lov WHERE lov.id = `donor`.lov_prefix_id) as prefix, ';
+			sql += '(SELECT text FROM lov WHERE lov.id = `donor`.lov_country_id) as country, ';
+			sql += '(SELECT text FROM lov WHERE lov.id = `donor`.lov_gender_id) as gender, ';
+			sql += '(SELECT text FROM lov WHERE lov.id = `donor`.lov_donor_group_id) as donor_group FROM `donor` WHERE id = '+ _id +' ' ;
+		await (models.sequelize
+		.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+		.then(res => {_data = res;})
+		);
+
+		let sql_lov_prefix = "SELECT text ,id  FROM lov WHERE lov.group = 'prefix_id' AND lov.delete_flag = 0";
+		await( models.sequelize
+			.query(sql_lov_prefix, { type: models.sequelize.QueryTypes.SELECT })
+			.then(res => {_data.sql_lov_prefix = res;})
+		);
+
+		let sql_lov_country = "SELECT text ,id  FROM lov WHERE lov.group = 'country_id' AND lov.delete_flag = 0";
+		await( models.sequelize
+			.query(sql_lov_country, { type: models.sequelize.QueryTypes.SELECT })
+			.then(res => {_data.sql_lov_country = res;})
+		);
+
+		let sql_lov_gender = "SELECT text ,id  FROM lov WHERE lov.group = 'gender_id' AND lov.delete_flag = 0";
+		await (models.sequelize
+			.query(sql_lov_gender, { type: models.sequelize.QueryTypes.SELECT })
+			.then(res => {_data.sql_lov_gender = res;})
+		);
+
+		let sql_lov_donor_group = "SELECT text ,id  FROM lov WHERE lov.group = 'donor_group_id' AND lov.delete_flag = 0";
+		await( models.sequelize
+			.query(sql_lov_donor_group, { type: models.sequelize.QueryTypes.SELECT })
+			.then(res => {_data.sql_lov_donor_group = res;})
+		  );
+
+		//update
+				console.log(_data);
+					res.render('donor/edit', { title: 'donor', menu_left:'donor', page_title:'', data:_data });
+		}//else
+	}//try
+
+		/*let _id = req.query.id;
+		if(!_id){
 		let _data = [{}];
 			res.render('donor/edit', { title: 'donor', menu_left:'donor', page_title:'', data:_data});
 		}
@@ -44,7 +118,7 @@ exports.edit = async function(req,res){
 			res.render('donor/edit', { title: 'donor', menu_left:'donor', page_title:'', data:_donor });
 		})
 		}
-	}
+	}*/
 	catch(err){
 		next();
 	}
@@ -52,9 +126,9 @@ exports.edit = async function(req,res){
 
 exports.save = async function(req,res){	
 	try{
-		var _id = req.query.id;
-		//if (_id == null){
-			/*let db = req.app.db;
+		var _id = req.body.id;
+		if (!_id){
+			let db = req.app.db;
 			db.donor.create({
 				firstname: req.body.fname,
 				lastname: req.body.lname,
@@ -69,12 +143,14 @@ exports.save = async function(req,res){
 			}).then(_donor => {
 				console.log(_donor.get({
 					plain: true
-				}))*/
-				console.log("a");
+				}))
 				res.redirect('/donor')
-			//})
-		//}
-		//else{
+			})
+			.catch(error => {
+				console.log("Create Failed ! +" + error);
+			  })
+		}
+		else{
 			let db = req.app.db;
 			db.donor.update({
 				firstname: req.body.fname,
@@ -91,14 +167,13 @@ exports.save = async function(req,res){
 				{ where: { id: req.body.id }}
 			)
 			.then(_donor => {
-			  console.log("Updated Successfully !");
+			  console.log("Updated !");
 			})
 			.catch(error => {
 			  console.log("Update Failed ! +" + error);
 			})
-			console.log("b");
 			res.redirect('/donor'); //go to route adjust
-		//}
+		}
 	}
 	catch(err){
 		next();
