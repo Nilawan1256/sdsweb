@@ -120,3 +120,11 @@
 .bold{
     font-weight:bold;
 }
+.datepicker{
+    width: 90%;
+    display: inline;
+}
+.ui-datepicker-trigger{
+    padding-left: 10px;
+    cursor: pointer;
+}
