@@ -35,6 +35,7 @@ exports.edit = async function(req,res){
 		let _id = req.query.id;
 		let _data = [{}];
 		if(!_id){
+			
 			let sql_lov_prefix = "SELECT text ,id  FROM lov WHERE lov.group = 'prefix_id' AND lov.delete_flag = 0";
 			await( models.sequelize
 				.query(sql_lov_prefix, { type: models.sequelize.QueryTypes.SELECT })
@@ -64,6 +65,7 @@ exports.edit = async function(req,res){
 		}
 
 		else{
+			
 			let sql = 'SELECT id, firstname, lastname, address, state, zipcode, phone, occupation, ';
 			sql += 'DATE_FORMAT(date_of_birth, "%D/%M/%Y") as date_of_birth, line, email, comment, create_by,';
 			sql += 'DATE_FORMAT(create_date, "%D/%M/%Y") as create_date,';
@@ -71,7 +73,7 @@ exports.edit = async function(req,res){
 			sql += '(SELECT text FROM lov WHERE lov.id = donor.lov_country_id) as country, ';
 			sql += '(SELECT text FROM lov WHERE lov.id = donor.lov_gender_id) as gender, ';
 			sql += '(SELECT text FROM lov WHERE lov.id = donor.lov_donor_group_id) as donor_group FROM `donor` WHERE id = '+ _id +' ' ;
-			
+			console.log(sql);
 			await (models.sequelize
 			.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 			.then(res => {_data = res;})
@@ -113,7 +115,9 @@ exports.edit = async function(req,res){
 exports.save = async function(req,res){	
 	try{
 		let _id = req.body.id;
+		console.log("num"+_id);
 		if (!_id){
+			console.log("add...");
 			let db = req.app.db;
 			db.donor.create({
 				lov_prefix_id: req.body.prefix,
@@ -125,7 +129,7 @@ exports.save = async function(req,res){
 				zipcode: req.body.zipcode,
 				phone: req.body.phone,
 				occupation: req.body.occupation,
-				//date
+				//date_of_birth: req.body.birthday,
 				lov_gender_id: req.body.gender,
 				line: req.body.line,
 				email: req.body.email,
@@ -142,6 +146,7 @@ exports.save = async function(req,res){
 			  })
 		}
 		else{
+			console.log("edit...");
 			let db = req.app.db;
 			db.donor.update({
 				lov_prefix_id: req.body.prefix,
@@ -153,7 +158,7 @@ exports.save = async function(req,res){
 				zipcode: req.body.zipcode,
 				phone: req.body.phone,
 				occupation: req.body.occupation,
-				//date
+				//date_of_birth: req.body.birthday,
 				lov_gender_id: req.body.gender,
 				line: req.body.line,
 				email: req.body.email,
