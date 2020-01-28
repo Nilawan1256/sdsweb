@@ -30,7 +30,20 @@ exports.donor = async function (req, res) {
 		l_date_search = req.query.l_date_search;
 
 
-		
+		// Set format date //
+		const f_date_olddate = moment(req.query.f_date, 'DD/MM/YYYY');
+		const l_date_olddate = moment(req.query.l_date, 'DD/MM/YYYY');
+
+		const f_date_newdate = f_date_olddate.format('YYYY/MM/DD');
+		const l_date_newdate = l_date_olddate.format('YYYY/MM/DD');
+		// seach
+		const f_date_search_olddate = moment(req.query.f_date_search, 'DD/MM/YYYY');
+		const l_date_search_olddate = moment(req.query.l_date_search, 'DD/MM/YYYY');
+
+		const f_date_search_newdate = f_date_search_olddate.format('YYYY/MM/DD');
+		const l_date_search_newdate = l_date_search_olddate.format('YYYY/MM/DD');
+
+
 		if (export_id == "" || export_id == null) {
 			if (f_date == "" || f_date == null || l_date == "" || l_date == null) {
 
@@ -45,7 +58,7 @@ exports.donor = async function (req, res) {
 	
 			} else {
 	
-				const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor WHERE create_date BETWEEN '" + f_date + "' AND '" + l_date + "' ";
+				const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor WHERE create_date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "' ";
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 					.then(result => {
 						res.render('report/donor', {
@@ -108,7 +121,7 @@ exports.donor = async function (req, res) {
 	
 			} else {
 
-	const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor WHERE create_date BETWEEN '" + f_date_search + "' AND '" + l_date_search + "' ";
+	const sql = "SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date FROM donor WHERE create_date BETWEEN '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "' ";
 	models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 	.then(result => {
 			console.log('excel export');
@@ -193,6 +206,21 @@ exports.order = async function (req, res) {
 			status_search = req.query.status_search,
 			export_id = req.query.export_id;
 
+			
+		// Set format date //
+		const f_date_olddate = moment(req.query.f_date, 'DD/MM/YYYY');
+		const l_date_olddate = moment(req.query.l_date, 'DD/MM/YYYY');
+
+		const f_date_newdate = f_date_olddate.format('YYYY/MM/DD');
+		const l_date_newdate = l_date_olddate.format('YYYY/MM/DD');
+		// seach
+		const f_date_search_olddate = moment(req.query.f_date_search, 'DD/MM/YYYY');
+		const l_date_search_olddate = moment(req.query.l_date_search, 'DD/MM/YYYY');
+
+		const f_date_search_newdate = f_date_search_olddate.format('YYYY/MM/DD');
+		const l_date_search_newdate = l_date_search_olddate.format('YYYY/MM/DD');
+
+
 	if (export_id == "" || export_id == null) {
 
 				if (f_date == "" || f_date == null || l_date == "" || l_date == null
@@ -247,7 +275,7 @@ exports.order = async function (req, res) {
 			sql += 'create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from donor ';
 			sql += 'where donor.id = `order`.donor_id) as firstname, (select lastname from donor where donor.id = `order`.donor_id) as lastname, ';
 			sql += '(select phone from donor where donor.id = `order`.donor_id) as phone, (select text from lov where lov.id = `order`.lov_payment_status) as lov_payment_status, ';
-			sql += "(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id FROM `order` where lov_payment_status = '" + status + "' or lov_service_point_id = '" + ser_point + "' or create_date between '" + f_date + "' AND '" + l_date + "'";
+			sql += "(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id FROM `order` where lov_payment_status = '" + status + "' or lov_service_point_id = '" + ser_point + "' or create_date between '" + f_date_newdate + "' AND '" + l_date_newdate + "'";
 			await (
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 					.then(res => {
@@ -350,7 +378,7 @@ exports.order = async function (req, res) {
 			sql += 'create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from donor ';
 			sql += 'where donor.id = `order`.donor_id) as firstname, (select lastname from donor where donor.id = `order`.donor_id) as lastname, ';
 			sql += '(select phone from donor where donor.id = `order`.donor_id) as phone, (select text from lov where lov.id = `order`.lov_payment_status) as lov_payment_status, ';
-			sql += "(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id FROM `order` where lov_payment_status = '" + status_search + "' or lov_service_point_id = '" + ser_point_search + "' or create_date between '" + f_date_search + "' AND '" + l_date_search + "'";
+			sql += "(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id FROM `order` where lov_payment_status = '" + status_search + "' or lov_service_point_id = '" + ser_point_search + "' or create_date between '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "'";
 			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 				.then(result => {
 					
@@ -422,6 +450,19 @@ exports.revenue = async function (req, res) {
 		f_date_search = req.query.f_date_search,
 		l_date_search = req.query.l_date_search;
 
+		// Set format date //
+		const f_date_olddate = moment(req.query.f_date, 'DD/MM/YYYY');
+		const l_date_olddate = moment(req.query.l_date, 'DD/MM/YYYY');
+
+		const f_date_newdate = f_date_olddate.format('YYYY/MM/DD');
+		const l_date_newdate = l_date_olddate.format('YYYY/MM/DD');
+		// seach
+		const f_date_search_olddate = moment(req.query.f_date_search, 'DD/MM/YYYY');
+		const l_date_search_olddate = moment(req.query.l_date_search, 'DD/MM/YYYY');
+
+		const f_date_search_newdate = f_date_search_olddate.format('YYYY/MM/DD');
+		const l_date_search_newdate = l_date_search_olddate.format('YYYY/MM/DD');
+
 
 if (export_id == "" || export_id == null) {
 
@@ -439,7 +480,7 @@ if (export_id == "" || export_id == null) {
 
 	} else {
 
-		const sql = "SELECT id, DATE_FORMAT(date, \"%d/%m/%Y\") as date, (select text from sdsweb.lov where lov.id = sdsweb.accounting_adjust.lov_servicepoint_id) as lov_service_point_id, qty, cash, wait_transfer, adjust, update_by, update_date, (SELECT SUM (cash) FROM accounting_adjust WHERE date BETWEEN '" + f_date + "' AND '" + l_date + "') as total_cash,(SELECT SUM (wait_transfer) FROM accounting_adjust WHERE date BETWEEN '" + f_date + "' AND '" + l_date + "') as total_wait_transfer FROM sdsweb.accounting_adjust WHERE date BETWEEN '" + f_date + "' AND '" + l_date + "' "; 
+		const sql = "SELECT id, DATE_FORMAT(date, \"%d/%m/%Y\") as date, (select text from sdsweb.lov where lov.id = sdsweb.accounting_adjust.lov_servicepoint_id) as lov_service_point_id, qty, cash, wait_transfer, adjust, update_by, update_date, (SELECT SUM (cash) FROM accounting_adjust WHERE date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "') as total_cash,(SELECT SUM (wait_transfer) FROM accounting_adjust WHERE date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "') as total_wait_transfer FROM sdsweb.accounting_adjust WHERE date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "' "; 
 		models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 			.then(result => {	
 				res.render('report/revenue', {
@@ -517,7 +558,7 @@ if (export_id == "" || export_id == null) {
 	} else {
 		
 
-		const sql = "SELECT id, DATE_FORMAT(date, \"%d/%m/%Y\") as date, (select text from sdsweb.lov where lov.id = sdsweb.accounting_adjust.lov_servicepoint_id) as lov_service_point_id, qty, cash, wait_transfer, adjust, update_by, update_date, (SELECT SUM (cash) FROM accounting_adjust WHERE date BETWEEN '" + f_date_search + "' AND '" + l_date_search + "') as total_cash,(SELECT SUM (wait_transfer) FROM accounting_adjust WHERE date BETWEEN '" + f_date_search + "' AND '" + l_date_search + "') as total_wait_transfer FROM sdsweb.accounting_adjust WHERE date BETWEEN '" + f_date_search + "' AND '" + l_date_search + "' "; 		
+		const sql = "SELECT id, DATE_FORMAT(date, \"%d/%m/%Y\") as date, (select text from sdsweb.lov where lov.id = sdsweb.accounting_adjust.lov_servicepoint_id) as lov_service_point_id, qty, cash, wait_transfer, adjust, update_by, update_date, (SELECT SUM (cash) FROM accounting_adjust WHERE date BETWEEN '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "') as total_cash,(SELECT SUM (wait_transfer) FROM accounting_adjust WHERE date BETWEEN '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "') as total_wait_transfer FROM sdsweb.accounting_adjust WHERE date BETWEEN '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "' "; 		
 		models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 		.then(result => {
 				console.log('excel export');
