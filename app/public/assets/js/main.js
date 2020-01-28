@@ -39,3 +39,37 @@ function bt_sms_sends(id) {
       .done();
   }
 }
+
+//delete
+function deleted(id) {
+  var del = confirm('คุณต้องการที่จะลบรายการนี้ ?');
+  //alert(popup);
+  if(del == true){
+    //alert("true!!!");
+  fetch("/donor/delete", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      id: id
+    })
+  })
+    .then(response => {
+      if (response.status !== 200) {
+        console.log(
+          "Looks like there was a problem. Status Code: " + response.status
+        );
+        return;
+      }
+    })
+    .catch(function(err) {
+      console.log("Fetch Error :-S", err);
+    })
+    .done(); 
+  }
+   else{
+      //alert("false!!!");
+  } 
+}

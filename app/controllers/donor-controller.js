@@ -111,7 +111,7 @@ exports.edit = async function(req, res) {
 exports.save = async function(req, res) {
   try {
     let _id = req.body.id;
-    console.log("num" + _id);
+    console.log("ID = " + _id);
     if (!_id) {
       console.log("add...");
       let db = req.app.db;
@@ -183,21 +183,16 @@ exports.save = async function(req, res) {
 
 exports.delete = async function(req, res) {
   try {
-    /* console.log(req.body.id); */
-
-    models.donor
-      .destroy({
+    await (models.donor.destroy({
         where: { id: req.body.id }
-      })
+    })
       .then(del => {
         console.log("Deleted successfully " + del);
-      });
-
+      })
+    );
     res.redirect("/donor");
-    next();
+    //res.render('index', { title: 'เสถียรธรรมสถาน', menu_left:'', page_title:'', data:id });
 
-    //go to route index
-    //res.render('index', { title: 'เสถียรธรรมสถาน', menu_left:'', page_title:'', data:id }); */
   } catch (err) {
     next();
   }
@@ -205,12 +200,7 @@ exports.delete = async function(req, res) {
 
 exports.upload = async function(req, res) {
   try {
-    res.render("donor/upload", {
-      title: "donor upload",
-      menu_left: "donor",
-      page_title: "",
-      data: null
-    });
+    res.render("donor/upload", {title: "donor upload",nmenu_left: "donor", page_title: "", data: null});
   } catch (err) {
     next();
   }
@@ -218,12 +208,7 @@ exports.upload = async function(req, res) {
 
 exports.uploadsave = async function(req, res) {
   try {
-    res.render("donor/uploadsave/save", {
-      title: "donor donor",
-      menu_left: "donor",
-      page_title: "",
-      data: null
-    });
+    res.render("donor/uploadsave/save", {title: "donor donor", menu_left: "donor", page_title: "", data: null});
   } catch (err) {
     next();
   }
