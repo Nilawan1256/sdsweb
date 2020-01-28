@@ -190,8 +190,8 @@ exports.delete = async function(req, res) {
         console.log("Deleted successfully " + del);
       })
     );
-    res.redirect("/donor");
-    //res.render('index', { title: 'เสถียรธรรมสถาน', menu_left:'', page_title:'', data:id });
+    res.redirect('/donor');
+    //res.render('donor/index', { title: 'เสถียรธรรมสถาน', menu_left:'', page_title:'', data:id });
 
   } catch (err) {
     next();
