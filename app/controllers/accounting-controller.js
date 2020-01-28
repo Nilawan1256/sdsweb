@@ -1,12 +1,15 @@
 var async = require("async");
 var _ = require("lodash");
 var models = require("../models");
+var moment = require('moment');
 
 var exports = module.exports = {}
 
 exports.adjust = async function(req,res){	
 	try{
-		const sql = "SELECT id, lov_servicepoint_id, DATE_FORMAT(date, \"%d/%m/%Y\") as date, qty, cash, wait_transfer, adjust, update_by, DATE_FORMAT(update_date, \"%d/%m/%Y\") as update_date FROM accounting_adjust ";
+		//let date = moment(req.body.date, 'DD/MM/YYYY');
+		//let date = date.format('YYYY/MM/DD');
+		let sql = "SELECT id, lov_servicepoint_id, DATE_FORMAT(date, \"%d/%m/%Y\") as date, qty, cash, wait_transfer, adjust, update_by, DATE_FORMAT(update_date, \"%d/%m/%Y\") as update_date FROM accounting_adjust ";
 			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 				.then(_adjust => {
 				res.render('accounting/adjust', { title: 'adjust', menu_left:'adjust', page_title:'', data:_adjust});
