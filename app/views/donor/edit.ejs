@@ -84,7 +84,7 @@
                                         <label>ประเทศ</label>
                                         <select class="form-control border-input" name="country">
                                             <% data.sql_lov_country.forEach(data => { %>  
-                                                <option value="<%= data[0].id%>"><%= data.text%></option>
+                                                <option value="<%= data.id%>"><%= data.text%></option>
                                             <% }) %>
                                         </select>
                                     </div>
@@ -156,13 +156,13 @@
                               <div class="col-md-12">
                                   <div class="form-group">
                                       <label>รายละเอียดเพิ่มเติม</label>
-                                      <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" value="Mike" name="comment"><%= data[0].comment></textarea>
+                                      <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" value="Mike" name="comment"><%= data[0].comment%></textarea>
                                   </div>
                               </div>
                           </div>
                           <div class="text-center">
                               <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
-                              <input type="hidden" class="btn btn-info btn-fill btn-wd" name="id" value="<%= data.id %>">
+                              <input type="hidden" class="btn btn-info btn-fill btn-wd" name="id" value="<%= data[0].id %>">
                           </div>
                           <div class="clearfix"></div>
                       </form>

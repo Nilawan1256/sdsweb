@@ -62,7 +62,10 @@ exports.stockcard = async function(req,res){
 		const press = req.query.type;
 		if (!press){
 			const sql_where = [];
-			const sql = "select product_id, name, qty_instock, qty_receive, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date, (select qty from stock where stock.product_id = stock_fulfill.product_id) as qty from stock_fulfill " + sql_where;
+			const sql = "select name, qty_instock,\
+			qty_receive, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date,\
+			(select qty from stock where stock.product_id = stock_fulfill.product_id) as qty\
+			from stock_fulfill " + sql_where;
 			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 			.then(_data => {
 				res.render('stock/stockcard', { title: 'เสถียรธรรมสถาน', menu_left:'stock', page_title:'', data: _data });
@@ -76,9 +79,11 @@ exports.stockcard = async function(req,res){
 			const f_date_newdate = f_date_olddate.format('YYYY/MM/DD');
 			const l_date_newdate = l_date_olddate.format('YYYY/MM/DD');
 
-			const sql_where = "WHERE purchase_date between '" + f_date_newdate + "' and '" + l_date_newdate + "'"
-			console.log(sql_where);
-			const sql = "select product_id, name, qty_instock, qty_receive, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date, (select qty from stock where stock.product_id = stock_fulfill.product_id) as qty from stock_fulfill " + sql_where;
+			const sql_where = "WHERE purchase_date between '" + f_date_newdate + "' and '" + l_date_newdate + "'";
+			const sql = "select name, qty_instock,\
+			qty_receive, DATE_FORMAT(purchase_date, \"%d/%m/%Y\") as purchase_date,\
+			(select qty from stock where stock.product_id = stock_fulfill.product_id) as qty\
+			from stock_fulfill " + sql_where;
 			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 			.then(_data => {
 				res.render('stock/stockcard', { title: 'เสถียรธรรมสถาน', menu_left:'stock', page_title:'', data: _data });
@@ -149,34 +154,23 @@ exports.stockfulfillsave = async function(req,res){
 			const purchase_date_olddate = moment(req.body.purchase_date, 'DD/MM/YYYY');
 			const receive_plan_date_olddate = moment(req.body.receive_plan_date, 'DD/MM/YYYY');
 			const receive_actual_date_olddate = moment(req.body.receive_actual_date, 'DD/MM/YYYY');
+			
 			const purchase_date_newdate = purchase_date_olddate.format('YYYY/MM/DD')
 			const receive_plan_date_newdate = receive_plan_date_olddate.format('YYYY/MM/DD')
 			const receive_actual_date_newdate = receive_actual_date_olddate.format('YYYY/MM/DD')
 
-			const sql = "insert into stock_fulfill (product_id, name, qty_instock, purchase_date, receive_plan_date, receive_actual_date) values ((SELECT id FROM product WHERE product.name = '" + name + "'), '" + name + "', '" + qty_instock + "', '" + purchase_date_newdate + "', '" + receive_plan_date_newdate + "', '" + receive_actual_date_newdate + "')";
-			console.log(sql);
-			// models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
-			// .then(_data => {
-			// 	console.log("เพิ่มข้อมูลสำเร็จ");
-			// })
-			// .catch(err => {
-			// 	console.log(err + "เพิ่มข้อมูลไม่สำเร็จ");
-			// })
+			const sql = "insert into stock_fulfill (product_id, name, qty_instock, purchase_date, receive_plan_date, receive_actual_date) values ((select id from product where name = '" + name + "'), '" + name + "', '" + qty_instock + "', '" + purchase_date_newdate + "', '" + receive_plan_date_newdate + "', '" + receive_actual_date_newdate + "')";
+			await(
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
+				.then(_data => {
+					console.log("เพิ่มข้อมูลสำเร็จ");
+				})
+				.catch(err => {
+					console.log(err + "เพิ่มข้อมูลไม่สำเร็จ");
+				})
+			);
 			res.redirect('/stockfulfill');
-			// models.stock_fulfill.create({
-			// 	product_id: null,
-			// 	name: req.body.name,
-			// 	qty_instock: req.body.qty_instock,
-			// 	purchase_date: purchase_date_newdate,
-			// 	receive_plan_date: receive_plan_date_newdate,
-			// 	receive_actual_date: receive_actual_date_newdate
-			// })
-			// .then(_data => {
-			// 	console.log("เพิ่มข้อมูลสำเร็จ");
-			// })
-			// .catch(err => {
-			// 	console.log(err + "เพิ่มข้อมูลไม่สำเร็จ");
-			// })
+			//res.render('stock/stockfulfill', { title: 'เสถียรธรรมสถาน', menu_left:'stock', page_title:'', data: null });
 		}
 		else{
 			// Set format date //
@@ -187,7 +181,7 @@ exports.stockfulfillsave = async function(req,res){
 			const purchase_date_newdate = purchase_date_olddate.format('YYYY/MM/DD')
 			const receive_plan_date_newdate = receive_plan_date_olddate.format('YYYY/MM/DD')
 			const receive_actual_date_newdate = receive_actual_date_olddate.format('YYYY/MM/DD')
-			
+
 			models.stock_fulfill.update(
 				{ 	name: req.body.name,
 					qty_instock: req.body.qty_instock,
@@ -203,6 +197,7 @@ exports.stockfulfillsave = async function(req,res){
 				console.log(err + " แก้ไขข้อมูลไม่สำเร็จ");
 			})
 			res.redirect('/stockfulfill');
+			//res.render('stock/stockfulfill', { title: 'เสถียรธรรมสถาน', menu_left:'stock', page_title:'', data: null });
 		}	
 	}
 	catch(err){

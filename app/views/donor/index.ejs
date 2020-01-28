@@ -40,7 +40,7 @@
                                     <td><%= data.phone %></td>
                                     <td><%= data.line %></td>
                                     <td><%= data.email %></td>
-                                    <td><a href="/donor/delete?id=<%= data.id %>" class="btn btn-warning" type="submit" onclick="return confirm('คุณต้องการที่จะลบรายการนี้ ?')">ลบ</a></td>
+                                    <td><a class="btn btn-warning" type="submit" onclick="deleted('<%= data.id %>')">ลบ</a></td>
                                     <td><a href="/donor/edit?id=<%= data.id %>" class="btn btn-default">แก้ไข</a></td>
                                 </tr>
                             <% }); %>

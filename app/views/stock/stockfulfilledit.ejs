@@ -58,7 +58,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>วันที่สั่งซื้อ</label>
-                                    <input class="form-control border-input" placeholder="วันที่สั่งซื้อ" value="<%= data[0].purchase_date %>" type="text" name="purchase_date">
+                                    <input class="form-control border-input datepicker" placeholder="วันที่สั่งซื้อ" value="<%= data[0].purchase_date %>" type="text" name="purchase_date">
                                 </div>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>วันที่นัดรับ</label>
-                                    <input class="form-control border-input" placeholder="วันที่นัดรับ" value="<%= data[0].receive_plan_date %>" type="text" name="receive_plan_date">
+                                    <input class="form-control border-input datepicker" placeholder="วันที่นัดรับ" value="<%= data[0].receive_plan_date %>" type="text" name="receive_plan_date">
                                 </div>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>วันที่รับล่าสุด</label>
-                                    <input class="form-control border-input" placeholder="วันที่รับล่าสุด" value="<%= data[0].receive_actual_date %>" type="text" name="receive_actual_date">
+                                    <input class="form-control border-input datepicker" placeholder="วันที่รับล่าสุด" value="<%= data[0].receive_actual_date %>" type="text" name="receive_actual_date">
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,6 @@
                         <div>
                             <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
                             <input type="hidden" name="type" value="<%= type %>">
-                            <input type="hidden" name="id" value="<%= data[0].product_id %>">
                         </div>
                         <div class="clearfix"></div>
                     </form>

@@ -1,20 +1,59 @@
 function bt_sms_sends(id) {
   const tr = document.getElementById("row_" + id);
   const td = tr.getElementsByTagName("td");
-  const array = [];
+  const data = [];
 
   for (i = 0; i < 3; i++) {
-    array.push(td[i].innerText);
+    data.push(td[i].innerText);
   }
 
-  fetch("/sms/sends", {
+  // Prompt Box //
+  const smstext = prompt("Please enter your SMSText:");
+
+  if (!smstext){
+    alert("Error");
+  }
+  else{
+    fetch("/sms/sends", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        data: data,
+        smstext: smstext
+      })
+    })
+      .then(response => {
+        if (response.status !== 200) {
+          console.log(
+            "Looks like there was a problem. Status Code: " + response.status
+          );
+          return;
+        }
+      })
+      .catch(function(err) {
+        console.log("Fetch Error : ", err);
+      })
+      .done();
+  }
+}
+
+//delete
+function deleted(id) {
+  var del = confirm('คุณต้องการที่จะลบรายการนี้ ?');
+  //alert(popup);
+  if(del == true){
+    //alert("true!!!");
+  fetch("/donor/delete", {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      data: array
+      id: id
     })
   })
     .then(response => {
@@ -28,5 +67,9 @@ function bt_sms_sends(id) {
     .catch(function(err) {
       console.log("Fetch Error :-S", err);
     })
-    .done();
+    .done(); 
+  }
+   else{
+      //alert("false!!!");
+  } 
 }
