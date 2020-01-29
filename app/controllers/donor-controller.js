@@ -7,10 +7,10 @@ var exports = (module.exports = {});
 exports.index = async function(req, res) {
   try {
     var q = req.query.q;
-    /* 		console.log(JSON.stringify(q)); */
+    console.log(JSON.stringify(q));
     if (q == null) {
-      let sql = 'SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, phone, occupation, ';
-      sql += 'date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, ';
+      let sql = 'SELECT id, lov_prefix_id, firstname, lastname, address, state, lov_country_id, zipcode, ';
+      sql += 'phone, occupation, date_of_birth, lov_gender_id, line, email, lov_donor_group_id, comment, create_by, ';
       sql += 'DATE_FORMAT(create_date, "%d/%m/%Y") as create_date FROM donor ';
       models.sequelize
         .query(sql, { type: models.sequelize.QueryTypes.SELECT })
@@ -19,11 +19,11 @@ exports.index = async function(req, res) {
         });
       console.log(JSON.stringify("show"));
     } else {
-      const sql = "SELECT * FROM donor WHERE firstname LIKE '%" + q + "%' OR lastname LIKE '%" + q + "%' ";
+      const sql = "SELECT * FROM donor WHERE firstname LIKE '%"+ q +"%' OR lastname LIKE '%"+ q +"%' ";
       models.sequelize
         .query(sql, { type: models.sequelize.QueryTypes.SELECT })
         .then(_donor => {
-          res.render("donor/index", {ntitle: "donor", menu_left: "donor", page_title: "", data: _donor});
+          res.render("donor/index", {title: "donor", menu_left: "donor", page_title: "", data: _donor});
         });
       console.log(JSON.stringify("search"));
     }
@@ -189,8 +189,8 @@ exports.delete = async function(req, res) {
       .then(del => {
         console.log("Deleted successfully " + del);
       })
-    );
-    res.redirect('/donor');
+      );
+    await res.redirect('/donor');
     //res.render('donor/index', { title: 'เสถียรธรรมสถาน', menu_left:'', page_title:'', data:id });
 
   } catch (err) {

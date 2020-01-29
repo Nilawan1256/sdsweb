@@ -44,6 +44,7 @@
                                 <div class="form-group">
                                     <label>คำหน้า</label>
                                     <select class="form-control border-input" name="prefix">
+                                            <option value="" disabled selected hidden >กรุณาเลือกคำนำหน้า</option>
                                         <% data.sql_lov_prefix.forEach(data => { %>  
                                             <option value="<%= data.id%>"><%= data.text%></option>
                                         <% }) %>
@@ -83,6 +84,7 @@
                                     <div class="form-group">
                                         <label>ประเทศ</label>
                                         <select class="form-control border-input" name="country">
+                                                <option value="" disabled selected hidden >กรุณาเลือกประเทศ</option>
                                             <% data.sql_lov_country.forEach(data => { %>  
                                                 <option value="<%= data.id%>"><%= data.text%></option>
                                             <% }) %>
@@ -121,6 +123,7 @@
                                 <div class="form-group">
                                     <label>เพศ</label>
                                     <select class="form-control border-input" name="gender">
+                                            <option value="" disabled selected hidden >กรุณาเลือกเพศ</option>
                                         <% data.sql_lov_gender.forEach(data => { %>  
                                             <option value="<%= data.id%>"><%= data.text%></option>
                                         <% }) %>
@@ -145,6 +148,7 @@
                                 <div class="form-group">
                                     <label>กลุ่มผู้ร่วมบุญ</label>
                                     <select class="form-control border-input" name="donor_group">
+                                            <option value="" disabled selected hidden >กรุณาเลือกกลุ่มผู้ร่วมบุญ</option>
                                         <% data.sql_lov_donor_group.forEach(data => { %>  
                                             <option value="<%= data.id%>"><%= data.text%></option>
                                         <% }) %>
