@@ -42,17 +42,6 @@ exports.useredit = async function (req, res) {
 
 
 		if (!id) {
-
-			// let data = {};
-
-			// let lov = "SELECT id as lov_id, name, code, text from lov where lov.group = 'department_id' and lov.delete_flag = 0";
-			// await (
-			// 	models.sequelize.query(lov, { type: models.sequelize.QueryTypes.SELECT })
-			// 		.then(res => {
-			// 			data.lov = res;
-			// 			data.user = res;
-			// 		})
-			// );
 			let lov = "SELECT id as lov_id, name, code, text from lov where lov.group = 'department_id' and lov.delete_flag = 0";
 			await (
 				models.sequelize.query(lov, { type: models.sequelize.QueryTypes.SELECT })
@@ -206,25 +195,40 @@ exports.pointsave = async function (req, res) {
 
 exports.project = async function (req, res) {
 	try {
-		let db = req.app.db;
-		db.product.findAll().then(_product => {
-			console.log(JSON.stringify(_product));
+		const db = req.app.db;
+		db.lov.findAll({
+			attributes: ['id', 'text', 'group'],
+			where: { group: 'donor_group_id' }
+		}).then(_product => {
 			res.render('setting/project', { title: 'project', menu_left: 'settingproject', page_title: '', data: _product });
-		})
+		});
 	}
 	catch (err) {
 		next();
 	}
-}
+	}
 
 exports.projectedit = async function (req, res) {
 	try {
-		res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: null });
+		let _id = req.query.id;
+		if (!_id) {
+			let _data = [{}];
+			res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _data });
+		}
+		else {
+			let db = req.app.db;
+			db.lov.findOne({ where: { id: req.query.id } }).then(_project => {
+				console.log(JSON.stringify(_project));
+				res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _project});
+			})
+		}
 	}
 	catch (err) {
 		next();
 	}
-}
+	}
+
+
 
 exports.projectsave = async function (req, res) {
 	try {
@@ -235,3 +239,18 @@ exports.projectsave = async function (req, res) {
 	}
 }
 
+exports.delete = async function(req, res) {
+	try {
+	  await (models.user.destroy({
+		  where: { id: req.body.id }
+	  })
+		.then(del => {
+		  console.log("Deleted successfully " + del);
+		})
+		);
+	  await res.redirect('/setting/user');
+  
+	} catch (err) {
+	  next();
+	}
+  };

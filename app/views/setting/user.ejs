@@ -65,7 +65,7 @@
                                     <td><%= data.email %></td>
                                     <td><%= data.phone %></td>
                                     <td><%= data.department_id %></td>
-                                    <td><a href="#" class="btn btn-warning">ลบ</a></td>
+                                    <td><a class="btn btn-warning" type="submit" onclick="deletedUser('<%= data.id %>')">ลบ</a></td>
                                     <td><a href="/setting/user/edit?id=<%= data.id %>" class="btn btn-info">แก้ไข</a></td>
                                     
                                 </tr>

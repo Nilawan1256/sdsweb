@@ -31,7 +31,7 @@ exports.index = async function (req, res) {
 					})
 			);
 			console.log(data);
-			res.render('order/index', { title: 'เสถียรธรรมสถาน', menu_left: 'stock', page_title: '', data: data });
+			res.render('order/index', { title: 'เสถียรธรรมสถาน', menu_left: 'order', page_title: '', data: data });
 // }//if
 	}
 	catch (err) {
@@ -207,7 +207,14 @@ exports.delete = async function (req, res) {
 
 exports.uploadbulk = async function (req, res) {
 	try {
-		res.render('order/uploadbulk', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: null });
+		const db = req.app.db;
+		db.lov.findAll({
+			attributes: ['id', 'text', 'group'],
+			where: { group: 'service_point_group' }
+		}).then(_data => {
+		res.render('order/uploadbulk', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: _data });
+	});
+
 	}
 	catch (err) {
 		next();

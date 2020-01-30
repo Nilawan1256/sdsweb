@@ -14,7 +14,8 @@
                                     <div class="form-group">
                                         <label>จุดตั้งรับ</label>
                                         <select class="form-control border-input" name="point">
-                                            <% result.forEach(data => { %> 
+                                            <option value="" disabled selected hidden >กรุณาเลือกจุดตั้งรับ</option>
+                                            <% data.forEach(data => { %> 
                                                 <option value="<%= data.id%>"><%= data.text%></option>
                                                 <% }) %>
                                         </select>

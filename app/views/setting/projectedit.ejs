@@ -44,7 +44,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>ชื่อโครงการ</label>
-                                    <input class="form-control border-input" placeholder="ชื่อโครงการ" value="โมลด์" type="text">
+                                    <input class="form-control border-input" placeholder="ชื่อโครงการ" value="<%= data.text %>" type="text" name="project">
                                 </div>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="btn" href="#">เพิ่มข้อมูล</a>
+                        <ia class="btn" onclick="tikkystoreInput(0)" type="button">เพิ่มข้อมูล</ia>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-striped">
                                     <thead>
@@ -66,16 +66,12 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><input class="form-control border-input" placeholder="ชื่อโครงการ" value="โมลด์" type="text"></td>
-                                            <td><a href="#" class="btn btn-warning">ลบ</a></td>
-                                        </tr>
-                                        <tr>                                                            
-                                            <td><input class="form-control border-input" placeholder="ชื่อโครงการ" value="ดอกบัว" type="text"></td>
-                                            <td><a href="#" class="btn btn-warning">ลบ</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td><input class="form-control border-input" placeholder="ชื่อโครงการ" value="องค์กริ่ง" type="text"></td>
-                                            <td><a href="#" class="btn btn-warning">ลบ</a></td>
+                                            <td><div id="divInput1">
+                                            <!-- <td><input class="form-control border-input" placeholder="ชื่อโครงการ" value="โมลด์" type="text" name="task[]"></td> -->
+                                            <!-- <td><a href="#" class="btn btn-warning">ลบ</a></td> -->
+                                            <td><div id="divInput2">
+                                            <td><div id="divInput3">
+                                            </div>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -93,3 +89,11 @@
 
   </div>
 </div>
+
+<script>
+    function tikkystoreInput (value) {
+     value = (value + 1);
+     document.getElementById("divInput"+value).innerHTML='<input class="form-control border-input" placeholder="ชื่อโครงการ" type="text" name="task[]"><td><a href="#" class="btn btn-warning">ลบ</a></td><div id="divInput'+(value+1)+'"></div>';
+      
+    }
+   </script>
