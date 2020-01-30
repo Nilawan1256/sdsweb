@@ -1,6 +1,7 @@
 var async = require("async");
 var _ = require("lodash");
 var models = require("../models");
+var moment = require('moment');
 
 var exports = (module.exports = {});
 
@@ -19,7 +20,7 @@ exports.index = async function(req, res) {
         });
       console.log(JSON.stringify("show"));
     } else {
-      const sql = "SELECT * FROM donor WHERE firstname LIKE '%"+ q +"%' OR lastname LIKE '%"+ q +"%' ";
+      let sql = "SELECT * FROM donor WHERE firstname LIKE '%"+ q +"%' OR lastname LIKE '%"+ q +"%' ";
       models.sequelize
         .query(sql, { type: models.sequelize.QueryTypes.SELECT })
         .then(_donor => {
@@ -115,41 +116,47 @@ exports.save = async function(req, res) {
     if (!_id) {
       console.log("add...");
       let db = req.app.db;
-      db.donor
-        .create({
-          lov_prefix_id: req.body.prefix,
-          firstname: req.body.fname,
-          lastname: req.body.lname,
-          address: req.body.address,
-          state: req.body.state,
-          lov_country_id: req.body.country,
-          zipcode: req.body.zipcode,
-          phone: req.body.phone,
-          occupation: req.body.occupation,
-          //date_of_birth: req.body.birthday,
-          lov_gender_id: req.body.gender,
-          line: req.body.line,
-          email: req.body.email,
-          lov_donor_group_id: req.body.donor_group,
-          comment: req.body.comment
-        })
-        .then(_donor => {
-          console.log(
-            _donor.get({
+      
+      // set format date
+			let bd = moment(req.body.birthday, 'DD/MM/YYYY');
+			let _bd = bd.format('YYYY/MM/DD');
+
+      db.donor.create({
+        lov_prefix_id: req.body.prefix,
+        firstname: req.body.fname,
+        lastname: req.body.lname,
+        address: req.body.address,
+        state: req.body.state,
+        lov_country_id: req.body.country,
+        zipcode: req.body.zipcode,
+        phone: req.body.phone,
+        occupation: req.body.occupation,
+        date_of_birth: _bd,
+        lov_gender_id: req.body.gender,
+        line: req.body.line,
+        email: req.body.email,
+        lov_donor_group_id: req.body.donor_group,
+        comment: req.body.comment
+      })
+      .then(_donor => {
+        console.log(_donor.get({
               plain: true
-            })
-          );
-          res.redirect("/donor");
-        })
+          })
+        );
+        res.redirect("/donor");
+    })
         .catch(error => {
           console.log("Create Failed ! +" + error);
         });
     } else {
       console.log("edit...");
       let db = req.app.db;
-      db.donor
-        .update(
-          {
+
+      // set format date
+			let bd = moment(req.body.birthday, 'DD/MM/YYYY');
+      let _bd = bd.format('YYYY/MM/DD');
+      
+      db.donor.update({
             lov_prefix_id: req.body.prefix,
             firstname: req.body.fname,
             lastname: req.body.lname,
@@ -159,7 +166,7 @@ exports.save = async function(req, res) {
             zipcode: req.body.zipcode,
             phone: req.body.phone,
             occupation: req.body.occupation,
-            //date_of_birth: req.body.birthday,
+            date_of_birth: _bd,
             lov_gender_id: req.body.gender,
             line: req.body.line,
             email: req.body.email,
@@ -200,7 +207,7 @@ exports.delete = async function(req, res) {
 
 exports.upload = async function(req, res) {
   try {
-    res.render("donor/upload", {title: "donor upload",nmenu_left: "donor", page_title: "", data: null});
+    res.render("donor/upload", {title: "donor upload",menu_left: "donor", page_title: "", data: null});
   } catch (err) {
     next();
   }
