@@ -10,10 +10,12 @@ function bt_sms_sends(id) {
   // Prompt Box //
   const smstext = prompt("กรุณากรอกข้อความที่ต้องการจะส่ง : ");
 
-  if (!smstext){
-    
+  if (smstext == ""){
+    alert("กรุณากรอกข้อความ");
   }
-  else{
+  if (!smstext){
+    alert("ยกเลิกการส่งข้อความ");
+  }  else{
     fetch("/sms/sends", {
       method: "POST",
       headers: {
