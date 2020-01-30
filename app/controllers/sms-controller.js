@@ -3,17 +3,17 @@ var _ = require("lodash");
 var models = require("../models");
 var Nexmo = require('nexmo');
 var PhoneNumber = require( 'awesome-phonenumber' );
+var axios = require('axios')
 var exports = module.exports = {}
 
-var nexmo = new Nexmo({
-	apiKey: '75e9a525',
-	apiSecret: 'H0ZLLWSQY7YJuFjY',
-});
+// var nexmo = new Nexmo({
+// 	apiKey: '75e9a525',
+// 	apiSecret: 'H0ZLLWSQY7YJuFjY',
+// });
 
 exports.index = async function (req, res) {
 	try {
 		const press = req.query.type;
-		console.log("asdasdasd = " + press);
 		if (!press){
 			const sql_where = [];
 			const sql = "select id, firstname, lastname, phone, line, email from donor " + sql_where;
@@ -40,18 +40,33 @@ exports.index = async function (req, res) {
 
 exports.sends = async function (req, res) {
 	try {
-		const from = 'Nexmo';
-		const text = req.body.smstext;
 
+		const username = 'thekingz001';
+    	const password = 'K0986501046';
+    	const msisdn = req.body.data[1];
+    	const message = req.body.text;
+    	const sender = 'SPECIAL';
+    	const ScheduledDelivery = Date.now();
+    	const force = 'Standard';
+		// const url = 'http://www.thaibulksms.com/sms_api.php';
+		const url1 = 'http://www.thsms.com/api/rest';
+	    // const pmeters = 'username=' + username + '&password=' + password + '&msisdn=' + msisdn + '&message=' + message + '&sender=' + sender + '&ScheduledDelivery=' + ScheduledDelivery + '&force=' + force;
+	    const pmeters1 = 'method=send&username=' + username + '&password=' + password + '&from=' + sender + '&to=' + msisdn + '&message=' + message;
+		
+		axios.post(url1, pmeters1)
+  		.then(res => {
+    		// console.log(`statusCode: ${res.statusCode}`)
+    		console.log(res)
+  		})
+  		.catch(error => {
+    		console.error(error)
+		})
+		
 		//convert phone number
-		const phone = req.body.data[1];
-		console.log(JSON.stringify(phone));
-		const newphone = new PhoneNumber( phone, 'TH' );
-		const to = newphone.getNumber( 'e164' );
-
-		console.log("from = " + from);
-		console.log("text = " + text);
-		console.log("to = " + to);
+		// const phone = req.body.data[1];
+		// const newphone = new PhoneNumber( phone, 'TH' );
+		// const to = newphone.getNumber( 'e164' );
+		// console.log("Phone = " + JSON.stringify(to));
 
 		// nexmo.message.sendSms(
 		// 	from, to, text, { type: 'unicode' },

@@ -8,10 +8,10 @@ function bt_sms_sends(id) {
   }
 
   // Prompt Box //
-  const smstext = prompt("Please enter your SMSText:");
+  const smstext = prompt("กรุณากรอกข้อความที่ต้องการจะส่ง : ");
 
   if (!smstext){
-    alert("Error");
+    
   }
   else{
     fetch("/sms/sends", {
@@ -22,21 +22,10 @@ function bt_sms_sends(id) {
       },
       body: JSON.stringify({
         data: data,
-        smstext: smstext
+        text: smstext
       })
     })
-      .then(response => {
-        if (response.status !== 200) {
-          console.log(
-            "Looks like there was a problem. Status Code: " + response.status
-          );
-          return;
-        }
-      })
-      .catch(function(err) {
-        console.log("Fetch Error : ", err);
-      })
-      .done();
+    .done();
   }
 }
 
