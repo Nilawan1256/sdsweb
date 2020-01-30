@@ -19,14 +19,12 @@ exports.index = async function (req, res) {
 
 exports.user = async function (req, res) {
 	try {
-		
-		const sql = "SELECT id, username, email, phone, (select text from lov WHERE lov.id = user.lov_department_id) as department_id FROM `user`";
+		let sql = 'SELECT id, username, email, phone, (SELECT text FROM lov WHERE lov.id = user.lov_department_id) as department_id FROM user ';
 			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 			.then(_user => {
 				console.log(JSON.stringify(_user));
 
-				res.render('setting/user', { title: 'user', menu_left: 'settinguser', page_title: '', data: _user
-				});
+				res.render('setting/user', { title: 'user', menu_left: 'settinguser', page_title: '', data: _user});
 			});
 	}
 	catch (err) {
@@ -38,15 +36,13 @@ exports.useredit = async function (req, res) {
 	try {
 		const id = req.query.id;
 		console.log(JSON.stringify(id));
-		const data = {};
-
+		const data = [{}];
 
 		if (!id) {
-			let lov = "SELECT id as lov_id, name, code, text from lov where lov.group = 'department_id' and lov.delete_flag = 0";
+			let lov = "SELECT text ,id  FROM lov WHERE lov.group = 'department_id' AND lov.delete_flag = 0";
 			await (
 				models.sequelize.query(lov, { type: models.sequelize.QueryTypes.SELECT })
-					.then(res => {
-						data.lov = res;
+					.then(res => {data.lov = res;
 						data.user = [{}];			
 					})
 			);
@@ -55,20 +51,16 @@ exports.useredit = async function (req, res) {
 		}
 		else {
 
-			let user = "SELECT id, username, email, phone, (select text from lov WHERE lov.id = user.lov_department_id) as user_lov_text FROM user where user.id= " + id + "";
+			let user = "SELECT id, username, email, phone, (select text from lov WHERE lov.id = user.lov_department_id) as department_id FROM user where user.id = " + id + "";
 			await (
 				models.sequelize.query(user, { type: models.sequelize.QueryTypes.SELECT })
-					.then(res => {
-						data.user = res;
+					.then(res => {data.user = res;
 					})
 			);
 	
-	
-			let lov = "SELECT id as lov_id, name, code, text from lov where lov.group = 'department_id' and lov.delete_flag = 0";
-			await (
-				models.sequelize.query(lov, { type: models.sequelize.QueryTypes.SELECT })
-					.then(res => {
-						data.lov = res;
+			let lov = "SELECT text ,id  FROM lov WHERE lov.group = 'department_id' AND lov.delete_flag = 0";
+			await (models.sequelize.query(lov, { type: models.sequelize.QueryTypes.SELECT })
+					.then(res => {data.lov = res;
 					})
 			);
 
@@ -85,18 +77,16 @@ exports.useredit = async function (req, res) {
 exports.usersave = async function (req, res) {
 	try {
 		let _id = req.body.id;
-	
+		console.log("asdasdasd =" + req.body.department);
 		if (!_id) {
 			let db = req.app.db;
 			db.user.create({
 				username: req.body.name,
 				email: req.body.email,
-				phone: req.body.phone
+				phone: req.body.phone,
+				lov_department_id: req.body.department
 			}).then(_user => {
-				console.log(_user.get({
-					plain: true
-				}))
-				res.redirect('/setting/user')
+				console.log(_user); 
 			})
 		}
 		else {
@@ -104,9 +94,10 @@ exports.usersave = async function (req, res) {
 			db.user.update({
 				username: req.body.name,
 				email: req.body.email,
-				phone: req.body.phone
+				phone: req.body.phone,
+				lov_department_id: req.body.department
 			},
-				{ where: { id: req.body.id } }
+			{ where: { id: req.body.id } }
 			)
 				.then(_user => {
 					console.log("Updated Successfully !");
@@ -114,8 +105,9 @@ exports.usersave = async function (req, res) {
 				.catch(error => {
 					console.log("Update Failed ! +" + error);
 				})
-			res.redirect('/setting/user'); //go to route adjust
-		}
+			}
+			res.redirect('/setting/user'); 
+		
 	}
 	catch (err) {
 		next();
@@ -239,7 +231,7 @@ exports.projectsave = async function (req, res) {
 	}
 }
 
-exports.delete = async function(req, res) {
+exports.userdelete = async function(req, res) {
 	try {
 	  await (models.user.destroy({
 		  where: { id: req.body.id }
@@ -249,7 +241,6 @@ exports.delete = async function(req, res) {
 		})
 		);
 	  await res.redirect('/setting/user');
-  
 	} catch (err) {
 	  next();
 	}

@@ -70,15 +70,16 @@
                                     <label>ส่วนงาน</label>
                                     <select class="form-control border-input" name="department">
                                         <% data.lov.forEach(data => { %> 
-                                            <option value="<%= data.department_id %>"><%= data.text%></option>
+                                            <option value="<%= data.id %>"><%= data.text%></option>
                                             <% }) %>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div> 
-                            <input type="hidden" class="form-control border-input" name="id" value="<%= data.id %>">
                             <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
+                            <input type="hidden" class="btn btn-info btn-fill btn-wd" name="id" value="<%= data.user[0].id %>">
+
                         </div>
                         <div class="clearfix"></div>
                     </form>

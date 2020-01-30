@@ -55,6 +55,7 @@ module.exports = function(app){
   app.get('/setting',settingController.index);
   app.get('/setting/user',settingController.user);
   app.get('/setting/user/edit',settingController.useredit);
+  app.post('/setting/user/delete',settingController.userdelete);
   app.post('/setting/user/save',settingController.usersave);
   app.get('/setting/point',settingController.point);
   app.get('/setting/point/edit',settingController.pointedit);
