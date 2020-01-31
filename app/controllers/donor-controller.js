@@ -65,8 +65,8 @@ exports.edit = async function(req, res) {
       res.render("donor/edit", {title: "donor", menu_left: "donor", page_title: "", data: _data});
     } else {
       let sql = "SELECT id, firstname, lastname, address, state, zipcode, phone, occupation, ";
-      sql += 'DATE_FORMAT(date_of_birth, "%D/%M/%Y") as date_of_birth, line, email, comment, create_by,';
-      sql += 'DATE_FORMAT(create_date, "%D/%M/%Y") as create_date,';
+      sql += 'DATE_FORMAT(date_of_birth, "%d/%m/%Y") as date_of_birth, line, email, comment, create_by,';
+      sql += 'DATE_FORMAT(create_date, "%d/%m/%Y") as create_date,';
       sql += "(SELECT text FROM lov WHERE lov.id = donor.lov_prefix_id) as prefix, ";
       sql += "(SELECT text FROM lov WHERE lov.id = donor.lov_country_id) as country, ";
       sql += "(SELECT text FROM lov WHERE lov.id = donor.lov_gender_id) as gender, ";
@@ -115,12 +115,19 @@ exports.save = async function(req, res) {
     console.log("ID = " + _id);
     if (!_id) {
       console.log("add...");
-      let db = req.app.db;
-      
-      // set format date
-			let bd = moment(req.body.birthday, 'DD/MM/YYYY');
-			let _bd = bd.format('YYYY/MM/DD');
+      let _bd = [];
 
+      if (!req.body.birthday){
+        console.log("aaaa");
+        _bd.date = null;
+      }
+      else{
+        console.log("bbbb");
+        let bd = moment(req.body.birthday, 'DD/MM/YYYY');
+        _bd.date = bd.format('YYYY/MM/DD');
+      }
+
+      let db = req.app.db;
       db.donor.create({
         lov_prefix_id: req.body.prefix,
         firstname: req.body.fname,
@@ -131,7 +138,7 @@ exports.save = async function(req, res) {
         zipcode: req.body.zipcode,
         phone: req.body.phone,
         occupation: req.body.occupation,
-        date_of_birth: _bd,
+        date_of_birth: _bd.date,
         lov_gender_id: req.body.gender,
         line: req.body.line,
         email: req.body.email,
@@ -139,23 +146,19 @@ exports.save = async function(req, res) {
         comment: req.body.comment
       })
       .then(_donor => {
-        console.log(_donor.get({
-              plain: true
-          })
-        );
-        res.redirect("/donor");
+        console.log(_donor);
     })
         .catch(error => {
           console.log("Create Failed ! +" + error);
         });
     } else {
       console.log("edit...");
-      let db = req.app.db;
 
-      // set format date
-			let bd = moment(req.body.birthday, 'DD/MM/YYYY');
-      let _bd = bd.format('YYYY/MM/DD');
+        // set format date
+        let bd = moment(req.body.birthday, 'DD/MM/YYYY');
+        let _bd = bd.format('YYYY/MM/DD');
       
+      let db = req.app.db;
       db.donor.update({
             lov_prefix_id: req.body.prefix,
             firstname: req.body.fname,
@@ -181,8 +184,8 @@ exports.save = async function(req, res) {
         .catch(error => {
           console.log("Update Failed ! +" + error);
         });
-      res.redirect("/donor");
     }
+    res.redirect("/donor");
   } catch (err) {
     next();
   }
@@ -196,8 +199,8 @@ exports.delete = async function(req, res) {
       .then(del => {
         console.log("Deleted successfully " + del);
       })
-      );
-    await res.redirect('/donor');
+    );
+    res.redirect('/donor');
     //res.render('donor/index', { title: 'เสถียรธรรมสถาน', menu_left:'', page_title:'', data:id });
 
   } catch (err) {
