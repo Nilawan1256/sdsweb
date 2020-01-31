@@ -132,6 +132,8 @@ exports.point = async function (req, res) {
 exports.pointedit = async function (req, res) {
 	try {
 		let _id = req.query.id;
+		let point = req.body.code;
+
 		if (!_id) {
 			let _data = [{}];
 			res.render('setting/pointedit', { title: 'point', menu_left: 'settingpoint', page_title: '', data: _data });
@@ -154,31 +156,35 @@ exports.pointsave = async function (req, res) {
 	try {
 		let _id = req.body.id;
 		if (!_id) {
-			let db = req.app.db;
-			db.lov.create({
-				text: req.body.point
-			}).then(_point => {
-				console.log(_point.get({
-					plain: true
-				}))
-				res.redirect('/setting/point')
-			})
+			let pointTH = req.body.pointth;
+			let pointEng = req.body.pointeng;
+			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('service_point_group_"+ pointEng +"','"+ pointEng +"' , '"+ pointTH +"','service_point_group', '0')";
+				await(
+					models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
+					.then(_data => {
+						console.log("เพิ่มข้อมูลสำเร็จ");
+					})
+					.catch(err => {
+						console.log(err + "เพิ่มข้อมูลไม่สำเร็จ");
+					})
+				);
 		}
 		else {
-			let db = req.app.db;
-			db.lov.update({
-				text: req.body.point
-			},
-				{ where: { id: req.body.id } }
-			)
-				.then(_point => {
-					console.log("Updated Successfully !");
-				})
-				.catch(error => {
-					console.log("Update Failed ! +" + error);
-				})
-			res.redirect('/setting/point'); //go to route adjust
+			let pointTH = req.body.pointth;
+			let pointEng = req.body.pointeng;
+			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('service_point_group_"+ pointEng +"','"+ pointEng +"' , '"+ pointTH +"','service_point_group', '0')";
+				await(
+					models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
+					.then(_data => {
+						console.log("เพิ่มข้อมูลสำเร็จ");
+					})
+					.catch(err => {
+						console.log(err + "เพิ่มข้อมูลไม่สำเร็จ");
+					})
+				);
 		}
+		res.redirect('/setting/point'); 
+
 	}
 	catch (err) {
 		next();
