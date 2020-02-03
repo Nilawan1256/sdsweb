@@ -12,6 +12,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: true,
       references: {
+        model: 'donor',
+        key: 'id'
+      }
+    },
+    receiver: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
+      references: {
         model: 'user',
         key: 'id'
       }

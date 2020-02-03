@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
       constraints: false
     });
     product_group.belongsTo(models.order, {
-      as: 'fk_order_product_group_id',
+      as: 'FK_order_product_group_id',
       foreignKey: 'id',
       constraints: false
     });

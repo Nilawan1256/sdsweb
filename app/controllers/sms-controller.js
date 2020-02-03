@@ -37,20 +37,20 @@ exports.sends = async function (req, res) {
 
 		const username = 'thekingz001';
     	const password = 'K0986501046';
-    	const msisdn = req.body.data[1];
+		const msisdn = req.body.data[1];
+		const receiver = req.body.id;
     	const message = req.body.text;
     	const sender = 'SPECIAL';
     	const ScheduledDelivery = moment(Date.now()).format('YYYY/MM/DD');
-    	const force = 'Standard';
+		const force = 'Standard';
 		
 		// const url = 'http://www.thaibulksms.com/sms_api.php';
 		// const pmeters = 'username=' + username + '&password=' + password + '&msisdn=' + msisdn + '&message=' + message + '&sender=' + sender + '&ScheduledDelivery=' + ScheduledDelivery + '&force=' + force;
-
 		const url1 = 'http://www.thsms.com/api/rest';
 	    const pmeters1 = 'method=send&username=' + username + '&password=' + password + '&from=' + sender + '&to=' + msisdn + '&message=' + message;
 		
-		const sql = "insert into sms (sender, send_date, message)\
-		values ('1', '" + ScheduledDelivery + "', '" + message + "')";
+		const sql = "insert into sms (sender, receiver, send_date, message)\
+		values ('1', '" + receiver + "', '" + ScheduledDelivery + "', '" + message + "')";
 			await(
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
 				.then(_data => {
@@ -64,7 +64,7 @@ exports.sends = async function (req, res) {
 		axios.post(url1, pmeters1)
   		.then(res => {
     		console.log(`statusCode: ${res.statusCode}`)
-    		console.log(res)
+    		// console.log(res)
   		})
   		.catch(error => {
     		console.error(error)

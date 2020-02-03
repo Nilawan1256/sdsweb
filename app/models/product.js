@@ -32,22 +32,22 @@ module.exports = function(sequelize, DataTypes) {
 
   product.associate = function(models) {
     product.belongsTo(models.stock, {
-      as: "fk_stock_product_id",
+      as: "FK_stock_product_id",
       foreignKey: "id",
       constraints: false
     });
     product.belongsTo(models.stock_fulfill, {
-      as: "fk_stock_fulfill_product_id",
+      as: "FK_stock_fulfill_product_id",
       foreignKey: "id",
       constraints: false
     });
     product.belongsTo(models.order_item, {
-      as: "fk_order_item_product_id",
+      as: "FK_order_item_product_id",
       foreignKey: "id",
       constraints: false
     });
     product.belongsTo(models.product_group, {
-      as: "fk_product_product_group_id",
+      as: "FK_product_product_group_id",
       foreignKey: "product_group_id"
     });
   };

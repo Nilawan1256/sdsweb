@@ -23,6 +23,7 @@ function bt_sms_sends(id) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
+        id: id,
         data: data,
         text: smstext
       })

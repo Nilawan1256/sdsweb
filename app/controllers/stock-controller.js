@@ -8,7 +8,7 @@ exports.index = async function(req,res){
 	try{
 		models.product.findAll({
 			include: [
-				{ model: models.stock, as: 'fk_stock_product_id' }
+				{ model: models.stock, as: 'FK_stock_product_id' }
 			] 
 		}).then(_data => {			
 			res.render('stock/index', { title: 'stock', menu_left:'stock', page_title:'', data: _data});
@@ -24,7 +24,7 @@ exports.edit = async function(req,res){
 	try{
 		const _id = req.query.id;
 		models.product.findOne({ where: {id: _id}, include: [
-			{ model: models.stock, as: 'fk_stock_product_id' }
+			{ model: models.stock, as: 'FK_stock_product_id' }
 		] })
 		.then(_data => {
 			res.render('stock/edit', { title: 'stock Edit', menu_left:'stock', page_title:'', data: _data });
@@ -155,7 +155,6 @@ exports.stockfulfilledit = async function(req,res){
 			from stock_fulfill where id = " + _id + "";
 			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 			.then(_data => {
-				console.log("asdasdas =" + JSON.stringify(_data));
 			  	const _type = "แก้ไขจำนวนรับเข้าสต๊อก";
 			  	res.render('stock/stockfulfilledit', { title: 'stock Edit', menu_left:'stock', page_title:'', data: _data, type: _type });
 			})
@@ -193,14 +192,12 @@ exports.stockfulfillsave = async function(req,res){
 			await(
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
 				.then(_data => {
-					console.log("เพิ่มข้อมูลสำเร็จ");
+					console.log("เพิ่มและอัพเดดข้อมูลสำเร็จ");
 				})
 				.catch(err => {
-					console.log(err + "เพิ่มข้อมูลไม่สำเร็จ");
+					console.log(err + "เพิ่มและอัพเดดข้อมูลไม่สำเร็จ");
 				})
 			);
-			res.redirect('/stockfulfill');
-			//res.render('stock/stockfulfill', { title: 'เสถียรธรรมสถาน', menu_left:'stock', page_title:'', data: null });
 		}
 		else{
 			const _id = req.body.id
@@ -222,14 +219,23 @@ exports.stockfulfillsave = async function(req,res){
 				}, { where: { id: _id }}
 			)
 			.then(_data => {
-				console.log("แก้ไขข้อมูลสำเร็จ");
+				console.log("แก้ไขและอัพเดดข้อมูลสำเร็จ");
 			})
 			.catch(err => {
-				console.log(err + " แก้ไขข้อมูลไม่สำเร็จ");
+				console.log(err + " แก้ไขและอัพเดดข้อมูลสำเร็จ");
 			})
-			res.redirect('/stockfulfill');
-			//res.render('stock/stockfulfill', { title: 'เสถียรธรรมสถาน', menu_left:'stock', page_title:'', data: null });
-		}	
+		}
+
+		const sql_total = "UPDATE stock	SET qty = (SELECT SUM(qty_instock) FROM stock_fulfill WHERE product_id = stock.product_id)";
+		await(
+			models.sequelize.query(sql_total, { type: models.sequelize.QueryTypes.UPDATE })
+			.then(_data => {
+				
+			})
+		);
+
+		res.redirect('/stockfulfill');
+		//res.render('stock/stockfulfill', { title: 'เสถียรธรรมสถาน', menu_left:'stock', page_title:'', data: null });
 	}
 	catch(err){
 		console.log("Error is = " + err);

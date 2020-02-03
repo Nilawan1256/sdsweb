@@ -20,7 +20,7 @@ module.exports = function(sequelize, DataTypes) {
 
   stock.associate = function (models) {
     stock.belongsTo(models.product, {
-      as: 'fk_stock_product_id',
+      as: 'FK_stock_product_id',
       foreignKey: 'product_id'
     });
   };
