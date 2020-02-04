@@ -53,7 +53,7 @@ function deleted(id) {
         );
         setTimeout(() => {
           location.reload()
-        }, 100);
+        }, 0);
         return;
       }
     })
@@ -89,7 +89,7 @@ function deletedUser(id) {
         );
         setTimeout(() => {
           location.reload()
-        }, 100);
+        }, 0);
         return;
       }
     })
