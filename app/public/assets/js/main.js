@@ -35,9 +35,7 @@ function bt_sms_sends(id) {
 //delete
 function deleted(id) {
   var del = confirm('คุณต้องการที่จะลบรายการนี้ ?');
-  //alert(popup);
   if(del == true){
-    //alert("true!!!");
   fetch("/donor/delete", {
     method: "POST",
     headers: {
@@ -53,6 +51,9 @@ function deleted(id) {
         console.log(
           "Looks like there was a problem. Status Code: " + response.status
         );
+        setTimeout(() => {
+          location.reload()
+        }, 100);
         return;
       }
     })
@@ -70,9 +71,7 @@ function deleted(id) {
 //delete user
 function deletedUser(id) {
   var del = confirm('คุณต้องการที่จะลบรายการนี้ ?');
-  //alert(popup);
   if(del == true){
-    //alert("true!!!");
   fetch("/setting/user/delete", {
     method: "POST",
     headers: {
@@ -88,6 +87,9 @@ function deletedUser(id) {
         console.log(
           "Looks like there was a problem. Status Code: " + response.status
         );
+        setTimeout(() => {
+          location.reload()
+        }, 100);
         return;
       }
     })

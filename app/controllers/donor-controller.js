@@ -118,11 +118,10 @@ exports.save = async function(req, res) {
       let _bd = [];
 
       if (!req.body.birthday){
-        console.log("aaaa");
+        console.log("no birthday!!!");
         _bd.date = null;
       }
       else{
-        console.log("bbbb");
         let bd = moment(req.body.birthday, 'DD/MM/YYYY');
         _bd.date = bd.format('YYYY/MM/DD');
       }
@@ -154,9 +153,9 @@ exports.save = async function(req, res) {
     } else {
       console.log("edit...");
 
-        // set format date
-        let bd = moment(req.body.birthday, 'DD/MM/YYYY');
-        let _bd = bd.format('YYYY/MM/DD');
+      // set format date
+      let bd = moment(req.body.birthday, 'DD/MM/YYYY');
+      let _bd = bd.format('YYYY/MM/DD');
       
       let db = req.app.db;
       db.donor.update({
@@ -193,15 +192,13 @@ exports.save = async function(req, res) {
 
 exports.delete = async function(req, res) {
   try {
-    await (models.donor.destroy({
+    models.donor.destroy({
         where: { id: req.body.id }
     })
       .then(del => {
         console.log("Deleted successfully " + del);
       })
-    );
-    res.redirect('/donor');
-    //res.render('donor/index', { title: 'เสถียรธรรมสถาน', menu_left:'', page_title:'', data:id });
+  res.redirect(req.get('donor'));
 
   } catch (err) {
     next();
