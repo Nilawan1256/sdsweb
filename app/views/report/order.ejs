@@ -71,7 +71,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>วันที่</label>
+                                        <label style="width:40px!important; text-align:left">วันที่</label>
                                         <input class="form-control border-input datepicker" placeholder="วันที่รับล่าสุด" type="text" name="f_date" id="f_date" value="<%=f_date%>">
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@
                                         
                                         <select class="form-control border-input" name="ser_point">
                                             
-                                        <option value="" selected >กรุณาเลือกจุดตั้งรับ</option>
+                                        <option value="" disabled selected hidden >กรุณาเลือกจุดตั้งรับ</option>
                                             
                                                 <% data.lov_ser_point.forEach(data => { %>  
                                                 <option value="<%= data.id%>"><%= data.text%></option>
@@ -106,7 +106,7 @@
                                         <label style="width:40px!important; text-align:left">สถานะ</label>
 
                                         <select class="form-control border-input" name="status">
-                                            <option value="" selected>กรุณาเลือกสถานะ</option>
+                                            <option value="" disabled selected hidden>กรุณาเลือกสถานะ</option>
                                             <% data.sql_lov_pay_status.forEach(data => { %> 
                                                 <option value="<%= data.id%>"><%= data.text%></option>
                                                 <% }) %>

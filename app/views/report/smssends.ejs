@@ -66,19 +66,18 @@
                     <h4 class="title">รายงานการส่ง SMS</h4>
                     <p class="category"></p>
                 </div>
-                
-                <form method="get" action="" class="search-container">
+                <form method="get" action="/report/smssends" class="search-container" onsubmit="return validateForm()">                
                     <div class="row content-container">
                         <div class="col-md-4">
-                            <div class="form-group">
-                                <label>วันที่</label>
-                                <input class="form-control border-input" placeholder="วันที่รับล่าสุด" value="15/03/2018" type="text">
+                            <div class="form-group" >
+                                <label style="width:40px!important; text-align:left">วันที่</label>
+                                <input class="form-control border-input datepicker " placeholder="วันที่รับล่าสุด" type="text" name="f_date" id="f_date" value="<%=f_date%>">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label style="width:40px!important; text-align:left">-</label>
-                                <input class="form-control border-input" placeholder="วันที่รับล่าสุด" value="15/03/2018" type="text">
+                                <input class="form-control border-input datepicker" placeholder="วันที่รับล่าสุด" type="text" name="l_date" id="l_date" value="<%=l_date%>">
                             </div>
                         </div>
                     </div>
@@ -86,17 +85,27 @@
                         <div class="col-md-8">
                             <div class="form-group">
                                 <label>ชื่อ หรือ นามสกุล</label>
-                                <input class="form-control border-input" placeholder="ชื่อ หรือ นามสกุล" value="" type="text">
+                                <input class="form-control border-input" placeholder="ชื่อ หรือ นามสกุล" type="text" name="txt_search" id="txt_search" value="<%=txt_search%>">
                             </div>
                         </div>
                         <div class="col-md-2 left">
-                            <a class="btn btn-info btn-fill" href="#">ค้นหา</a>
+                            <button type="submit" class="btn btn-info btn-fill">ค้นหา</button>
                         </div>
                     </div>
                 </form>
 
                 <div class="content table-responsive table-full-width">
-                    <div class="content right"><a class="btn" href="#">Export to excel</a></div>
+                    <div class="content right">
+                        <form action="/report/smssends" method="GET">
+                            <input type="hidden" value="<%=f_date%>" id="f_date_search" name="f_date_search">
+                            <input type="hidden" value="<%=l_date%>" id="l_date_search" name="l_date_search">
+                            <input type="hidden" value="<%=txt_search%>" id="txt_search_search" name="txt_search_search">
+                            <input type="hidden" value="0" id="export_id" name="export_id">
+                            <button class="btn" type="submit">
+                                Export to excel
+                            </button>
+                        </form>
+                    </div>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -105,38 +114,14 @@
                                 <th>วันที่ส่ง</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href="donor-edit.html" target="_blank">อัญสา โกเมน</a></td>
-                                <td>081-8143200</td>
-                                <td>12/03/2018</td>
-                            </tr>
-                            <tr>
-                                <td><a href="donor-edit.html" target="_blank">น.ส.ตุลารัตน์ นามธรรม</a></td>
-                                <td>097-0478656</td>
-                                <td>15/03/2018</td>
-                            </tr>
-                            <tr>
-                                <td><a href="donor-edit.html" target="_blank">น.ส.ศิริรัตน์ เนื่องนิต</a></td>
-                                <td>087-9337568</td>
-                                <td>17/03/2018</td>
-                            </tr>
-                            <tr>
-                                <td><a href="donor-edit.html" target="_blank">ศิริพร แก้วใจ</a></td>
-                                <td>085-1498118</td>
-                                <td>18/03/2018</td>
-                            </tr>
-                            <tr>
-                                <td><a href="donor-edit.html" target="_blank">น.ส.นิศาชล จงกล</a></td>
-                                <td>081-7493559</td>
-                                <td>21/03/2018</td>
-                            </tr>
-                            <tr>
-                                <td><a href="donor-edit.html" target="_blank">ภัทรา วิธรรม</a></td>
-                                <td>081-7363385</td>
-                                <td>25/03/2018</td>
-                            </tr>
-                        </tbody>
+                        <% data.forEach(data => { %>
+                            <tbody>
+                              <tr>
+                              <td><%=data.firstname%> <%=data.lastname%></td>
+                              <td><%=data.phone%></td>
+                              <td><%=data.send_date%></td>                              
+                            </tbody>
+                        <% }) %>
                     </table>
 
                     <div class="content right">
