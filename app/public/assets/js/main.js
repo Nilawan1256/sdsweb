@@ -102,3 +102,41 @@ function deletedUser(id) {
       //alert("false!!!");
   } 
 }
+
+
+//delete point
+function deletePoint(id) {
+  var del = confirm('คุณต้องการที่จะลบรายการนี้ ?');
+  //alert(popup);
+  if(del == true){
+    //alert("true!!!");
+  fetch("/setting/point/delete", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      id: id
+    })
+  })
+    .then(response => {
+      if (response.status !== 200) {
+        console.log(
+          "Looks like there was a problem. Status Code: " + response.status
+        );
+        setTimeout(() => {
+        location.reload()
+        }, 0);
+        return;
+      }
+    })
+    .catch(function(err) {
+      console.log("Fetch Error :-S", err);
+    })
+    .done(); 
+  }
+   else{
+      //alert("false!!!");
+  } 
+}

@@ -58,7 +58,7 @@
                         <% data.forEach(data => { %>
                         <tbody>
                             <td><%=data.text%></td>
-                            <td><a href="#" class="btn btn-warning">ลบ</a></td>
+                            <td><a class="btn btn-warning" type="submit" onclick="deletePoint('<%= data.id %>')">ลบ</a></td>
                             <td><a href="/setting/point/edit?id=<%= data.id %>" class="btn btn-info">แก้ไข</a></td>
                         </tbody>
                         <% }) %>

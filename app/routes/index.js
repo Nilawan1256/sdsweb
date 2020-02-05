@@ -60,6 +60,7 @@ module.exports = function(app){
   app.get('/setting/point',settingController.point);
   app.get('/setting/point/edit',settingController.pointedit);
   app.post('/setting/point/save',settingController.pointsave);
+  app.post('/setting/point/delete',settingController.pointdelete);
   app.get('/setting/project',settingController.project);
   app.get('/setting/project/edit',settingController.projectedit);
   app.post('/setting/project/save',settingController.projectsave);
