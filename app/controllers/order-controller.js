@@ -1,6 +1,7 @@
 var async = require("async");
 var _ = require("lodash");
 var models = require("../models");
+var multer = require('multer');
 
 
 var exports = module.exports = {}
@@ -223,7 +224,22 @@ exports.uploadbulk = async function (req, res) {
 
 exports.uploadbulksave = async function (req, res) {
 	try {
-		res.render('order/uploadbulksave', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: null });
+		var storage	=	multer.diskStorage({
+			destination: function (req, file, callback) {
+			  callback(null, './app/public/upload');
+			},
+			filename: function (req, file, callback) {
+			  callback(null, file.originalname);
+			}
+		});
+		var upload = multer({ storage : storage}).array('myfile', 50);
+		upload(req,res,function(err) {
+			if(err) {
+				return res.end("Error uploading file.");
+			}
+			res.end("File is uploaded successfully!");
+		});
+		// res.render('order/uploadbulksave', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: null });
 	}
 	catch (err) {
 		next();
