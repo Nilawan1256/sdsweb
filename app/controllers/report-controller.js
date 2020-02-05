@@ -781,6 +781,7 @@ exports.smssends = async function (req, res) {
 
 exports.smsreply = async function (req, res) {
 	try {
+		
 		res.render('report/smsreply', { title: 'Report smsresponse', menu_left: 'reports', page_title: '', data: null });
 	}
 	catch (err) {
@@ -790,7 +791,153 @@ exports.smsreply = async function (req, res) {
 
 exports.smssummary = async function (req, res) {
 	try {
-		res.render('report/smssummary', { title: 'Report smssummary', menu_left: 'reports', page_title: '', data: null });
+
+		
+		f_date = req.query.f_date,
+		l_date = req.query.l_date;
+			
+		export_id = req.query.export_id;
+		
+		txt_search= req.query.txt_search;
+		txt_search_search = req.query.txt_search_search;
+
+		f_date_search = req.query.f_date_search,
+		l_date_search = req.query.l_date_search;
+
+
+		// Set format date //
+		const f_date_olddate = moment(req.query.f_date, 'DD/MM/YYYY');
+		const l_date_olddate = moment(req.query.l_date, 'DD/MM/YYYY');
+
+		const f_date_newdate = f_date_olddate.format('YYYY/MM/DD');
+		const l_date_newdate = l_date_olddate.format('YYYY/MM/DD');
+		// seach
+		const f_date_search_olddate = moment(req.query.f_date_search, 'DD/MM/YYYY');
+		const l_date_search_olddate = moment(req.query.l_date_search, 'DD/MM/YYYY');
+
+		const f_date_search_newdate = f_date_search_olddate.format('YYYY/MM/DD');
+		const l_date_search_newdate = l_date_search_olddate.format('YYYY/MM/DD');
+
+
+		if (export_id == "" || export_id == null) {
+			if (f_date == "" || f_date == null || l_date == "" || l_date == null){
+
+				// const sql = "SELECT DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date,COUNT(send_date) as count_send_date FROM sdsweb.sms  GROUP BY send_date UNION ALL (SELECT 'SUM' send_date,COUNT(send_date) as count_send_date FROM sdsweb.sms)";
+				const sql = "SELECT DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date,COUNT(send_date) as count_send_date, (SELECT COUNT(send_date) as count_send_date FROM sdsweb.sms) as total FROM sdsweb.sms  GROUP BY send_date ";
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+					.then(result => {
+				res.render('report/smssummary', { title: 'Report smssummary', menu_left: 'reports', page_title: '', data:result });
+					}); console.log('it\'s here >>', f_date, '<< value >>', l_date, '<< it\'s here');
+
+
+	
+			} else {
+	
+				
+				const sql = "SELECT DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date,COUNT(send_date) as count_send_date, (SELECT COUNT(send_date) as count_send_date FROM sdsweb.sms where send_date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "' ) as total FROM sdsweb.sms where send_date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "'  GROUP BY send_date ";
+				
+				
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+					.then(result => {
+						res.render('report/smssummary', { title: 'Report smssends', menu_left: 'reports', page_title: '', data: result, f_date: f_date,l_date: l_date});
+					}); console.log('it\'s here >>', f_date, '<< value >>', l_date, '<< it\'s here');
+			}			
+
+		} else {
+//excel
+			if (f_date_search == "" || f_date_search == null || l_date_search == "" || l_date_search == null) {
+
+				const sql = "SELECT DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date,COUNT(send_date) as count_send_date, (SELECT COUNT(send_date) as count_send_date FROM sdsweb.sms) as total FROM sdsweb.sms  GROUP BY send_date ";
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+				.then(result => {
+					console.log('excel export');
+						var wb = new xl.Workbook();
+						var ws = wb.addWorksheet('Sheet 1'); 
+
+						var HeaderStyle = wb.createStyle({
+							font: {
+							color: '#000000',
+							size: 20
+							},
+							numberFormat: '##0; (##0); -'
+						});
+						var ContentStyle = wb.createStyle({
+							font: {
+							color: '#000000',
+							size: 16
+							},
+							numberFormat: '##0; (##0); -'
+						});
+		
+
+				ws.cell(1,1).string('วันที่ส่ง').style(HeaderStyle);
+				ws.cell(1,2).string('จำนวนการส่ง (รายการ)').style(HeaderStyle);
+				
+				
+
+			result.forEach(function(data, i) {
+			 	
+				ws.cell(('%d',i+2),1).string(data.send_date).style(ContentStyle);
+				ws.cell(('%d',i+2),2).number(data.count_send_date).style(ContentStyle);
+				
+				console.log('it\'s here >> %d << : %s', i, data);x=i++;
+			});
+							
+			ws.cell(('%d',x+3),1).string('รวม').style(HeaderStyle);
+			ws.cell(('%d',x+3),2).number(result[0].total).style(HeaderStyle);
+			                  
+            	wb.write('ExcelFile.xlsx', res);		
+			
+
+	});
+	
+			} else {
+
+				const sql = "SELECT DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date,COUNT(send_date) as count_send_date, (SELECT COUNT(send_date) as count_send_date FROM sdsweb.sms where send_date BETWEEN '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "' ) as total FROM sdsweb.sms where send_date BETWEEN '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "'  GROUP BY send_date ";
+	models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+	.then(result => {
+			console.log('excel export');
+			var wb = new xl.Workbook();
+			var ws = wb.addWorksheet('Sheet 1'); 
+
+			var HeaderStyle = wb.createStyle({
+				font: {
+					color: '#000000',
+					size: 20
+				},
+				numberFormat: '##0; (##0); -'
+			});
+			var ContentStyle = wb.createStyle({
+				font: {
+					color: '#000000',
+					size: 16
+				},
+				numberFormat: '##0; (##0); -'
+			});
+		
+
+			ws.cell(1,1).string('วันที่ส่ง').style(HeaderStyle);
+			ws.cell(1,2).string('จำนวนการส่ง (รายการ)').style(HeaderStyle);
+			
+			
+
+		result.forEach(function(data, i) {
+			 
+			ws.cell(('%d',i+2),1).string(data.send_date).style(ContentStyle);
+			ws.cell(('%d',i+2),2).number(data.count_send_date).style(ContentStyle);
+			
+			console.log('it\'s here >> %d << : %s', i, data);x=i++;
+		});
+						
+		ws.cell(('%d',x+3),1).string('รวม').style(HeaderStyle);
+		ws.cell(('%d',x+3),2).number(result[0].total).style(HeaderStyle);
+			                  
+            	wb.write('ExcelFile.xlsx', res);		
+			
+
+	});
+			}	
+		}
 	}
 	catch (err) {
 		next();
