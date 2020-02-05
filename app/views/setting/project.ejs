@@ -89,3 +89,12 @@
 
   </div>
 </div>
+
+<script>
+    function tikkystoreInput (value) {
+    const input = document.getElementById("input").value;
+    const test = document.createElement("DIV");
+    test.innerHTML = '<input class="form-control border-input" placeholder="ชื่อโครงการ" type="text" value="'+ input +'" name=""><a href="#" class="btn btn-warning">ลบ</a>';
+    document.getElementById("divInput").appendChild(test);
+    }
+    </script>

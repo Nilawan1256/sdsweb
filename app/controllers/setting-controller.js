@@ -239,14 +239,29 @@ exports.projectsave = async function (req, res) {
 
 exports.userdelete = async function(req, res) {
 	try {
-	  await (models.user.destroy({
+	   models.user.destroy({
 		  where: { id: req.body.id }
 	  })
 		.then(del => {
 		  console.log("Deleted successfully " + del);
 		})
-		);
-	  await res.redirect('/setting/user');
+	   res.redirect(req.get('/setting/user'));
+	} catch (err) {
+	  next();
+	}
+  };
+
+
+  exports.pointdelete = async function(req, res) {
+	try {
+	   models.lov.destroy({
+		  where: { id: req.body.id }
+	  })
+		.then(del => {
+		  console.log("Deleted successfully " + del);
+		})
+		
+	   res.redirect(req.get('/setting/point'));
 	} catch (err) {
 	  next();
 	}

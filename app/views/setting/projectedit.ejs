@@ -55,7 +55,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="btn" onclick="tikkystoreInput(0)" type="button">เพิ่มข้อมูล</a>
+                        <a class="btn" type="button" value="Add TextBox" onclick="add_field();">เพิ่มข้อมูล</a>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-striped">
                                     <thead>
@@ -65,12 +65,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><div id="divInput1">
-                                            <!-- <td><input class="form-control border-input" placeholder="ชื่อโครงการ" value="โมลด์" type="text" name="task[]"></td> -->
-                                            <!-- <td><a href="#" class="btn btn-warning">ลบ</a></td> -->
-                                            <td><div id="divInput1">
-                                            <td><div id="divInput1">
+                                        <tr> 
+                                            <td><div id="wrapper"></td>
+                                            <td><div id="field_div"></td>
+                                            <!-- <td><input class="form-control border-input" placeholder="ชื่อโครงการ" value="โมลด์" type="text" name="task[]"></td>
+                                            <td><a href="#" class="btn btn-warning">ลบ</a></td> -->
                                             </div>
                                         </tr>
                                     </tbody>
@@ -91,11 +90,15 @@
 </div>
 
 <script>
-    function tikkystoreInput (value) {
-     value = (value + 1);
-     document.getElementById("divInput"+value)
-    .innerHTML='<input class="form-control border-input" placeholder="ชื่อโครงการ" type="text"  value="" name="task[]"><td>';
-    '<a href="#" class="btn btn-warning">ลบ</a></td><div id="divInput'+(value+1)+'"></div>';
-      
+    function add_field()
+    {
+      var total_text=document.getElementsByClassName("input_text");
+      total_text=total_text.length+1;
+      document.getElementById("field_div").innerHTML=document.getElementById("field_div").innerHTML+
+      "<p id='input_text"+total_text+"_wrapper'><input class=\"form-control border-input\" placeholder=\"ชื่อโครงการ\" value=\"โมลด์\" type=\"text\" id=\"input_text" +total_text+"'><a href=\"#\" class=\"btn btn-warning\" onclick=remove_field >ลบ</a>('input_text"+total_text+"');></p>";
     }
-   </script>
+    function remove_field(id)
+    {
+      document.getElementById(id+"_wrapper").innerHTML="";
+    }
+    </script>
