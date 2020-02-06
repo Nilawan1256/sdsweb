@@ -58,7 +58,7 @@
                         <tbody>
                             <% data.forEach(function(data) { %>
                                 <tr>
-                                    <td><%= data.text %></td>
+                                    <td><%= data.name %></td>
                                     <td><a href="#" class="btn btn-warning">ลบ</a></td>
                                     <td><a href="/setting/project/edit?id=<%= data.id %>" class="btn btn-info">แก้ไข</a></td>
                                     
@@ -89,12 +89,3 @@
 
   </div>
 </div>
-
-<script>
-    function tikkystoreInput (value) {
-    const input = document.getElementById("input").value;
-    const test = document.createElement("DIV");
-    test.innerHTML = '<input class="form-control border-input" placeholder="ชื่อโครงการ" type="text" value="'+ input +'" name=""><a href="#" class="btn btn-warning">ลบ</a>';
-    document.getElementById("divInput").appendChild(test);
-    }
-    </script>

@@ -224,15 +224,15 @@ exports.uploadbulk = async function (req, res) {
 
 exports.uploadbulksave = async function (req, res) {
 	try {
-		var storage	=	multer.diskStorage({
+		var storage	=	multer.diskStorage({         //ต้นทาง
 			destination: function (req, file, callback) {
 			  callback(null, './app/public/upload');
 			},
-			filename: function (req, file, callback) {
+			filename: function (req, file, callback) {       //ปลายทาง
 			  callback(null, file.originalname);
 			}
 		});
-		var upload = multer({ storage : storage}).array('myfile', 50);
+		var upload = multer({ storage : storage}).array('myfile', 50);	//สร้าง
 		upload(req,res,function(err) {
 			if(err) {
 				return res.end("Error uploading file.");

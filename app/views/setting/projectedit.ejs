@@ -1,104 +1,93 @@
 <div class="content">
-  <div class="container-fluid">
+    <div class="container-fluid">
 
-      <div class="row">
-          <div class="col-lg-3 col-md-5">
-              <div class="card card-user">
-                  <br />
-                  <div class="content">
-                      <div class="author">
-                          <img class="avatar border-white" src="/assets/img/faces/face-setting.jpg" alt="...">
-                          <h4 class="title">
-                              ตั้งค่าข้อมูลหลัก                                            
-                          </h4>
-                      </div>
-                      <ul class="leftnav">
-                          <li>
-                              <p class="description">
-                                  <a href="/setting/point">จุดตั้งรับ</a>
-                              </p>
-                          </li>
-                          <li>
-                              <p class="description">
-                                  <a href="/setting/project">โครงการ</a>
-                              </p>
-                          </li>
-                          <li>
-                              <p class="description">
-                                  <a href="/setting/user">ผู้ใช้งานระบบ</a>
-                              </p>
-                          </li>
-                      </ul>
-                  </div>
-              </div>                            
-          </div>
-
-          <div class="col-lg-9 col-md-7">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title">โครงการ</h4>
-                </div>
-                <div class="content">
-                    <form>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>ชื่อโครงการ</label>
-                                    <input class="form-control border-input" placeholder="ชื่อโครงการ" value="<%= data.text %>" type="text" name="project">
-                                </div>
-                            </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="card card-user">
+                    <br />
+                    <div class="content">
+                        <div class="author">
+                            <img class="avatar border-white" src="/assets/img/faces/face-setting.jpg" alt="...">
+                            <h4 class="title">
+                                ตั้งค่าข้อมูลหลัก
+                            </h4>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>รายการข้อมูลของโครงการ</label>                                                
-                                </div>
-                            </div>
-                        </div>
-                        <a class="btn" type="button" value="Add TextBox" onclick="add_field();">เพิ่มข้อมูล</a>
-                            <div class="content table-responsive table-full-width">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th width="80%">รายการข้อมูลโครงการ</th>
-                                            <th width="10%"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr> 
-                                            <td><div id="wrapper"></td>
-                                            <td><div id="field_div"></td>
-                                            <!-- <td><input class="form-control border-input" placeholder="ชื่อโครงการ" value="โมลด์" type="text" name="task[]"></td>
-                                            <td><a href="#" class="btn btn-warning">ลบ</a></td> -->
-                                            </div>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                </div>                                                                                    
-                        <div>
-                            <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
-                        </div>
-                        <div class="clearfix"></div>
-                    </form>
+                        <ul class="leftnav">
+                            <li>
+                                <p class="description">
+                                    <a href="/setting/point">จุดตั้งรับ</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="description">
+                                    <a href="/setting/project">โครงการ</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="description">
+                                    <a href="/setting/user">ผู้ใช้งานระบบ</a>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>    
 
-      </div>
+            <div class="col-lg-9 col-md-7">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">โครงการ</h4>
+                    </div>
+                    <div class="content">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ชื่อโครงการ</label>
+                                        <input class="form-control border-input" placeholder="ชื่อโครงการ"
+                                            value="<%= data.product_group.name %>" type="text" id="input" name="project">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>รายการข้อมูลของโครงการ</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="btn" onclick="tikkystoreInput(0)" type="button">เพิ่มข้อมูล</a>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <% data.project.forEach(function(data) { %>
+                                            <input class="form-control border-input" placeholder="ชื่อโครงการ" type="text" value="<%= data.name %>" name=""><a href="#" class="btn btn-warning">ลบ</a>
+                                        <% }); %>
+                                            <div id="divInput">
+                                            </div>
 
-  </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-info btn-fill btn-wd">บันทึก</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 </div>
 
 <script>
-    function add_field()
-    {
-      var total_text=document.getElementsByClassName("input_text");
-      total_text=total_text.length+1;
-      document.getElementById("field_div").innerHTML=document.getElementById("field_div").innerHTML+
-      "<p id='input_text"+total_text+"_wrapper'><input class=\"form-control border-input\" placeholder=\"ชื่อโครงการ\" value=\"โมลด์\" type=\"text\" id=\"input_text" +total_text+"'><a href=\"#\" class=\"btn btn-warning\" onclick=remove_field >ลบ</a>('input_text"+total_text+"');></p>";
+    function tikkystoreInput(value) {
+        const input = document.getElementById("input").value;
+        const test = document.createElement("DIV");
+        test.innerHTML = '<input class="form-control border-input" placeholder="ชื่อโครงการ" type="text" value="' + input + '" name=""><a href="#" class="btn btn-warning">ลบ</a>';
+        document.getElementById("divInput").appendChild(test);
     }
-    function remove_field(id)
-    {
-      document.getElementById(id+"_wrapper").innerHTML="";
-    }
-    </script>
+</script>
