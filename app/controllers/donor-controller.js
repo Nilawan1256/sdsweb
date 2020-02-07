@@ -152,10 +152,15 @@ exports.save = async function(req, res) {
         });
     } else {
       console.log("edit...");
-
-      // set format date
-      let bd = moment(req.body.birthday, 'DD/MM/YYYY');
-      let _bd = bd.format('YYYY/MM/DD');
+      let _bd = [];
+      if (!req.body.birthday){
+        console.log("no birthday!!!");
+        _bd.date = null;
+      }
+      else{
+        let bd = moment(req.body.birthday, 'DD/MM/YYYY');
+        _bd.date = bd.format('YYYY/MM/DD');
+      }
       
       let db = req.app.db;
       db.donor.update({
@@ -168,7 +173,7 @@ exports.save = async function(req, res) {
             zipcode: req.body.zipcode,
             phone: req.body.phone,
             occupation: req.body.occupation,
-            date_of_birth: _bd,
+            date_of_birth: _bd.date,
             lov_gender_id: req.body.gender,
             line: req.body.line,
             email: req.body.email,
