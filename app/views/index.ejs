@@ -12,7 +12,7 @@
                             </div>
                             <div class="col-xs-7">
                                 <div class="numbers">
-                                    100
+                                    <%= data.order_pepole_total[0].total %>
                                     <p>คน</p>
                                 </div>
                             </div>
@@ -123,19 +123,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        26 ตุลาคม 2017
-                                    </td>
-                                    <td>ธรรมสวัสดี</td>
-                                    <td>ทิพย์</td>
-                                    <td>ทิพย์</td>
-                                    <td><span class="text-warning">ยังไม่เรียบร้อย</span></td>
-                                    <td><a href="#" class="btn btn-warning">ยกเลิก</a></td>
-                                    <td><a href="order-upload.html" class="btn btn-info" target="_blank">แก้ไข</a></td>
-                                    <td><i class="ti-lock"></i></td>
-                                </tr>
-                                <tr>
+                                <% data.order.forEach(function(data) { %>
+                                    <tr>
+                                        <td>
+                                            <%= data.create_date %>
+                                        </td>
+                                        <td><%= data.lov_service_point_id %></td>
+                                        <td><%= data.create_by %></td>
+                                        <td><%= data.lov_payment_status %></td>
+                                        <td><span class="text-warning">ยังไม่เรียบร้อย</span></td>
+                                        <td><a href="#" class="btn btn-warning">ยกเลิก</a></td>
+                                        <td><a href="order-upload.html" class="btn btn-info" target="_blank">แก้ไข</a></td>
+                                        <!-- <td><i class="ti-lock"></i></td> -->
+                                    </tr>
+                                <% }); %>
+                                <!-- <tr>
                                     <td>
                                         27 ตุลาคม 2017
                                     </td>
@@ -194,7 +196,7 @@
                                     <td><a href="#" class="btn btn-warning">ยกเลิก</a></td>
                                     <td><a href="order-upload.html" class="btn btn-info" target="_blank">แก้ไข</a></td>
                                     <td></td>
-                                </tr>
+                                </tr> -->
                             </tbody>
                         </table>
                     </div>
@@ -233,7 +235,8 @@
                                     <td>500</td>
                                     <td><span class="text-warning">ยังไม่ตรวจสอบ</span></td>
                                     <td><a href="#" class="btn btn-warning">ยกเลิก</a></td>
-                                    <td><a href="receipt-upload.html" class="btn btn-info" target="_blank">แก้ไข</a></td>
+                                    <td><a href="receipt-upload.html" class="btn btn-info" target="_blank">แก้ไข</a>
+                                    </td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -245,7 +248,8 @@
                                     <td>300</td>
                                     <td><span class="text-warning">ยังไม่ตรวจสอบ</span></td>
                                     <td><a href="#" class="btn btn-warning">ยกเลิก</a></td>
-                                    <td><a href="receipt-upload.html" class="btn btn-info" target="_blank">แก้ไข</a></td>
+                                    <td><a href="receipt-upload.html" class="btn btn-info" target="_blank">แก้ไข</a>
+                                    </td>
                                     <td><i class="ti-lock"></i></td>
                                 </tr>
                                 <tr>
@@ -257,7 +261,8 @@
                                     <td>1,000</td>
                                     <td><span class="text-primary">รอการอนุมัติ</span></td>
                                     <td><a href="#" class="btn btn-warning">ยกเลิก</a></td>
-                                    <td><a href="receipt-upload.html" class="btn btn-info" target="_blank">แก้ไข</a></td>
+                                    <td><a href="receipt-upload.html" class="btn btn-info" target="_blank">แก้ไข</a>
+                                    </td>
                                     <td></td>
                                 </tr>
                             </tbody>
