@@ -174,17 +174,22 @@
                                 <div class="form-group">
                                     <label>กลุ่มผู้ร่วมบุญ</label>
                                     <select class="form-control border-input" name="donor_group">
-                                            <option value="" disabled selected hidden >กรุณาเลือกกลุ่มผู้ร่วมบุญ</option>
-                                            <%
+                                       
+                                        <%
                                             var select = [];
                                             var options = data[0].donor_group;
+
+                                            if(!data[0].id){
+                                                options = "บุคคลทั่วไป";
+                                            }
+
                                             data.sql_lov_donor_group.forEach(data => {
-                                            if (data.text == options){
-                                                select.true = "selected";
-                                            }
-                                            else{
-                                                select.true = "";
-                                            }
+                                                if (data.text == options){
+                                                    select.true = "selected";
+                                                }
+                                                else {
+                                                    select.true = "";
+                                                }
                                         %>
                                         <option value="<%= data.id%>" <%= select.true %>><%= data.text %></option>
                                         <% }) %>
@@ -196,7 +201,7 @@
                               <div class="col-md-12">
                                   <div class="form-group">
                                       <label>รายละเอียดเพิ่มเติม</label>
-                                      <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" name="comment"><%= data[0].comment%></textarea>
+                                      <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" name="comment"><%= data[0].comment %></textarea>
                                   </div>
                               </div>
                           </div>

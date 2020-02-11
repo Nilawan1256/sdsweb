@@ -7,7 +7,7 @@ var exports = module.exports = {}
 exports.adjust = async function(req,res){	
 	try{
 		let _id = req.query.id;
-		let sql = 'SELECT id, DATE_FORMAT(date, \"%d/%m/%Y\") as date, qty, cash, wait_transfer, adjust, update_by, DATE_FORMAT(update_date, \"%d/%m/%Y\") as update_date, (SELECT text FROM lov WHERE lov.id = accounting_adjust.lov_servicepoint_id) as service_point_group FROM accounting_adjust ';
+		let sql = 'SELECT id, DATE_FORMAT(date, \"%d/%m/%Y\") as date, qty, cash, wait_transfer, adjust, update_by, DATE_FORMAT(update_date, \"%d/%m/%Y\") as update_date, (SELECT text FROM lov WHERE lov.id = accounting_adjust.lov_servicepoint_id) as service_point_id FROM accounting_adjust ';
 			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 				.then(_adjust => {
 				res.render('accounting/adjust', { title: 'adjust', menu_left:'adjust', page_title:'', data:_adjust});
@@ -45,7 +45,7 @@ exports.adjustsave = async function(req,res){
 		.catch(error => {
 		  console.log("Update Failed ! +" + error);
 		})
-		res.redirect('/accounting/adjust'); //go to route adjust*/
+		res.redirect('/accounting/adjust');
 	}
 	catch(err){
 		next();

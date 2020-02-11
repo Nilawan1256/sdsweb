@@ -61,8 +61,6 @@ exports.edit = async function(req, res) {
         .query(sql_lov_donor_group, {type: models.sequelize.QueryTypes.SELECT})
         .then(res => {_data.sql_lov_donor_group = res})
       );
-      console.log(_data);
-      res.render("donor/edit", {title: "donor", menu_left: "donor", page_title: "", data: _data});
     } else {
       let sql = "SELECT id, firstname, lastname, address, state, zipcode, phone, occupation, ";
       sql += 'DATE_FORMAT(date_of_birth, "%d/%m/%Y") as date_of_birth, line, email, comment, create_by,';
@@ -100,10 +98,12 @@ exports.edit = async function(req, res) {
         .query(sql_lov_donor_group, {type: models.sequelize.QueryTypes.SELECT})
         .then(res => {_data.sql_lov_donor_group = res})
       );
-
-      console.log(_data);
-      res.render("donor/edit", {title: "donor", menu_left: "donor", page_title: "", data: _data});
     }
+
+    _data.id = _id; //check lov donor_group
+
+    console.log(_data);
+    res.render("donor/edit", {title: "donor", menu_left: "donor", page_title: "", data: _data});
   } catch (err) {
     next();
   }
@@ -203,8 +203,7 @@ exports.delete = async function(req, res) {
       .then(del => {
         console.log("Deleted successfully " + del);
       })
-  res.redirect(req.get('donor'));
-
+    res.redirect(req.get('donor'));
   } catch (err) {
     next();
   }
