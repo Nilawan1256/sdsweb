@@ -37,7 +37,7 @@ exports.index = async function(req, res, next){
 		// 	})
 		// );
 
-		const sql_order = "select id, donor_id, (select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, (select text from lov where lov.id = `order`.lov_payment_status) as lov_payment_status, `comment`, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, (select username from user where user.id = `order`.create_by) as create_by,(select username from user where user.id = `order`.update_by) as update_by, DATE_FORMAT(update_date, \"%d/%m/%Y\") as update_date from sdsweb.order";
+		const sql_order = "select id, donor_id, (select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, (select `text` from lov where lov.id = `order`.lov_payment_status_id) as lov_payment_status_id, `comment`, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, (select username from user where user.id = `order`.create_by) as create_by,(select username from user where user.id = `order`.update_by) as update_by, DATE_FORMAT(update_date, \"%d/%m/%Y\") as update_date from sdsweb.order";
 		await (
 			models.sequelize.query(sql_order, { type: models.sequelize.QueryTypes.SELECT })
 			.then(_data => {
