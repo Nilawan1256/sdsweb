@@ -211,7 +211,7 @@ exports.uploadbulk = async function (req, res) {
 		const db = req.app.db;
 		db.lov.findAll({
 			attributes: ['id', 'text', 'group'],
-			where: { group: 'service_point_group' }
+			where: { group: 'service_point_id' }
 		}).then(_data => {
 		res.render('order/uploadbulk', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: _data });
 	});

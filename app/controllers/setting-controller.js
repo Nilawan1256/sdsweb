@@ -122,7 +122,7 @@ exports.point = async function (req, res) {
 		const db = req.app.db;
 		db.lov.findAll({
 			attributes: ['id', 'text', 'group'],
-			where: { group: 'service_point_group' }
+			where: { group: 'service_point_id' }
 		}).then(_data => {
 			res.render('setting/point', { title: 'point', menu_left: 'settingpoint', page_title: '', data: _data });
 		});
@@ -161,7 +161,7 @@ exports.pointsave = async function (req, res) {
 		if (!_id) {
 			let pointTH = req.body.pointth;
 			let pointEng = req.body.pointeng;
-			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('service_point_group_" + pointEng + "','" + pointEng + "' , '" + pointTH + "','service_point_group', '0')";
+			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('service_point_id_" + pointEng + "','" + pointEng + "' , '" + pointTH + "','service_point_group', '0')";
 			await (
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
 					.then(_data => {
@@ -175,7 +175,7 @@ exports.pointsave = async function (req, res) {
 		else {
 			let pointTH = req.body.pointth;
 			let pointEng = req.body.pointeng;
-			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('service_point_group_" + pointEng + "','" + pointEng + "' , '" + pointTH + "','service_point_group', '0')";
+			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('service_point_id_" + pointEng + "','" + pointEng + "' , '" + pointTH + "','service_point_id', '0')";
 			await (
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
 					.then(_data => {
@@ -195,19 +195,7 @@ exports.pointsave = async function (req, res) {
 }
 
 exports.project = async function (req, res) {
-	// try {
-	// 	const db = req.app.db;
-	// 	db.lov.findAll({
-	// 		attributes: ['id', 'text', 'group'],
-	// 		where: { group: 'donor_group_id' }
-	// 	}).then(_product => {
-	// 		res.render('setting/project', { title: 'project', menu_left: 'settingproject', page_title: '', data: _product });
-	// 	});
-	// }
-	// catch (err) {
-	// 	next();
-	// }
-	// }
+
 
 	try {
 		let db = req.app.db;
