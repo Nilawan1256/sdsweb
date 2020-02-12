@@ -47,19 +47,32 @@
                     </div>
                     <div class="content">
                         <form action="/order/save" method="POST">
-                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        
+                                        <label>ชื่อ</label>
+                                        <input class="form-control border-input" placeholder="กรุณากรอกชื่อ"  type="text" name="fname" value="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>สกุล</label>
+                                        <input class="form-control border-input" placeholder="กรุณากรอกสกุล" type="text" name="lname" value="">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>จุดตั้งรับ</label>
                                         <select class="form-control border-input" name="servicepoint">
                                             <% dataedit.order.forEach(data => { %>
-                                            <option value="<%=data.lov_service_point_id%>"><%=data.lov_service_point_id%></option>
+                                            <option value="<%=data.lov_service_point_id%>"><%=data.lov_service_point%></option>
                                             <% }) %>
-                                            <option value="32">ธรรมสวัสดี</option>
-                                            <option value="36">ลานโพธิ์</option>
-                                            <option value="34">ถ้ำอารยตารา</option>
-                                            <option value="30">สำนักงาน</option>
+                                            <% dataedit.lov_ser_point.forEach(data => { %>
+                                            <option value="<%= data.id%>"><%= data.text%></option>
+                                            <% }) %>
                                         </select>
                                     </div>
                                 </div>
@@ -84,8 +97,10 @@
                                     <div class="form-group">
                                         <label>โครงการ</label>
                                         <select class="form-control border-input" name="product_group">
-                                            <option value="<%=data.product_group_id%>"><%=data.product_group_id%></option>
-                                            <option value="1">โมลด์</option>
+                                            <option value="<%=data.product_group_id%>"><%=data.product_group%></option><% }) %>
+                                            <% dataedit.sql_lov_product.forEach(data => { %>
+                                                <option value="<%= data.id%>"><%= data.text%></option>
+                                            <% }) %>
                                         </select>
                                         
                                     </div>
@@ -111,14 +126,18 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>ประเภทการชำระเงิน</label>
-                                        <select class="form-control border-input" name="paymentstatus">
-                                            <option value="27">เงินสด</option>
-                                            <option value="28">โอนผ่านบัญชีธนาคาร</option>
-                                            <option value="29">บัตรเครดิต</option>
+                                        <select class="form-control border-input" name="paymenttype">
+                                            <% dataedit.order.forEach(data => { %>
+                                            <option value="<%=data.lov_transfer_type_id%>"><%=data.lov_transfer_type%></option>
+                                            <% }) %>
+                                            <% dataedit.sql_lov_payment.forEach(data => { %>
+                                                <option value="<%= data.id%>"><%= data.text%></option>
+                                            <% }) %>
                                         </select>
                                     </div>
                                 </div>
                             </div>
+                            <% dataedit.order.forEach(data => { %>
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -137,13 +156,12 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>สถานะการชำระเงิน</label>
-                                        <select class="form-control border-input" name="paymenttype">
-                                            <option value="<%=data.lov_payment_status%>"><%=data.lov_payment_status%></option>
-                                            <option value="33">ค้างชำระ</option>
-                                            <option value="34">ชำระครบ</option>
-                                            <option value="35">ยุติการตาม</option>
-                                            <option value="36">มอบให้ตาราอวอร์ด</option>
-                                            <option value="37">มอบให้แขกพิเศษ</option>
+                                        <select class="form-control border-input" name="paymentstatus">
+                                            <option value="<%=data.lov_payment_status_id%>"><%=data.lov_payment_status%></option><% }) %>
+                                            <% dataedit.sql_lov_payment_status_group.forEach(data => { %>
+                                                <option value="<%= data.id%>"><%= data.text%></option>
+                                            <% }) %>
+                                            
                                         </select>
                                     </div>
                                 </div>
@@ -151,10 +169,10 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
+                                        <% dataedit.order.forEach(data => { %>
                                         <label>หมายเหตุ</label>
                                         <textarea rows="2" class="form-control border-input" placeholder="Here can be your description" value="" name="comment"><%=data.comment%></textarea>
                                         <!-- <a class="btn btn-info btn-fill addnew" type="submit">บันทึก</a> -->
-                                        
                                         <br><button class="btn btn-info btn-fill addnew"  type="submit" value="<%=data.id%>">บันทึก</button>
                                         <% }) %>  
                                     </div>
