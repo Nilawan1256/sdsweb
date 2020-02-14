@@ -91,10 +91,12 @@
                                         <select class="form-control border-input" name="ser_point">
                                             
                                         <option value="" disabled selected hidden >กรุณาเลือกจุดตั้งรับ</option>
-                                            
-                                                <% data.lov_ser_point.forEach(data => { %>  
-                                                <option value="<%= data.id%>"><%= data.text%></option>
-                                                <% }) %>
+
+                                      
+
+                                        <% data.lov_ser_point.forEach(data => { %>  
+                                        <option value="<%= data.id%>"><%= data.text%></option>
+                                        <% })%>
                                        
 
                                         </select>
@@ -155,7 +157,7 @@
                               <td><%=data.phone%></td>
                               <td><%=data.create_date%></td>
                               <td><%=data.lov_service_point_id%></td>
-                              <td><%=data.lov_payment_status%></td>
+                              <td><%=data.lov_payment_status_id%></td>
                               </tr>
                             </tbody>
                         <% }) %>
