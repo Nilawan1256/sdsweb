@@ -221,6 +221,9 @@ exports.order = async function (req, res) {
 		const l_date_search_newdate = l_date_search_olddate.format('YYYY/MM/DD');
 
 
+
+
+		
 	if (export_id == "" || export_id == null) {
 
 				if (f_date == "" || f_date == null || l_date == "" || l_date == null
@@ -228,11 +231,19 @@ exports.order = async function (req, res) {
 
 
 			let data = {};
-			let sql = 'SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status, comment, ';
-			sql += 'create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from donor ';
-			sql += 'where donor.id = `order`.donor_id) as firstname, (select lastname from donor where donor.id = `order`.donor_id) as lastname, ';
-			sql += '(select phone from donor where donor.id = `order`.donor_id) as phone, (select text from lov where lov.id = `order`.lov_payment_status) as lov_payment_status, ';
-			sql += '(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id FROM `order`';
+			
+			let sql = 'SELECT id, donor_id, lov_service_point_id, order_name, total, project, product_group_id, lov_transfer_type_id, receipt_file,';
+			sql += ' payment_period, lov_payment_status_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, ';
+			sql += '(select firstname from donor where id = donor_id) as firstname, (select lastname from donor where id = donor_id) as lastname,';
+			sql += '(select phone from donor where id = donor_id) as phone, (select text from lov where id = lov_payment_status_id) as lov_payment_status_id,';
+			sql += '(select text from lov where id = lov_service_point_id) as lov_service_point_id FROM sdsweb.`order`;';
+
+			// let sql = 'SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status, comment, ';
+			// sql += 'create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from donor ';
+			// sql += 'where donor.id = `order`.donor_id) as firstname, (select lastname from donor where donor.id = `order`.donor_id) as lastname, ';
+			// sql += '(select phone from donor where donor.id = `order`.donor_id) as phone, (select text from lov where lov.id = `order`.lov_payment_status_id) as lov_payment_status, ';
+			// sql += '(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id FROM sdsweb.`order`';
+
 			await (
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 					.then(res => {
@@ -240,7 +251,7 @@ exports.order = async function (req, res) {
 					})
 			);
 	
-			let sql_lov_ser_point = "SELECT text ,id  FROM lov where lov.group = 'service_point_group' and lov.delete_flag = 0";
+			let sql_lov_ser_point = "SELECT text ,id  FROM lov where lov.group = 'service_point_id' and lov.delete_flag = 0";
 			await (
 				models.sequelize.query(sql_lov_ser_point, { type: models.sequelize.QueryTypes.SELECT })
 					.then(res => {
@@ -249,7 +260,7 @@ exports.order = async function (req, res) {
 			);
 	
 	
-			let sql_lov_pay_status = "SELECT text ,id  FROM lov where lov.group = 'payment_status_group' and lov.delete_flag = 0";
+			let sql_lov_pay_status = "SELECT text ,id  FROM lov where lov.group = 'payment_status' and lov.delete_flag = 0";
 			await (
 				models.sequelize.query(sql_lov_pay_status, { type: models.sequelize.QueryTypes.SELECT })
 					.then(res => {
@@ -271,11 +282,20 @@ exports.order = async function (req, res) {
 
 			
 			let data = {};
-			let sql = 'SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status, comment, ';
-			sql += 'create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from donor ';
-			sql += 'where donor.id = `order`.donor_id) as firstname, (select lastname from donor where donor.id = `order`.donor_id) as lastname, ';
-			sql += '(select phone from donor where donor.id = `order`.donor_id) as phone, (select text from lov where lov.id = `order`.lov_payment_status) as lov_payment_status, ';
-			sql += "(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id FROM `order` where lov_payment_status = '" + status + "' or lov_service_point_id = '" + ser_point + "' or create_date between '" + f_date_newdate + "' AND '" + l_date_newdate + "'";
+
+			let sql = 'SELECT id, donor_id, lov_service_point_id, order_name, total, project, product_group_id, lov_transfer_type_id, receipt_file,';
+			sql += ' payment_period, lov_payment_status_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, ';
+			sql += 'update_date, (select firstname from donor where id = donor_id) as firstname, (select lastname from donor where id = donor_id) as lastname,';
+			sql += '(select phone from donor where id = donor_id) as phone, (select text from lov where id = lov_payment_status_id) as lov_payment_status_id,';
+			sql += "(select text from lov where id = lov_service_point_id) as lov_service_point_id FROM sdsweb.`order` where lov_payment_status_id = '" + status + "' or lov_service_point_id = '" + ser_point + "' or create_date between '" + f_date_newdate + "' AND '" + l_date_newdate + "'";
+
+
+			// let sql = 'SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status, comment, ';
+			// sql += 'create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from donor ';
+			// sql += 'where donor.id = `order`.donor_id) as firstname, (select lastname from donor where donor.id = `order`.donor_id) as lastname, ';
+			// sql += '(select phone from donor where donor.id = `order`.donor_id) as phone, (select text from lov where lov.id = `order`.lov_payment_status) as lov_payment_status, ';
+			// sql += "(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id FROM `order` where lov_payment_status = '" + status + "' or lov_service_point_id = '" + ser_point + "' or create_date between '" + f_date_newdate + "' AND '" + l_date_newdate + "'";
+			
 			await (
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 					.then(res => {
@@ -283,7 +303,7 @@ exports.order = async function (req, res) {
 					})
 			);
 	
-			let sql_lov_ser_point = "SELECT text ,id  FROM lov where lov.group = 'service_point_group' and lov.delete_flag = 0";
+			let sql_lov_ser_point = " SELECT text ,id  FROM lov where lov.group = 'service_point_id' and lov.delete_flag = 0";
 			await (
 				models.sequelize.query(sql_lov_ser_point, { type: models.sequelize.QueryTypes.SELECT })
 					.then(res => {
@@ -292,7 +312,7 @@ exports.order = async function (req, res) {
 			);
 	
 	
-			let sql_lov_pay_status = "SELECT text ,id  FROM lov where lov.group = 'payment_status_group' and lov.delete_flag = 0";
+			let sql_lov_pay_status = "SELECT text ,id  FROM lov where lov.group = 'payment_status' and lov.delete_flag = 0";
 			await (
 				models.sequelize.query(sql_lov_pay_status, { type: models.sequelize.QueryTypes.SELECT })
 					.then(res => {
@@ -300,12 +320,12 @@ exports.order = async function (req, res) {
 					})
 			);
 	
-			console.log(data);
+			console.log(data, 'F_date >>', f_date_newdate,'L_date>>',l_date_newdate);
 	
 	
 			res.render('report/order', {
 				title: 'Report order', menu_left: 'reports',
-				page_title: '', data: data ,f_date: f_date,l_date: l_date
+				page_title: '', data: data ,f_date: f_date,l_date: l_date, ser_point: ser_point, status: status
 			});
 		}
 
@@ -317,11 +337,12 @@ exports.order = async function (req, res) {
 			 ser_point_search == "" || ser_point_search == null
 			 ) {
 				
-				let sql = 'SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status, comment, ';
-				sql += 'create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from donor ';
-				sql += 'where donor.id = `order`.donor_id) as firstname, (select lastname from donor where donor.id = `order`.donor_id) as lastname, ';
-				sql += '(select phone from donor where donor.id = `order`.donor_id) as phone, (select text from lov where lov.id = `order`.lov_payment_status) as lov_payment_status, ';
-				sql += '(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id FROM `order`';
+				let sql = 'SELECT id, donor_id, lov_service_point_id, order_name, total, project, product_group_id, lov_transfer_type_id, receipt_file,';
+				sql += ' payment_period, lov_payment_status_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, ';
+				sql += '(select firstname from donor where id = donor_id) as firstname, (select lastname from donor where id = donor_id) as lastname,';
+				sql += '(select phone from donor where id = donor_id) as phone, (select text from lov where id = lov_payment_status_id) as lov_payment_status_id,';
+				sql += '(select text from lov where id = lov_service_point_id) as lov_service_point_id FROM sdsweb.`order`;';
+					
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 				.then(result => {
 					
@@ -358,7 +379,7 @@ exports.order = async function (req, res) {
 								ws.cell(('%d',i+2),3).string(data.phone).style(ContentStyle);
 								ws.cell(('%d',i+2),4).string(data.create_date).style(ContentStyle);
 								ws.cell(('%d',i+2),5).string(data.lov_service_point_id).style(ContentStyle);
-								ws.cell(('%d',i+2),6).string(data.lov_payment_status).style(ContentStyle);
+								ws.cell(('%d',i+2),6).string(data.lov_payment_status_id).style(ContentStyle);
 								console.log('it\'s here >> %d << : %s', i, data);
 						});
 										
@@ -374,11 +395,13 @@ exports.order = async function (req, res) {
 			} else {
 					
 			
-				let sql = 'SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status, comment, ';
-			sql += 'create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from donor ';
-			sql += 'where donor.id = `order`.donor_id) as firstname, (select lastname from donor where donor.id = `order`.donor_id) as lastname, ';
-			sql += '(select phone from donor where donor.id = `order`.donor_id) as phone, (select text from lov where lov.id = `order`.lov_payment_status) as lov_payment_status, ';
-			sql += "(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id FROM `order` where lov_payment_status = '" + status_search + "' or lov_service_point_id = '" + ser_point_search + "' or create_date between '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "'";
+				let sql = 'SELECT id, donor_id, lov_service_point_id, order_name, total, project, product_group_id, lov_transfer_type_id, receipt_file,';
+				sql += ' payment_period, lov_payment_status_id, comment, create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, ';
+				sql += 'update_date, (select firstname from donor where id = donor_id) as firstname, (select lastname from donor where id = donor_id) as lastname,';
+				sql += '(select phone from donor where id = donor_id) as phone, (select text from lov where id = lov_payment_status_id) as lov_payment_status_id,';
+				sql += "(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id FROM `order` where lov_payment_status_id = '" + status_search + "' or lov_service_point_id = '" + ser_point_search + "' or create_date between '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "'";
+				
+			
 			models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 				.then(result => {
 					
@@ -415,7 +438,7 @@ exports.order = async function (req, res) {
 								ws.cell(('%d',i+2),3).string(data.phone).style(ContentStyle);
 								ws.cell(('%d',i+2),4).string(data.create_date).style(ContentStyle);
 								ws.cell(('%d',i+2),5).string(data.lov_service_point_id).style(ContentStyle);
-								ws.cell(('%d',i+2),6).string(data.lov_payment_status).style(ContentStyle);
+								ws.cell(('%d',i+2),6).string(data.lov_payment_status_id).style(ContentStyle);
 								console.log('it\'s here >> %d << : %s', i, data);
 						});
 										
