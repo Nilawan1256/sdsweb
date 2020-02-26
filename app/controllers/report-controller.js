@@ -439,6 +439,7 @@ exports.order = async function (req, res) {
 								ws.cell(('%d',i+2),4).string(data.create_date).style(ContentStyle);
 								ws.cell(('%d',i+2),5).string(data.lov_service_point_id).style(ContentStyle);
 								ws.cell(('%d',i+2),6).string(data.lov_payment_status_id).style(ContentStyle);
+								
 								console.log('it\'s here >> %d << : %s', i, data);
 						});
 										
@@ -682,7 +683,7 @@ exports.smssends = async function (req, res) {
 			if (f_date == "" || f_date == null || l_date == "" || l_date == null){
 			/* || txt_search == "" || txt_search == null ) {*/
 
-				const sql = "SELECT id, sender, receiver,DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date, lov_sends_sms_status_id, message, lov_sms_response_id,(select firstname from donor where donor.id = `sms`.receiver) as firstname,(select lastname from donor where donor.id = `sms`.receiver) as lastname,(select phone from donor where donor.id = `sms`.receiver) as phone FROM sdsweb.sms";
+				const sql = "SELECT id, sender, receiver,DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date, lov_sends_sms_status_id, message, lov_sms_response_id,(select firstname from donor where donor.id = `sms`.receiver) as firstname,(select lastname from donor where donor.id = `sms`.receiver) as lastname,(select phone from donor where donor.id = `sms`.receiver) as phone FROM sdsweb.sms where lov_sends_sms_status_id = 102 ";
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 					.then(result => {
 						res.render('report/smssends', { title: 'Report smssends', menu_left: 'reports', page_title: '', data: result });
@@ -692,7 +693,7 @@ exports.smssends = async function (req, res) {
 	
 				// const sql = "SELECT id, sender, receiver,DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date, lov_sends_sms_status_id, message, lov_sms_response_id,(select firstname from donor where donor.id = `sms`.receiver) as firstname,(select lastname from donor where donor.id = `sms`.receiver) as lastname,(select phone from donor where donor.id = `sms`.receiver) as phone FROM sdsweb.sms WHERE send_date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "' OR firstname LIKE '%" + txt_seach + "%' OR lastname LIKE '%" + txt_seach + "%' ";
 				
-				const sql = "SELECT DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date,firstname,lastname,phone FROM sdsweb.sms INNER JOIN sdsweb.donor ON sms.receiver=donor.id WHERE firstname LIKE '%" + txt_search + "%' OR lastname LIKE '%" + txt_search + "%' OR send_date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "' ";
+				const sql = "SELECT DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date,firstname,lastname,phone FROM sdsweb.sms INNER JOIN sdsweb.donor ON sms.receiver=donor.id WHERE sms.lov_sends_sms_status_id=102 AND (firstname LIKE '%" + txt_search + "%' OR lastname LIKE '%" + txt_search + "%' OR send_date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "' ) ";
 				
 				//const sql = "SELECT id, sender, receiver,DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date, lov_sends_sms_status_id, message, lov_sms_response_id,(select firstname from donor where donor.id = `sms`.receiver) as firstname,(select lastname from donor where donor.id = `sms`.receiver) as lastname,(select phone from donor where donor.id = `sms`.receiver) as phone FROM sdsweb.sms WHERE send_date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "' ";
 				
@@ -706,7 +707,7 @@ exports.smssends = async function (req, res) {
 //excel
 			if (f_date_search == "" || f_date_search == null || l_date_search == "" || l_date_search == null) {
 
-				const sql = "SELECT id, sender, receiver,DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date, lov_sends_sms_status_id, message, lov_sms_response_id,(select firstname from donor where donor.id = `sms`.receiver) as firstname,(select lastname from donor where donor.id = `sms`.receiver) as lastname,(select phone from donor where donor.id = `sms`.receiver) as phone FROM sdsweb.sms";
+				const sql = "SELECT id, sender, receiver,DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date, lov_sends_sms_status_id, message, lov_sms_response_id,(select firstname from donor where donor.id = `sms`.receiver) as firstname,(select lastname from donor where donor.id = `sms`.receiver) as lastname,(select phone from donor where donor.id = `sms`.receiver) as phone FROM sdsweb.sms Where sms.lov_sends_sms_status_id=102 ";
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 				.then(result => {
 					console.log('excel export');
@@ -751,7 +752,7 @@ exports.smssends = async function (req, res) {
 	
 			} else {
 
-				const sql = "SELECT DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date,firstname,lastname,phone FROM sdsweb.sms INNER JOIN sdsweb.donor ON sms.receiver=donor.id WHERE firstname LIKE '%" + txt_search_search + "%' OR lastname LIKE '%" + txt_search_search + "%' OR send_date BETWEEN '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "' ";
+				const sql = "SELECT DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date,firstname,lastname,phone FROM sdsweb.sms INNER JOIN sdsweb.donor ON sms.receiver=donor.id WHERE sms.lov_sends_sms_status_id=102 AND ( firstname LIKE '%" + txt_search_search + "%' OR lastname LIKE '%" + txt_search_search + "%' OR send_date BETWEEN '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "' )";
 	models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
 	.then(result => {
 			console.log('excel export');
@@ -803,9 +804,155 @@ exports.smssends = async function (req, res) {
 }
 
 exports.smsreply = async function (req, res) {
+
 	try {
+	
+
+		f_date = req.query.f_date,
+		l_date = req.query.l_date;
+			
+		export_id = req.query.export_id;
 		
-		res.render('report/smsreply', { title: 'Report smsresponse', menu_left: 'reports', page_title: '', data: null });
+		txt_search= req.query.txt_search;
+		txt_search_search = req.query.txt_search_search;
+
+		f_date_search = req.query.f_date_search,
+		l_date_search = req.query.l_date_search;
+
+
+		// Set format date //
+		const f_date_olddate = moment(req.query.f_date, 'DD/MM/YYYY');
+		const l_date_olddate = moment(req.query.l_date, 'DD/MM/YYYY');
+
+		const f_date_newdate = f_date_olddate.format('YYYY/MM/DD');
+		const l_date_newdate = l_date_olddate.format('YYYY/MM/DD');
+		// seach
+		const f_date_search_olddate = moment(req.query.f_date_search, 'DD/MM/YYYY');
+		const l_date_search_olddate = moment(req.query.l_date_search, 'DD/MM/YYYY');
+
+		const f_date_search_newdate = f_date_search_olddate.format('YYYY/MM/DD');
+		const l_date_search_newdate = l_date_search_olddate.format('YYYY/MM/DD');
+
+
+		if (export_id == "" || export_id == null) {
+			if (f_date == "" || f_date == null || l_date == "" || l_date == null){
+			/* || txt_search == "" || txt_search == null ) {*/
+
+				const sql = "SELECT id, sender, receiver,DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date, lov_sends_sms_status_id, message, lov_sms_response_id,(select firstname from donor where donor.id = `sms`.receiver) as firstname,(select lastname from donor where donor.id = `sms`.receiver) as lastname,(select phone from donor where donor.id = `sms`.receiver) as phone FROM sdsweb.sms where lov_sms_response_id = 104 ";
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+					.then(result => {
+						res.render('report/smsreply', { title: 'Report smsresponse', menu_left: 'reports', page_title: '', data: result });
+					}); console.log('it\'s here >>', f_date, '<< value >>', l_date, '<< it\'s here');
+	
+			} else {
+	
+				// const sql = "SELECT id, sender, receiver,DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date, lov_sends_sms_status_id, message, lov_sms_response_id,(select firstname from donor where donor.id = `sms`.receiver) as firstname,(select lastname from donor where donor.id = `sms`.receiver) as lastname,(select phone from donor where donor.id = `sms`.receiver) as phone FROM sdsweb.sms WHERE send_date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "' OR firstname LIKE '%" + txt_seach + "%' OR lastname LIKE '%" + txt_seach + "%' ";
+				
+				const sql = "SELECT DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date,firstname,lastname,phone FROM sdsweb.sms INNER JOIN sdsweb.donor ON sms.receiver=donor.id WHERE sms.lov_sms_response_id=104 AND (firstname LIKE '%" + txt_search + "%' OR lastname LIKE '%" + txt_search + "%' OR send_date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "' ) ";
+				
+				//const sql = "SELECT id, sender, receiver,DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date, lov_sends_sms_status_id, message, lov_sms_response_id,(select firstname from donor where donor.id = `sms`.receiver) as firstname,(select lastname from donor where donor.id = `sms`.receiver) as lastname,(select phone from donor where donor.id = `sms`.receiver) as phone FROM sdsweb.sms WHERE send_date BETWEEN '" + f_date_newdate + "' AND '" + l_date_newdate + "' ";
+				
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+					.then(result => {
+						res.render('report/smsreply', { title: 'Report smsresponse', menu_left: 'reports', page_title: '', data: result, f_date: f_date,l_date: l_date ,txt_search:txt_search});
+					}); console.log('it\'s here >>', f_date, '<< value >>', l_date, '<< it\'s here');
+			}			
+
+		} else {
+//excel
+			if (f_date_search == "" || f_date_search == null || l_date_search == "" || l_date_search == null) {
+
+				const sql = "SELECT id, sender, receiver,DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date, lov_sends_sms_status_id, message, lov_sms_response_id,(select firstname from donor where donor.id = `sms`.receiver) as firstname,(select lastname from donor where donor.id = `sms`.receiver) as lastname,(select phone from donor where donor.id = `sms`.receiver) as phone FROM sdsweb.sms Where sms.lov_sms_response_id=104 ";
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+				.then(result => {
+					console.log('excel export');
+						var wb = new xl.Workbook();
+						var ws = wb.addWorksheet('Sheet 1'); 
+
+						var HeaderStyle = wb.createStyle({
+							font: {
+							color: '#000000',
+							size: 20
+							},
+							numberFormat: '##0.00; (##0.00); -'
+						});
+						var ContentStyle = wb.createStyle({
+							font: {
+							color: '#000000',
+							size: 16
+							},
+							numberFormat: '##0.00; (##0.00); -'
+						});
+		
+
+				ws.cell(1,1).string('ชื่อ').style(HeaderStyle);
+				ws.cell(1,2).string('นามสกุล').style(HeaderStyle);
+				ws.cell(1,3).string('โทรศัพท์').style(HeaderStyle);
+				ws.cell(1,4).string('วันที่ส่ง').style(HeaderStyle);
+				
+
+			result.forEach(function(data, i) {
+			 	
+				ws.cell(('%d',i+2),1).string(data.firstname).style(ContentStyle);
+				ws.cell(('%d',i+2),2).string(data.lastname).style(ContentStyle);
+				ws.cell(('%d',i+2),3).string(data.phone).style(ContentStyle);
+				ws.cell(('%d',i+2),4).string(data.send_date).style(ContentStyle);;
+				console.log('it\'s here >> %d << : %s', i, data);
+		});
+			                  
+            	wb.write('ExcelFile.xlsx', res);		
+			
+
+	});
+	
+			} else {
+
+				const sql = "SELECT DATE_FORMAT(send_date, \"%d/%m/%Y\") as send_date,firstname,lastname,phone FROM sdsweb.sms INNER JOIN sdsweb.donor ON sms.receiver=donor.id WHERE sms.lov_sms_response_id=104 AND ( firstname LIKE '%" + txt_search_search + "%' OR lastname LIKE '%" + txt_search_search + "%' OR send_date BETWEEN '" + f_date_search_newdate + "' AND '" + l_date_search_newdate + "' )";
+	models.sequelize.query(sql, { type: models.sequelize.QueryTypes.SELECT })
+	.then(result => {
+			console.log('excel export');
+			var wb = new xl.Workbook();
+			var ws = wb.addWorksheet('Sheet 1'); 
+
+			var HeaderStyle = wb.createStyle({
+				font: {
+					color: '#000000',
+					size: 20
+				},
+				numberFormat: '##0.00; (##0.00); -'
+			});
+			var ContentStyle = wb.createStyle({
+				font: {
+					color: '#000000',
+					size: 16
+				},
+				numberFormat: '##0.00; (##0.00); -'
+			});
+		
+
+				ws.cell(1,1).string('ชื่อ').style(HeaderStyle);
+				ws.cell(1,2).string('นามสกุล').style(HeaderStyle);
+				ws.cell(1,3).string('โทรศัพท์').style(HeaderStyle);
+				ws.cell(1,4).string('วันที่ส่ง').style(HeaderStyle);
+				
+
+			result.forEach(function(data, i) {
+			 	
+				ws.cell(('%d',i+2),1).string(data.firstname).style(ContentStyle);
+				ws.cell(('%d',i+2),2).string(data.lastname).style(ContentStyle);
+				ws.cell(('%d',i+2),3).string(data.phone).style(ContentStyle);
+				ws.cell(('%d',i+2),4).string(data.send_date).style(ContentStyle);
+				console.log('it\'s here >> %d << : %s', i, data);
+		});
+			                  
+            	wb.write('ExcelFile.xlsx', res);		
+			
+
+	});
+			}	
+		}
+
+		//res.render('report/smsreply', { title: 'Report smsresponse', menu_left: 'reports', page_title: '', data: null });
 	}
 	catch (err) {
 		next();
