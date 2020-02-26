@@ -324,16 +324,39 @@ exports.delete = async function (req, res) {
 
 exports.uploadbulk = async function (req, res) {
 	try {
-		res.render('order/uploadbulk', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: null });
+		const db = req.app.db;
+		db.lov.findAll({
+			attributes: ['id', 'text', 'group'],
+			where: { group: 'service_point_id' }
+		}).then(_data => {
+		res.render('order/uploadbulk', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: _data });
+	});
+
 	}
 	catch (err) {
 		next();
 	}
 }
 
+
 exports.uploadbulksave = async function (req, res) {
 	try {
-		res.render('order/uploadbulksave', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: null });
+		var storage	=	multer.diskStorage({
+			destination: function (req, file, callback) {
+			  callback(null, './app/public/upload');
+			},
+			filename: function (req, file, callback) {
+			  callback(null, file.originalname);
+			}
+		});
+		var upload = multer({ storage : storage}).array('myfile', 50);
+		upload(req,res,function(err) {
+			if(err) {
+				return res.end("Error uploading file.");
+			}
+			res.end("File is uploaded successfully!");
+		});
+		// res.render('order/uploadbulksave', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: null });
 	}
 	catch (err) {
 		next();
