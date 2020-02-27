@@ -66,6 +66,7 @@ exports.edit = async function (req, res) {
 
 
 		if (edit_id != 0) {
+			const ch = "checked"
 			// await models.order.findOne({ where: { id: edit_id } })
 			// 	.then(_data => {
 			// 		res.render('order/edit', { title: 'order', menu_left: 'order', page_title: 'Customer Edit', dataedit: _data, id: edit_id });
@@ -134,7 +135,7 @@ exports.edit = async function (req, res) {
 					})
 			);
 
-			res.render('order/edit', { title: 'order', menu_left: 'order', page_title: 'Customer Edit', dataedit: data, idedit: edit_id });
+			res.render('order/edit', { title: 'order', menu_left: 'order', page_title: 'Customer Edit', dataedit: data, idedit: edit_id,ch:ch });
 
 		} else {
 			let data = {};
@@ -266,8 +267,9 @@ exports.save = async function (req, res) {
 		var comment = req.body.comment;
 		
 		var receipt_file = req.body.receipt_file;
-		var create_by = "admin11";
-		var update_by = "aomaom";
+		var create_by = 1;
+		var update_by = 1;
+		
 		
 
 
@@ -292,7 +294,7 @@ exports.save = async function (req, res) {
 		console.log(fname + lname)
 		// if (add == "add") {
 
-			const sql = "insert into order (donor_id, lov_service_point_id, order_name, total, project, product_group_id,lov_transfer_type_id, payment_period, lov_payment_status, comment, create_by, create_date, update_by, update_date) values ((select id from donor where firstname = '" + fname + "' and lastname = '" + lname + "' ), '" + servicepoint + "', '" + ordername + "', '" + total + "', '" + project + "' , '" + product + "' , '" + paymenttype + "', '" + paymentperiod + "', '" + paymentstatus + "' , '" + comment + "' , '" + create_by + "' , '" + update_by + "')";
+			const sql = "insert into sdsweb.order (donor_id, lov_service_point_id, order_name, total, project, product_group_id,lov_transfer_type_id, payment_period, lov_payment_status_id, comment, create_by, update_by) values ((select id from donor where firstname = '" + fname + "'and lastname = '" + lname + "' ), '35', '44', '5555', '71' , '2' , '28', '10', '48' , 'sasa' , 1 , 1)";
 			await (
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
 					.then(_data => {
@@ -302,7 +304,7 @@ exports.save = async function (req, res) {
 						console.log(err + "เพิ่มข้อมูลไม่สำเร็จ");
 					})
 			);
-			res.redirect('/order/index');
+			res.redirect('/order');
 
 		// } else {
 			// models.order.update(
@@ -348,7 +350,7 @@ exports.delete = async function (req, res) {
 		  .then(del => {
 			console.log("Deleted successfully " + del);
 		  })
-		res.redirect(req.get('index'));
+		res.redirect(req.get('order'));
 	  } catch (err) {
 		next();
 	  }
