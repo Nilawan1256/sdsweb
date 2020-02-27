@@ -11,7 +11,9 @@
                         <div class="author">
                             <img class="avatar border-white" src="/assets/img/faces/face-1.jpg" alt="...">
                             <h4 class="title">
-                                <a href="/donor/edit" target="_blank">Got</a>
+                                <% dataedit.order.forEach(data => { %>
+                                <a href="/donor/edit" target="_blank"><%=data.firstname%> <%=data.lastname%></a>
+                                <% }) %>
                             </h4>
                         </div>
                         <ul class="leftnav">
@@ -30,6 +32,7 @@
                     <hr>
                     <div class="text-center">
                         <div class="row">
+                            
                             <div class="col-md-12">
                                 <% dataedit.order.forEach(data => { %>
                                 <h5><small>สถานะการชำระเงิน</small> <span class="alert alert-warning"><%=data.lov_payment_status%></span></h5>
@@ -50,15 +53,15 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        
+                                        <% dataedit.order.forEach(data => { %>
                                         <label>ชื่อ</label>
-                                        <input class="form-control border-input" placeholder="กรุณากรอกชื่อ"  type="text" name="fname" value="">
+                                        <input class="form-control border-input" placeholder="กรุณากรอกชื่อ"  type="text" name="fname" value="<%=data.firstname%>">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>สกุล</label>
-                                        <input class="form-control border-input" placeholder="กรุณากรอกสกุล" type="text" name="lname" value="">
+                                        <input class="form-control border-input" placeholder="กรุณากรอกสกุล" type="text" name="lname" value="<%=data.lastname%>">
                                     </div>
                                 </div>
                             </div>
@@ -67,7 +70,7 @@
                                     <div class="form-group">
                                         <label>จุดตั้งรับ</label>
                                         <select class="form-control border-input" name="servicepoint">
-                                            <% dataedit.order.forEach(data => { %>
+                                            
                                             <option value="<%=data.lov_service_point_id%>"><%=data.lov_service_point%></option>
                                             <% }) %>
                                             <% dataedit.lov_ser_point.forEach(data => { %>
@@ -96,9 +99,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>โครงการ</label>
-                                        <select class="form-control border-input" name="product_group">
-                                            <option value="<%=data.product_group_id%>"><%=data.product_group%></option><% }) %>
-                                            <% dataedit.sql_lov_product.forEach(data => { %>
+                                        <select class="form-control border-input" name="project">
+                                            <option value="<%=data.project_id%>"><%=data.project%></option><% }) %>
+                                            <% dataedit.sql_lov_project.forEach(data => { %>
                                                 <option value="<%= data.id%>"><%= data.text%></option>
                                             <% }) %>
                                         </select>
@@ -111,15 +114,12 @@
                                     <div class="form-group">
                                         <label>ของที่ระลึกโครงการ</label>
                                     </div>
+                                    <% dataedit.sql_lov_product.forEach(data => { %>
                                     <div class="checkbox">
-                                        <label><input type="checkbox" name="product1" value="1">โมลด์กรีนดารา</label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" name="product2" value="2">ดอกบัว</label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" name="product3" value="3">พระกริ่ง</label>
-                                    </div>
+                                        
+                                        <label><input type="checkbox" name="product" value="<%= data.id%>"><%= data.name%></label>
+                                        
+                                    </div><% }) %>
                                 </div>
                             </div>
                             <div class="row">
@@ -142,7 +142,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>จำนวนงวดการชำระเงิน</label>
-                                        <input class="form-control border-input" placeholder="จำนวนงวดการชำระเงิน"  type="text" name="paymentperiod" value="<%=data.payment_period%>">
+                                        <input class="form-control border-input" placeholder="จำนวนงวดการชำระเงิน"  type="number" min="1" max="12" name="paymentperiod" value="<%=data.payment_period%>">
                                     </div>
                                 </div>
                                 <div class="col-md-3">

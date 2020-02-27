@@ -61,6 +61,9 @@ exports.edit = async function (req, res) {
 	try {
 		const edit_id = req.query.id;
 		console.log("id = " + edit_id)
+		const name = req.body.fname;
+		console.log("name = " + name)
+
 
 		if (edit_id != 0) {
 			// await models.order.findOne({ where: { id: edit_id } })
@@ -76,6 +79,8 @@ exports.edit = async function (req, res) {
 			sql += '(select text from lov where lov.id = `order`.lov_transfer_type_id) as lov_transfer_type, ';
 			sql += '(select id from lov where lov.id = `order`.lov_transfer_type_id) as lov_transfer_type_id, ';
 			sql += '(select text from lov where lov.id = `order`.lov_service_point_id) as lov_service_point, ';
+			sql += '(select text from lov where lov.id = `order`.project) as project, ';
+			sql += '(select id from lov where lov.id = `order`.project) as project_id, ';
 			sql += '(select id from lov where lov.id = `order`.lov_service_point_id) as lov_service_point_id, ';
 			sql += '(select name from product_group where product_group.id = `order`.product_group_id) as product_group, ';
 			sql += '(select id from product_group where product_group.id = `order`.product_group_id) as product_group_id, ';
@@ -96,7 +101,7 @@ exports.edit = async function (req, res) {
 					})
 			);
 
-			let sql_lov_product = "SELECT text ,id  FROM lov where lov.group = 'donor_group_id' and lov.delete_flag = 0";
+			let sql_lov_product = "SELECT *  FROM product_group";
 			console.log(sql_lov_product)
 			await (
 				models.sequelize.query(sql_lov_product, { type: models.sequelize.QueryTypes.SELECT })
@@ -121,6 +126,14 @@ exports.edit = async function (req, res) {
 					})
 			);
 
+			let sql_lov_project = "SELECT text ,id  FROM lov where lov.group = 'project_id' and lov.delete_flag = 0";
+			await (
+				models.sequelize.query(sql_lov_project, { type: models.sequelize.QueryTypes.SELECT })
+					.then(ress => {
+						data.sql_lov_project = ress;
+					})
+			);
+
 			res.render('order/edit', { title: 'order', menu_left: 'order', page_title: 'Customer Edit', dataedit: data, idedit: edit_id });
 
 		} else {
@@ -137,7 +150,8 @@ exports.edit = async function (req, res) {
 					})
 			);
 
-			let sql_lov_product = "SELECT text ,id  FROM lov where lov.group = 'donor_group_id' and lov.delete_flag = 0";
+			let sql_lov_product = "SELECT * FROM product_group ";
+			console.log(sql_lov_product)
 			await (
 				models.sequelize.query(sql_lov_product, { type: models.sequelize.QueryTypes.SELECT })
 					.then(ress => {
@@ -158,6 +172,14 @@ exports.edit = async function (req, res) {
 				models.sequelize.query(sql_lov_payment_status_group, { type: models.sequelize.QueryTypes.SELECT })
 					.then(ress => {
 						data.sql_lov_payment_status_group = ress;
+					})
+			);
+
+			let sql_lov_project = "SELECT text ,id  FROM lov where lov.group = 'project_id' and lov.delete_flag = 0";
+			await (
+				models.sequelize.query(sql_lov_project, { type: models.sequelize.QueryTypes.SELECT })
+					.then(ress => {
+						data.sql_lov_project = ress;
 					})
 			);
 
@@ -233,29 +255,34 @@ exports.save = async function (req, res) {
 	// try {
 		var fname = req.body.fname;
 		var lname = req.body.lname;
+		var servicepoint = req.body.servicepoint;
 		var ordername = req.body.ordername;
 		var total = req.body.total;
-		var paymentperiod = req.body.paymentperiod;
-		var comment = req.body.comment;
-		var servicepoint = req.body.servicepoint;
-		var product_group = req.body.product_group;
-		var paymentstatus = req.body.paymentstatus;
+		var project = req.body.project;
+		var product = req.body.product;
 		var paymenttype = req.body.paymenttype;
-		var receipt_file = req.body.receipt_file;
-
-		var create_by = "admin11";
+		var paymentperiod = req.body.paymentperiod;
+		var paymentstatus = req.body.paymentstatus
+		var comment = req.body.comment;
 		
+		var receipt_file = req.body.receipt_file;
+		var create_by = "admin11";
 		var update_by = "aomaom";
 		
 
 
+		console.log("fname "+fname)
+		console.log("lname "+lname)
+		console.log("servicepoint "+servicepoint)
 		console.log("ordername "+ordername)
 		console.log("total "+total)
+		console.log("project "+project)
+		console.log("product "+product)
+		console.log("paymenttype "+paymenttype)
 		console.log("paymentperiod "+paymentperiod)
-		console.log("comment "+comment)
-		console.log("servicepoint "+servicepoint)
-		console.log("product_group "+product_group)
 		console.log("paymentstatus "+paymentstatus)
+		console.log("comment "+comment)
+
 
 
 
@@ -265,7 +292,7 @@ exports.save = async function (req, res) {
 		console.log(fname + lname)
 		// if (add == "add") {
 
-			const sql = "insert into order (donor_id, lov_service_point_id, order_name, total, product_group_id, payment_period, lov_payment_status, comment, create_by, create_date, update_by, update_date) values ((select id from donor where firstname = '" + fname + "'and lastname = '" + lname + "' ), '" + servicepoint + "', '" + ordername + "', '" + total + "', '" + product_group + "' , '" + paymentperiod + "', '" + paymentstatus + "' , '" + paymentperiod + "' , '" + comment + "' , '" + create_by + "' , '" + update_by + "')";
+			const sql = "insert into order (donor_id, lov_service_point_id, order_name, total, project, product_group_id,lov_transfer_type_id, payment_period, lov_payment_status, comment, create_by, create_date, update_by, update_date) values ((select id from donor where firstname = '" + fname + "' and lastname = '" + lname + "' ), '" + servicepoint + "', '" + ordername + "', '" + total + "', '" + project + "' , '" + product + "' , '" + paymenttype + "', '" + paymentperiod + "', '" + paymentstatus + "' , '" + comment + "' , '" + create_by + "' , '" + update_by + "')";
 			await (
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
 					.then(_data => {
@@ -315,48 +342,30 @@ exports.save = async function (req, res) {
 
 exports.delete = async function (req, res) {
 	try {
-		res.render('index', { title: 'เสถียรธรรมสถาน', menu_left: '', page_title: '', data: null });
-	}
-	catch (err) {
+		models.order.destroy({
+			where: { id: req.body.id }
+		})
+		  .then(del => {
+			console.log("Deleted successfully " + del);
+		  })
+		res.redirect(req.get('index'));
+	  } catch (err) {
 		next();
-	}
+	  }
 }
 
 exports.uploadbulk = async function (req, res) {
 	try {
-		const db = req.app.db;
-		db.lov.findAll({
-			attributes: ['id', 'text', 'group'],
-			where: { group: 'service_point_id' }
-		}).then(_data => {
-		res.render('order/uploadbulk', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: _data });
-	});
-
+		res.render('order/uploadbulk', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: null });
 	}
 	catch (err) {
 		next();
 	}
 }
 
-
 exports.uploadbulksave = async function (req, res) {
 	try {
-		var storage	=	multer.diskStorage({
-			destination: function (req, file, callback) {
-			  callback(null, './app/public/upload');
-			},
-			filename: function (req, file, callback) {
-			  callback(null, file.originalname);
-			}
-		});
-		var upload = multer({ storage : storage}).array('myfile', 50);
-		upload(req,res,function(err) {
-			if(err) {
-				return res.end("Error uploading file.");
-			}
-			res.end("File is uploaded successfully!");
-		});
-		// res.render('order/uploadbulksave', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: null });
+		res.render('order/uploadbulksave', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: null });
 	}
 	catch (err) {
 		next();

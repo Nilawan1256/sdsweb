@@ -51,8 +51,7 @@
                                     </td>
                                     <td><a href="/order/edit?id=<%=data.id%>" class="btn btn-default" target="_blank">แก้ไข</a>
                                     </td>
-                                    <td><a class="btn btn-warning btn-fill addnew"
-                                            href="/order/delete?id=<%=data.id%>">ลบรายการบริจาค</a></td>
+                                    <td><a class="btn btn-warning btn-fill addnew" type="submit" onclick="deletedorder('<%= data.id %>')">ลบรายการบริจาค</a></td>
                                 </tr>
                             </tbody>
                             <% }) %>
