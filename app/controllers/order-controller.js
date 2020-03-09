@@ -66,11 +66,7 @@ exports.edit = async function (req, res) {
 
 
 		if (edit_id != 0) {
-			const ch = "checked"
-			// await models.order.findOne({ where: { id: edit_id } })
-			// 	.then(_data => {
-			// 		res.render('order/edit', { title: 'order', menu_left: 'order', page_title: 'Customer Edit', dataedit: _data, id: edit_id });
-			// 	})
+
 			let data = {};
 			let sql = 'SELECT id, lov_service_point_id, order_name, total, product_group_id, receipt_file, payment_period, lov_payment_status_id, comment, ';
 			sql += 'create_by, DATE_FORMAT(create_date, \"%d/%m/%Y\") as create_date, update_by, update_date, (select firstname from donor ';
@@ -135,12 +131,12 @@ exports.edit = async function (req, res) {
 					})
 			);
 
-			res.render('order/edit', { title: 'order', menu_left: 'order', page_title: 'Customer Edit', dataedit: data, idedit: edit_id,ch:ch });
+			data.id = edit_id;
+			res.render('order/edit', { title: 'order', menu_left: 'order', page_title: 'Customer Edit', dataedit: data });
 
 		} else {
 			let data = {};
 			const _data = [{}];
-			const _add = "add";
 			data.order = _data;
 
 			let sql_lov_ser_point = "SELECT text ,id  FROM lov where lov.group = 'service_point_id' and lov.delete_flag = 0";
@@ -183,43 +179,11 @@ exports.edit = async function (req, res) {
 						data.sql_lov_project = ress;
 					})
 			);
-
+			
 
 			res.render('order/edit', { title: 'order', menu_left: 'order', page_title: 'Customer Edit', dataedit: data, idedit: edit_id});
 		}
-		// var ordername = req.body.ordername;
-		// var total = req.body.total;
-		// var paymentperiod = req.body.paymentperiod;
-		// var comment = req.body.comment;
-		// var servicepoint = req.body.servicepoint;
-		// var product_group = req.body.product_group;
-		// var paymentstatus = req.body.paymentstatus;
 
-		// var paymenttype = req.body.paymenttype;
-		// if(id == 0){
-		// let data = {}
-		// var donor_id = "SELECT firstname,lastname FROM donor ";
-		// const db = req.app.db;	
-		// 	const sql = "INSERT INTO table_name (donor_id, lov_service_point_id, order_name,total,product_group_id,receipt_file,payment_period,lov_payment_status,comment,create_by)";
-		// 	sql += "VALUES ("+donor_id+", "+lov_service_point_id+", "+ordername+","+total+","+product_group+","+receipt_file+","+paymentperiod+","+paymentstatus+","+comment+","+sess.username+")";
-
-		// await models.sequelize.query(donor_id,sql, { type: models.sequelize.QueryTypes.SELECT })
-		// .then(donor => {
-		// 	data.rows = donor;
-		// 	res.render('order/edit', { title: 'order', menu_left: 'order', page_title: 'Customer Edit',donor_id : donor,id : edit_id, s_donor: sess.username,data_edit : data.rows });
-		// })
-
-		// var lov_service_point_id = "SELECT text FROM lov WHERE id = "+servicepoint+" ";
-		// var receipt_file = req.body.receipt_file;
-
-
-		// }else{
-		// 	console.log("else")
-		// 	let db = req.app.db ;
-		// db.order.findOne({ where: {id: req.query.id}}).then(orderedit => {
-		// res.render('order/edit', { title: 'order', menu_left: 'order', page_title: 'Customer Edit',orderedit:orderedit });
-		// })
-		// }
 	}
 	catch (err) {
 		next();
@@ -227,33 +191,10 @@ exports.edit = async function (req, res) {
 }
 
 exports.save = async function (req, res) {
-	// 	var ordername = req.body.ordername;
-	// 	var total = req.body.total;
-	// 	var paymentperiod = req.body.paymentperiod;
-	// 	var comment = req.body.comment;
-	// 	var servicepoint = req.body.servicepoint;
-	// 	var product_group = req.body.product_group;
-	// 	var paymentstatus = req.body.paymentstatus;
-	// 	var paymenttype = req.body.paymenttype;
+	try {
+		const _id = req.body.id;
+		console.log("id = " + _id)
 
-	// 	var product1 = req.body.product1;
-	// 	var product2 = req.body.product2;
-	// 	var product3 = req.body.product3;
-
-
-	// 	if (product1 == 1) {
-	// 		var product = 1
-	// 		if (product2 == 2) {
-	// 			product = 2
-	// 			if (product3 == 3) {
-	// 				product = 3
-	// 			}
-	// 		}
-	// 	}
-
-	//  const product_group_id =1;
-	// const db = req.app.db;
-	// try {
 		var fname = req.body.fname;
 		var lname = req.body.lname;
 		var servicepoint = req.body.servicepoint;
@@ -265,36 +206,33 @@ exports.save = async function (req, res) {
 		var paymentperiod = req.body.paymentperiod;
 		var paymentstatus = req.body.paymentstatus
 		var comment = req.body.comment;
-		
+
 		var receipt_file = req.body.receipt_file;
 		var create_by = 1;
 		var update_by = 1;
-		
-		
-
-
-		console.log("fname "+fname)
-		console.log("lname "+lname)
-		console.log("servicepoint "+servicepoint)
-		console.log("ordername "+ordername)
-		console.log("total "+total)
-		console.log("project "+project)
-		console.log("product "+product)
-		console.log("paymenttype "+paymenttype)
-		console.log("paymentperiod "+paymentperiod)
-		console.log("paymentstatus "+paymentstatus)
-		console.log("comment "+comment)
 
 
 
 
-		const id = req.query.idedit;
-		console.log("id = " + id)
-		const add = req.body.add;
-		console.log(fname + lname)
-		// if (add == "add") {
+		console.log("fname " + fname)
+		console.log("lname " + lname)
+		console.log("servicepoint " + servicepoint)
+		console.log("ordername " + ordername)
+		console.log("total " + total)
+		console.log("project " + project)
+		console.log("product " + product)
+		console.log("paymenttype " + paymenttype)
+		console.log("paymentperiod " + paymentperiod)
+		console.log("paymentstatus " + paymentstatus)
+		console.log("comment " + comment)
 
-			const sql = "insert into sdsweb.order (donor_id, lov_service_point_id, order_name, total, project, product_group_id,lov_transfer_type_id, payment_period, lov_payment_status_id, comment, create_by, update_by) values ((select id from donor where firstname = '" + fname + "'and lastname = '" + lname + "' ), '35', '44', '5555', '71' , '2' , '28', '10', '48' , 'sasa' , 1 , 1)";
+
+
+
+
+		if (!_id) {
+
+			const sql = "insert into sdsweb.order (donor_id, lov_service_point_id, order_name, total, project, product_group_id,lov_transfer_type_id, payment_period, lov_payment_status_id, comment, create_by, update_by) values ((select id from donor where firstname = '" + fname + "'and lastname = '" + lname + "' ), '" + servicepoint + "', '" + ordername + "', '" + total + "', '" + project + "' , '" + product + "' , '" + paymenttype + "', '" + paymentperiod + "', '" + paymentstatus + "' , '" + comment + "' , 1 , 1)";
 			await (
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
 					.then(_data => {
@@ -306,40 +244,40 @@ exports.save = async function (req, res) {
 			);
 			res.redirect('/order');
 
-		// } else {
-			// models.order.update(
-			// 	{
-			// 		ordername: req.body.ordername,
-			// 		total: req.body.total,
-			// 		paymentperiod: req.body.paymentperiod,
-			// 		comment: req.body.comment,
-			// 		servicepoint: req.body.servicepoint,
-			// 		product_group: req.body.product_group,
-			// 		paymentstatus: req.body.paymentstatus
-			// 	},
-			// 	{
-			// 		where: {
-			// 			id: id
-			// 		}
-			// 	}
-			// )
-			// 	.then(_data => {
-			// 		console.log("Updated Successfully !");
-			// 	})
-			// 	.catch(error => {
-			// 		console.log("Update Failed ! +");
-			// 	})
-		// 	res.redirect('/order/index');
-		// }
-		// db.order.create({ order_name: ordername, total: total, payment_period: paymentperiod, comment: comment, lov_service_point_id: servicepoint, product_group_id: product_group, lov_payment_status: paymentstatus }).then(order => { });
-		// db.order_item.create({ product_id: product }).then(orderitem => { });
-		// db.order_transfer.create({ lov_payment_status_id: paymenttype }).then(ordertransfer => { });
+		} else {
+			await (
+				models.order.update(
+					{
+						lov_service_point_id: req.body.servicepoint,
+						order_name: req.body.ordername,
+						total: req.body.total,
+						project: req.body.project,
+						product_group_id: req.body.product,
+						lov_transfer_type_id: req.body.paymenttype,
+						payment_period: req.body.paymentperiod,
+						lov_payment_status_id: req.body.paymentstatus,
+						comment: req.body.comment,
+					},
+					{
+						where: {
+							id: _id
+						}
+					}
+				)
+					.then(_data => {
+						console.log("Updated Successfully !");
+					})
+					.catch(error => {
+						console.log("Update Failed ! +");
+					})
+			);
+			res.redirect('/order');
+		}
 
-		// res.render('index', { title: 'เสถียรธรรมสถาน', menu_left: '', page_title: '' });
-	// }
-	// catch (err) {
-	// 	next();
-	// }
+	}
+	catch (err) {
+		next();
+	}
 }
 
 exports.delete = async function (req, res) {
@@ -347,13 +285,13 @@ exports.delete = async function (req, res) {
 		models.order.destroy({
 			where: { id: req.body.id }
 		})
-		  .then(del => {
-			console.log("Deleted successfully " + del);
-		  })
+			.then(del => {
+				console.log("Deleted successfully " + del);
+			})
 		res.redirect(req.get('order'));
-	  } catch (err) {
+	} catch (err) {
 		next();
-	  }
+	}
 }
 
 exports.uploadbulk = async function (req, res) {

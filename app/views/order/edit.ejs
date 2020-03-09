@@ -172,8 +172,9 @@
                                         <% dataedit.order.forEach(data => { %>
                                         <label>หมายเหตุ</label>
                                         <textarea rows="2" class="form-control border-input" placeholder="Here can be your description" value="" name="comment"><%=data.comment%></textarea>
-                                        <!-- <a class="btn btn-info btn-fill addnew" type="submit">บันทึก</a> -->
-                                        <br><button class="btn btn-info btn-fill addnew"  type="submit" value="<%=data.id%>">บันทึก</button>
+                                        
+                                        <br><button class="btn btn-info btn-fill addnew"  type="submit">บันทึก</button>
+                                        <input type="hidden" class="btn btn-info btn-fill btn-wd" name="id" value="<%= data.id %>">
                                         <% }) %>  
                                     </div>
                                 </div>
@@ -205,58 +206,18 @@
                                     <th class="text-center">ต้องการใบร่วมบุญ</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-center"><span>1</span></td>
-                                    <td><input class="form-control border-input" placeholder="" value="0" type="text"></td>
-                                    <td><input class="form-control border-input" placeholder="" value="" type="text"></td>
-                                    <td><input class="form-control border-input" placeholder="" value="" type="text"></td>
-                                    <td>
-                                        <select class="form-control border-input">
-                                            <option>Cash</option>
-                                            <option>Tranfer</option>
-                                            <option>Credit</option>
-                                        </select>
-                                    </td>
-                                    <td class="text-center" style="display:block;"><div class="checkbox" style="margin:0 auto">
-                                        <label><input type="checkbox"></label>
-                                    </div></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center"><span>2</span></td>
-                                    <td><input class="form-control border-input" placeholder="" value="0" type="text"></td>
-                                    <td><input class="form-control border-input" placeholder="" value="" type="text"></td>
-                                    <td><input class="form-control border-input" placeholder="" value="" type="text"></td>
-                                    <td>
-                                        <select class="form-control border-input">
-                                            <option>Cash</option>
-                                            <option>Tranfer</option>
-                                            <option>Credit</option>
-                                        </select>
-                                    </td>
-                                    <td class="text-center" style="display:block;"><div class="checkbox" style="margin:0 auto">
-                                        <label><input type="checkbox"></label>
-                                    </div></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center"><span>3</span></td>
-                                    <td><input class="form-control border-input" placeholder="" value="0" type="text"></td>
-                                    <td><input class="form-control border-input" placeholder="" value="" type="text"></td>
-                                    <td><input class="form-control border-input" placeholder="" value="" type="text"></td>
-                                    <td>
-                                        <select class="form-control border-input">
-                                            <option>Cash</option>
-                                            <option>Tranfer</option>
-                                            <option>Credit</option>
-                                        </select>
-                                    </td>
-                                    <td class="text-center" style="display:block;"><div class="checkbox" style="margin:0 auto">
-                                        <label><input type="checkbox"></label>
-                                    </div></td>
-                                </tr>
-                            </tbody>
+                            
+                            
                         </table>
+                        <form method="post" action="receive.php">
+                            <div id="cover"> 
+                            </div>
+                            <br><br>
+                            <input type="button" id="btnAdd" value="add" class="btn" />
+                         </form>
+                            <input type="button" id="btnSend" value="send" class="btn"/>
                     </div>
+                    
                     <div class="row content-container">
                         <form method="get" action="" class="search-container"></form>
                             <div class="col-md-12 text-center">
@@ -264,9 +225,41 @@
                             </div>
                         </form>
                     </div>
-                    <br />
+                    <br/>
                 </div>
             </div>
         </div>
     </div>
   </div>
+  
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script>
+	$(document).ready(function(){
+		first();                   // เมื่อ page ถูกโหลดจะทำฟังก์ชัน first ก่อน
+		$('#btnAdd').click(first); // เมื่อ click จะสร้าง element ขึ้นมาใหม่(สร้างอินพุตใหม่)
+		$('#btnSend').click(send); //เมื่อคลิกจะทำฟังก์ชัน send
+	});
+	
+	function first(){
+		var id = $('#cover select').length+1;            // นับว่ามี tag div กี่อันแล้ว แล้ว +1
+		var wrapper = $("<div id=\"field"+id+"\">");  // สร้าง div
+		// var parag   = $("<p>เบอร์โทร\""+id+"\"</p>");   // สร้าง p
+		var text    = $("<div class=\"content table-responsive table-full-width\"><table class=\"table table-striped\"><thead><tbody><tr><td><span>"+id+"</span></td><td><input class=\"form-control border-input\"  value=\"0\" type=\"text\" name=\"total\"></td><td><input class=\"form-control border-input\" \  type=\"text\" name=\"notidate\"></td><td><input class=\"form-control border-input\"  type=\"text\" name=\"paydate\"></td><td><select class=\"form-control border-input\" name=\"status\"><option>Cash</option><option>Tranfer</option><option>Credit</option></select></td><td class=\"text-center\" style=\"display:block;\"><div class=\"checkbox\" style=\"margin:0 auto\"><label><input type=\"checkbox\" name=\"receipt\"></label></div></td></tr></tbody></thead></table></div>"); // สร้าง input
+		var btnDel  = $("<input type='button' class=\"btn\" value='del' id=\"btn"+id+"\"/>"); 
+		btnDel.click(function(){
+			$(this).parent().remove();			
+		});
+		
+		// wrapper.append(parag);   
+		wrapper.append(text);
+		wrapper.append(btnDel);
+		$('#cover').append(wrapper);
+	}
+	
+	function send(){  //นับ div ทั้งหมดก่อนส่ง
+		var id= $('#cover div').length;
+		var hiddens = $("<input type='hidden' name='hidden' value=\""+id+"\"/>");
+		$('form').append(hiddens);
+		$('form').submit(); 
+	}
+</script>
