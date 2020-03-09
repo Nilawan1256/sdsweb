@@ -45,7 +45,7 @@
                                     <div class="form-group">
                                         <label>ชื่อโครงการ</label>
                                         <input class="form-control border-input" placeholder="ชื่อโครงการ"
-                                            value="<%= data.product_group.name %>" type="text" id="input" name="project">
+                                            value="<%= data.lov.text %>" type="text" id="input" name="project">
                                     </div>
                                 </div>
                             </div>
@@ -60,7 +60,7 @@
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-striped">
                                     <tbody>
-                                        <% data.project.forEach(function(data) { %>
+                                        <% data.product_group.forEach(function(data) { %>
                                             <input class="form-control border-input" placeholder="ชื่อโครงการ" type="text" value="<%= data.name %>" name=""><a href="#" class="btn btn-warning">ลบ</a>
                                         <% }); %>
                                             <div id="divInput">
@@ -87,7 +87,7 @@
     function tikkystoreInput(value) {
         const input = document.getElementById("input").value;
         const test = document.createElement("DIV");
-        test.innerHTML = '<input class="form-control border-input" placeholder="ชื่อโครงการ" type="text" value="' + input + '" name=""><a href="#" class="btn btn-warning">ลบ</a>';
+        test.innerHTML = '<input class="form-control border-input" placeholder="ของที่ระลึก" type="text" value="" name=""><a href="#" class="btn btn-warning">ลบ</a>';
         document.getElementById("divInput").appendChild(test);
     }
 </script>

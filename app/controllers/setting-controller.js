@@ -196,11 +196,13 @@ exports.pointsave = async function (req, res) {
 
 exports.project = async function (req, res) {
 	try {
-		let db = req.app.db;
-		db.product_group.findAll().then(_product_group => {
-			console.log(JSON.stringify(_product_group));
-			res.render('setting/project', { title: 'project', menu_left: 'settingproject', page_title: '', data: _product_group });
-		})
+		const db = req.app.db;
+		db.lov.findAll({
+			attributes: ['id', 'text', 'group'],
+			where: { group: 'project_id' }
+		}).then(_project => {
+			res.render('setting/project', { title: 'project', menu_left: 'settingproject', page_title: '', data: _project });
+		});
 	}
 	catch (err) {
 		next();
@@ -209,68 +211,69 @@ exports.project = async function (req, res) {
 
 
 exports.projectedit = async function (req, res) {
-// 	try {
-// 		let _id = req.query.id;
-// 		let _data = [{}];
-// 		if (!_id) {
-// 			_data.product_group = [];
-// 			_data.project = [];
-// 			res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _data });
-// 		}
-// 		else {
-// 			let db = req.app.db;
-// 			await (
-// 				db.product_group.findOne({ where: { id: req.query.id } })
-// 					.then(_product_group => {
-// 						_data.product_group = _product_group;
-// 					})
-// 			);
-// 			let project = "SELECT id, name FROM product where product.product_group_id = " + _id + "";
-// 			await (
-// 				models.sequelize.query(project, { type: models.sequelize.QueryTypes.SELECT })
-// 					.then(project => {
-// 						_data.project = project;
-// 					})
-// 			);
-// 			res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _data });
-// 		}
-// 	}
-// 	catch (err) {
-// 		next();
-// 	}
-// }
+	// 	try {
+	// 		let id = req.query.id;
+	// 		console.log(JSON.stringify(id));
+	// 		let _data = [{}];
+	// 		if (!id) {
+	// 			res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _data });
+	// 		}
+	// 		else {
+	// 			let db = req.app.db;
+	// 			await (
+	// 				db.lov.findOne({ where: { id: req.query.id } })
+	// 					.then(res => {
+	// 						data.lov = res;
+	// 					})
+	// 			);
+	// 			let project = "SELECT id, name FROM product_group ";
+	// 			await (
+	// 				models.sequelize.query(project, { type: models.sequelize.QueryTypes.SELECT })
+	// 					.then(project => {
+	// 						_data.project = project;
+	// 					})
+	// 			);
+	// 			res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _data });
+	// 		}
+	// 	}
+	// 	catch (err) {
+	// 		next();
+	// 	}
+	// }
+
+	try {
+		let _id = req.query.id;
+		let _data = [{}];
+		if (!_id) {
+			_data.project = [];
+			_data.product_group = [];
+			_data.lov = [];
+			res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _data });
+		}
+		else {
+			let db = req.app.db;
+			await ( 
+				db.lov.findOne({ where: { id: req.query.id } })
+					.then(_project => {
+						_data.lov = _project;
+				})
+			);
+			let product_group = "SELECT id, name FROM product_group where product_group.id";
+			await (
+				models.sequelize.query(product_group, { type: models.sequelize.QueryTypes.SELECT })
+					.then(product_group => {
+						_data.product_group = product_group;
+				})
+			);
+			res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _data });
+		}
+	}
+	catch (err) {
+		next();
+	}
+	}
 
 
-try {
-	let _id = req.query.id;
-	let _data = [{}];
-	if (!_id) {
-		_data.product_group = [];
-		_data.project = [];
-		res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _data });
-	}
-	else {
-		let db = req.app.db;
-		await ( 
-			db.product_group.findOne({ where: { id: req.query.id } })
-				.then(_product_group => {
-					_data.product_group = _product_group;
-			})
-		);
-		let project = "SELECT id, name FROM product where product.product_group_id = " + _id + "";
-		await (
-			models.sequelize.query(project, { type: models.sequelize.QueryTypes.SELECT })
-				.then(project => {
-					_data.project = project;
-			})
-		);
-		res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _data });
-	}
-}
-catch (err) {
-	next();
-}
-}
 
 exports.projectsave = async function (req, res) {
 	// 	try {
@@ -322,7 +325,6 @@ exports.projectsave = async function (req, res) {
 
 
 
-
 exports.userdelete = async function (req, res) {
 	try {
 		models.user.destroy({
@@ -352,3 +354,4 @@ exports.pointdelete = async function (req, res) {
 		next();
 	}
 };
+
