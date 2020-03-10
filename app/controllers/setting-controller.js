@@ -211,36 +211,6 @@ exports.project = async function (req, res) {
 
 
 exports.projectedit = async function (req, res) {
-	// 	try {
-	// 		let id = req.query.id;
-	// 		console.log(JSON.stringify(id));
-	// 		let _data = [{}];
-	// 		if (!id) {
-	// 			res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _data });
-	// 		}
-	// 		else {
-	// 			let db = req.app.db;
-	// 			await (
-	// 				db.lov.findOne({ where: { id: req.query.id } })
-	// 					.then(res => {
-	// 						data.lov = res;
-	// 					})
-	// 			);
-	// 			let project = "SELECT id, name FROM product_group ";
-	// 			await (
-	// 				models.sequelize.query(project, { type: models.sequelize.QueryTypes.SELECT })
-	// 					.then(project => {
-	// 						_data.project = project;
-	// 					})
-	// 			);
-	// 			res.render('setting/projectedit', { title: 'project', menu_left: 'settingproject', page_title: '', data: _data });
-	// 		}
-	// 	}
-	// 	catch (err) {
-	// 		next();
-	// 	}
-	// }
-
 	try {
 		let _id = req.query.id;
 		let _data = [{}];
@@ -287,9 +257,9 @@ exports.projectsave = async function (req, res) {
 	try {
 		let _id = req.body.id;
 		if (!_id) {
-			let pointTH = req.body.pointth;
-			let pointEng = req.body.pointeng;
-			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('service_point_id_" + pointEng + "','" + pointEng + "' , '" + pointTH + "','service_point_id', '0')";
+			let projectTH = req.body.projectth;
+			let projectEng = req.body.projecteng;
+			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('project_id_" + projectEng + "','" + projectEng + "' , '" + projectTH  + "','project_id', '0')";
 			await (
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
 					.then(_data => {
@@ -301,9 +271,9 @@ exports.projectsave = async function (req, res) {
 			);
 		}
 		else {
-			let pointTH = req.body.pointth;
-			let pointEng = req.body.pointeng;
-			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('service_point_id_" + pointEng + "','" + pointEng + "' , '" + pointTH + "','service_point_id', '0')";
+			let projectTH = req.body.projectth;
+			let projectEng = req.body.projecteng;
+			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('project_id_" + projectEng + "','" + projectEng + "' , '" + projectTH  + "','project_id', '0')";
 			await (
 				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
 					.then(_data => {
@@ -314,7 +284,7 @@ exports.projectsave = async function (req, res) {
 					})
 			);
 		}
-		res.redirect('/setting/point');
+		res.redirect('/setting/project');
 
 	}
 	catch (err) {
@@ -354,4 +324,20 @@ exports.pointdelete = async function (req, res) {
 		next();
 	}
 };
+
+exports.projectdelete = async function (req, res) {
+	try {
+		models.lov.destroy({
+			where: { id: req.body.id }
+		})
+			.then(del => {
+				console.log("Deleted successfully " + del);
+			})
+
+		res.redirect(req.get('/setting/point'));
+	} catch (err) {
+		next();
+	}
+};
+
 
