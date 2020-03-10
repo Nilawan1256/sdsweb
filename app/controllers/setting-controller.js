@@ -334,7 +334,7 @@ exports.projectdelete = async function (req, res) {
 				console.log("Deleted successfully " + del);
 			})
 
-		res.redirect(req.get('/setting/point'));
+		res.redirect(req.get('/setting/project'));
 	} catch (err) {
 		next();
 	}

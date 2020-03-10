@@ -59,7 +59,7 @@
                             <% data.forEach(function(data) { %>
                                 <tr>
                                     <td><%= data.text %></td>
-                                    <td><a href="#" class="btn btn-warning" type="submit" onclick="deleteProject('<%= data.id %>')">ลบ</a></td>
+                                    <td><a class="btn btn-warning" type="submit" onclick="deleteProject('<%= data.id %>')">ลบ</a></td>
                                     <td><a href="/setting/project/edit?id=<%= data.id %>" class="btn btn-info">แก้ไข</a></td>
                                     
                                 </tr>

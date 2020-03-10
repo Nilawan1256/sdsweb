@@ -10,12 +10,12 @@ function bt_sms_sends(id) {
   // Prompt Box //
   const smstext = prompt("กรุณากรอกข้อความที่ต้องการจะส่ง : ");
 
-  if (smstext == ""){
+  if (smstext == "") {
     alert("กรุณากรอกข้อความ");
   }
-  if (!smstext){
+  if (!smstext) {
     alert("ยกเลิกการส่งข้อความ");
-  }  else{
+  } else {
     fetch("/sms/sends", {
       method: "POST",
       headers: {
@@ -28,79 +28,79 @@ function bt_sms_sends(id) {
         text: smstext
       })
     })
-    .done();
+      .done();
   }
 }
 
 //delete
 function deleted(id) {
   var del = confirm('คุณต้องการที่จะลบรายการนี้ ?');
-  if(del == true){
-  fetch("/donor/delete", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      id: id
+  if (del == true) {
+    fetch("/donor/delete", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: id
+      })
     })
-  })
-    .then(response => {
-      if (response.status !== 200) {
-        console.log(
-          "Looks like there was a problem. Status Code: " + response.status
-        );
-        setTimeout(() => {
-          location.reload()
-        }, 0);
-        return;
-      }
-    })
-    .catch(function(err) {
-      console.log("Fetch Error :-S", err);
-    })
-    .done(); 
+      .then(response => {
+        if (response.status !== 200) {
+          console.log(
+            "Looks like there was a problem. Status Code: " + response.status
+          );
+          setTimeout(() => {
+            location.reload()
+          }, 0);
+          return;
+        }
+      })
+      .catch(function (err) {
+        console.log("Fetch Error :-S", err);
+      })
+      .done();
   }
-   else{
-      //alert("false!!!");
-  } 
+  else {
+    //alert("false!!!");
+  }
 }
 
 
 //delete user
 function deletedUser(id) {
   var del = confirm('คุณต้องการที่จะลบรายการนี้ ?');
-  if(del == true){
-  fetch("/setting/user/delete", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      id: id
+  if (del == true) {
+    fetch("/setting/user/delete", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: id
+      })
     })
-  })
-    .then(response => {
-      if (response.status !== 200) {
-        console.log(
-          "Looks like there was a problem. Status Code: " + response.status
-        );
-        setTimeout(() => {
-          location.reload()
-        }, 0);
-        return;
-      }
-    })
-    .catch(function(err) {
-      console.log("Fetch Error :-S", err);
-    })
-    .done(); 
+      .then(response => {
+        if (response.status !== 200) {
+          console.log(
+            "Looks like there was a problem. Status Code: " + response.status
+          );
+          setTimeout(() => {
+            location.reload()
+          }, 0);
+          return;
+        }
+      })
+      .catch(function (err) {
+        console.log("Fetch Error :-S", err);
+      })
+      .done();
   }
-   else{
-      //alert("false!!!");
-  } 
+  else {
+    //alert("false!!!");
+  }
 }
 
 
@@ -108,70 +108,108 @@ function deletedUser(id) {
 function deletePoint(id) {
   var del = confirm('คุณต้องการที่จะลบรายการนี้ ?');
   //alert(popup);
-  if(del == true){
+  if (del == true) {
     //alert("true!!!");
-  fetch("/setting/point/delete", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      id: id
+    fetch("/setting/point/delete", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: id
+      })
     })
-  })
-    .then(response => {
-      if (response.status !== 200) {
-        console.log(
-          "Looks like there was a problem. Status Code: " + response.status
-        );
-        setTimeout(() => {
-        location.reload()
-        }, 0);
-        return;
-      }
-    })
-    .catch(function(err) {
-      console.log("Fetch Error :-S", err);
-    })
-    .done(); 
+      .then(response => {
+        if (response.status !== 200) {
+          console.log(
+            "Looks like there was a problem. Status Code: " + response.status
+          );
+          setTimeout(() => {
+            location.reload()
+          }, 0);
+          return;
+        }
+      })
+      .catch(function (err) {
+        console.log("Fetch Error :-S", err);
+      })
+      .done();
   }
-   else{
-      //alert("false!!!");
-  } 
+  else {
+    //alert("false!!!");
+  }
 }
 
 //delete order
 function deletedorder(id) {
   var del = confirm('คุณต้องการที่จะลบรายการนี้ ?');
-  if(del == true){
-  fetch("/order/delete", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      id: id
+  if (del == true) {
+    fetch("/order/delete", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: id
+      })
     })
-  })
-    .then(response => {
-      if (response.status !== 200) {
-        console.log(
-          "Looks like there was a problem. Status Code: " + response.status
-        );
-        setTimeout(() => {
-          location.reload()
-        }, 0);
-        return;
-      }
-    })
-    .catch(function(err) {
-      console.log("Fetch Error :-S", err);
-    })
-    .done(); 
+      .then(response => {
+        if (response.status !== 200) {
+          console.log(
+            "Looks like there was a problem. Status Code: " + response.status
+          );
+          setTimeout(() => {
+            location.reload()
+          }, 0);
+          return;
+        }
+      })
+      .catch(function (err) {
+        console.log("Fetch Error :-S", err);
+      })
+      .done();
   }
-   else{
-      //alert("false!!!");
-  } 
+  else {
+    //alert("false!!!");
+  }
+}
+
+
+//delete Project
+function deleteProject(id) {
+  var del = confirm('คุณต้องการที่จะลบรายการนี้12 ?');
+  //alert(popup);
+  if (del == true) {
+    //alert("true!!!");
+    fetch("/setting/project/delete", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: id
+      })
+    })
+      .then(response => {
+        if (response.status !== 200) {
+          console.log(
+            "Looks like there was a problem. Status Code: " + response.status
+          );
+          setTimeout(() => {
+            location.reload()
+          }, 0);
+          return;
+        }
+      })
+      .catch(function (err) {
+        console.log("Fetch Error :-S", err);
+      })
+      .done();
+  }
+  else {
+    //alert("false!!!");
+  }
 }

@@ -64,5 +64,6 @@ module.exports = function(app){
   app.get('/setting/project',settingController.project);
   app.get('/setting/project/edit',settingController.projectedit);
   app.post('/setting/project/save',settingController.projectsave);
+  app.post('/setting/project/delete',settingController.projectdelete);
 
 }
