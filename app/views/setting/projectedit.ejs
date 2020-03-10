@@ -39,13 +39,22 @@
                         <h4 class="title">โครงการ</h4>
                     </div>
                     <div class="content">
-                        <form>
+                        <form action="/setting/project/save" method="POST">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>ชื่อโครงการ</label>
-                                        <input class="form-control border-input" placeholder="ชื่อโครงการ"
-                                            value="<%= data.lov.text %>" type="text" id="input" name="project">
+                                        <label>ชื่อโครงการ ภาษาไทย</label>
+                                        <input class="form-control border-input" placeholder="ชื่อโครงการ ภาษาไทย"
+                                            value="<%= data.lov.text %>" type="text" id="input" name="projectth">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>ชื่อโครงการ ภาษาอังกฤษ</label>
+                                        <input class="form-control border-input" placeholder="ชื่อโครงการ ภาษาอังกฤษ"
+                                            value="<%= data.lov.code %>" type="text" id="input" name="projecteng">
                                     </div>
                                 </div>
                             </div>
