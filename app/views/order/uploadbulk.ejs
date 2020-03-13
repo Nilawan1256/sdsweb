@@ -21,14 +21,48 @@
                                         <label>จุดตั้งรับ</label>
                                         <select class="form-control border-input" name="point">
                                             <option value="" disabled selected hidden >กรุณาเลือกจุดตั้งรับ</option>
-                                            <% data.forEach(data => { %> 
+                                            <% data.service_point_id.forEach(data => { %> 
                                                 <option value="<%= data.id%>"><%= data.text%></option>
                                                 <% }) %>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-
+                            
+                            <!-- ------------------------------------------------------------------------------------------- -->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>สถานะผู้ร่วมบุญ</label>
+                                        <select class="form-control border-input" name="donor_status">
+                                            <%
+                                                var select = [];
+                                                data.sql_lov_donor_verify_status_id.forEach(data => {
+                                                        select.true = "";
+                                            %>
+                                            <option value="<%= data.id%>" <%= select.true %>><%= data.text %></option>
+                                            <% }) %>
+                                        </select>
+                                    </div>
+                                </div>
+                              </div>
+                            <!-- -------------------------------------------------------------------------------------- -->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>สถานะการบริจาค</label>
+                                        <select class="form-control border-input" name="order_status">
+                                            <%
+                                                var select = [];
+                                                data.sql_lov_order_verify_status_id.forEach(data => {
+                                                        select.true = "";
+                                            %>
+                                            <option value="<%= data.id%>" <%= select.true %>><%= data.text %></option>
+                                            <% }) %>
+                                        </select>
+                                    </div>
+                                </div>
+                              </div>
+                            <!-- -------------------------------------------------------------------------------------- -->
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">

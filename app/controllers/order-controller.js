@@ -1,6 +1,7 @@
 var async = require("async");
 var _ = require("lodash");
 var models = require("../models");
+var multer	=	require('multer');
 
 
 var exports = module.exports = {}
@@ -296,20 +297,41 @@ exports.delete = async function (req, res) {
 
 exports.uploadbulk = async function (req, res) {
 	try {
-		const db = req.app.db;
-		db.lov.findAll({
-			attributes: ['id', 'text', 'group'],
+		let db = req.app.db;
+		let data = {};
+		await (		db.lov.findAll({
+			attributes: ['id', 'text'],
 			where: { group: 'service_point_id' }
-		}).then(_data => {
-		res.render('order/uploadbulk', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: _data });
-	});
+		
+		}).then(res => {
+			data.service_point_id = res;
+			// console.log(JSON.stringify(data.service_point_id));
+	}));
 
+		let sql_lov_donor_verify_status_id = "SELECT text ,id  FROM lov WHERE lov.group = 'donor_verify_status_id' AND lov.delete_flag = 0";
+		await (models.sequelize
+		.query(sql_lov_donor_verify_status_id, {type: models.sequelize.QueryTypes.SELECT})
+		.then(res => {
+			data.sql_lov_donor_verify_status_id = res;
+			// console.log(JSON.stringify(res));
+		}));
+
+		let sql_lov_order_verify_status_id = "SELECT text ,id  FROM lov WHERE lov.group = 'order_verify_status_id' AND lov.delete_flag = 0";
+		await (models.sequelize
+		.query(sql_lov_order_verify_status_id, {type: models.sequelize.QueryTypes.SELECT})
+		.then(res => {
+			data.sql_lov_order_verify_status_id = res;
+			// console.log(JSON.stringify(res));
+		}));
+		console.log(JSON.stringify(data));
+	res.render('order/uploadbulk', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: data });
 	}
+	
 	catch (err) {
-		next();
+		console.log(err);
+		// next();
 	}
 }
-
 
 exports.uploadbulksave = async function (req, res) {
 	try {
@@ -323,14 +345,22 @@ exports.uploadbulksave = async function (req, res) {
 		});
 		var upload = multer({ storage : storage}).array('myfile', 50);
 		upload(req,res,function(err) {
+			// let db = req.app.db;
+			// db.order_upload.create({
+			// 	lov_service_point_id: req.body.point,
+			// 	lov_donor_verify_status_id: req.body.donor_status,
+			// 	lov_order_verify_status_id: req.body.order_status
+			// });
 			if(err) {
 				return res.end("Error uploading file.");
 			}
 			res.end("File is uploaded successfully!");
 		});
 		// res.render('order/uploadbulksave', { title: 'uploadbulk', menu_left: 'uploadbulk', page_title: '', data: null });
+	console.log(req.body.id);
 	}
 	catch (err) {
-		next();
+		console.log(err);
+		// next();
 	}
 }

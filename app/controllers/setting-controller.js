@@ -158,6 +158,7 @@ exports.pointedit = async function (req, res) {
 exports.pointsave = async function (req, res) {
 	try {
 		let _id = req.body.id;
+		console.log(_id);
 		if (!_id) {
 			let pointTH = req.body.pointth;
 			let pointEng = req.body.pointeng;
@@ -175,9 +176,9 @@ exports.pointsave = async function (req, res) {
 		else {
 			let pointTH = req.body.pointth;
 			let pointEng = req.body.pointeng;
-			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('service_point_id_" + pointEng + "','" + pointEng + "' , '" + pointTH + "','service_point_id', '0')";
+			const sql = "UPDATE lov SET code = '" + pointEng + "' , text = '" + pointTH + "' WHERE id = '"+_id+"' ";
 			await (
-				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.UPDATE })
 					.then(_data => {
 						console.log("เพิ่มข้อมูลสำเร็จ");
 					})
@@ -256,6 +257,7 @@ exports.projectsave = async function (req, res) {
 
 	try {
 		let _id = req.body.id;
+		console.log(_id);
 		if (!_id) {
 			let projectTH = req.body.projectth;
 			let projectEng = req.body.projecteng;
@@ -273,9 +275,10 @@ exports.projectsave = async function (req, res) {
 		else {
 			let projectTH = req.body.projectth;
 			let projectEng = req.body.projecteng;
-			const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('project_id_" + projectEng + "','" + projectEng + "' , '" + projectTH  + "','project_id', '0')";
+			const sql = "UPDATE lov SET code = '" + projectEng + "' , text = '" + projectTH + "' WHERE id = '"+_id+"' ";
+			// const sql = "insert into lov (name, code, text, `group`, delete_flag) values ('project_id_" + projectEng + "','" + projectEng + "' , '" + projectTH  + "','project_id', '0')";
 			await (
-				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.INSERT })
+				models.sequelize.query(sql, { type: models.sequelize.QueryTypes.UPDATE })
 					.then(_data => {
 						console.log("เพิ่มข้อมูลสำเร็จ");
 					})
@@ -292,9 +295,6 @@ exports.projectsave = async function (req, res) {
 	}
 }
 
-
-
-
 exports.userdelete = async function (req, res) {
 	try {
 		models.user.destroy({
@@ -308,7 +308,6 @@ exports.userdelete = async function (req, res) {
 		next();
 	}
 };
-
 
 exports.pointdelete = async function (req, res) {
 	try {
